@@ -23,6 +23,6 @@ public class Product {
     private int stock;
 
     @Column(nullable = false, length = 250)
-    private int description;
+    private String description;
 
 }
