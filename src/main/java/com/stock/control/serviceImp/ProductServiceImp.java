@@ -25,6 +25,11 @@ public class ProductServiceImp implements IProductService {
     }
 
     @Override
+    public List<Product> getProductsByName(String name) {
+        return productRepository.findByNameContainingIgnoreCase(name);
+    }
+
+    @Override
     public Product getProductById(Long id) {
         return productRepository.findById(id).orElseThrow();
     }
