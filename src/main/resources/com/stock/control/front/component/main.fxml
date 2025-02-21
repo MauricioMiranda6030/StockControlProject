@@ -28,7 +28,10 @@
       </AnchorPane>
       <AnchorPane layoutX="13.0" layoutY="114.0" prefHeight="474.0" prefWidth="784.0">
          <children>
-            <TextField id="txtSearch" fx:id="txtBusqueda" layoutX="13.0" layoutY="31.0" prefHeight="25.0" prefWidth="365.0" promptText="Ingrese nombre de producto a buscar" />
+            <TextField id="txtSearch" fx:id="txtBusqueda" layoutX="13.0" layoutY="31.0" prefHeight="25.0" prefWidth="365.0" promptText="Ingrese nombre de producto a buscar">
+               <font>
+                  <Font name="Verdana" size="12.0" />
+               </font></TextField>
             <TableView fx:id="tableProducts" layoutX="8.0" layoutY="71.0" prefHeight="378.0" prefWidth="763.0">
               <columns>
                 <TableColumn fx:id="id" editable="false" prefWidth="45.0" text="id" />

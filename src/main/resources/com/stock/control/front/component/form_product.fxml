@@ -1,14 +1,80 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.stock.control.front.FormProductController"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane prefHeight="651.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stock.control.front.FormProductController">
+   <children>
+      <AnchorPane prefHeight="105.0" prefWidth="600.0" style="-fx-background-color: #14e066;">
+         <children>
+            <ImageView fitHeight="79.0" fitWidth="94.0" layoutX="17.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../images/form%20logo.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="106.0" layoutY="32.0" prefHeight="44.0" prefWidth="285.0" text="Nuevo Producto" textFill="WHITE">
+               <font>
+                  <Font name="Verdana" size="35.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <Label layoutX="60.0" layoutY="132.0" text="Nombre">
+         <font>
+            <Font name="Verdana" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="60.0" layoutY="197.0" prefHeight="20.0" prefWidth="64.0" text="Precio">
+         <font>
+            <Font name="Verdana" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="60.0" layoutY="258.0" text="Stock">
+         <font>
+            <Font name="Verdana" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="59.0" layoutY="324.0" text="Descripción">
+         <font>
+            <Font name="Verdana" size="16.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtName" layoutX="59.0" layoutY="152.0" prefHeight="25.0" prefWidth="295.0" promptText="Ingrese nombre de producto">
+         <font>
+            <Font name="Verdana" size="14.0" />
+         </font></TextField>
+      <TextField fx:id="txtPrice" layoutX="60.0" layoutY="217.0" prefHeight="30.0" prefWidth="109.0" promptText="123">
+         <font>
+            <Font name="Verdana" size="14.0" />
+         </font></TextField>
+      <TextField fx:id="txtStock" layoutX="60.0" layoutY="278.0" prefHeight="25.0" prefWidth="109.0" promptText="123">
+         <font>
+            <Font name="Verdana" size="14.0" />
+         </font></TextField>
+      <TextArea fx:id="txtDescription" layoutX="59.0" layoutY="345.0" prefHeight="203.0" prefWidth="502.0">
+         <font>
+            <Font name="Verdana" size="12.0" />
+         </font></TextArea>
+      <Button layoutX="419.0" layoutY="575.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="118.0" style="-fx-background-color: #14e066;" text="Guardar" textFill="WHITE">
+         <font>
+            <Font name="Verdana Bold" size="19.0" />
+         </font>
+      </Button>
+      <ImageView fx:id="imgReset" fitHeight="58.0" fitWidth="53.0" layoutX="490.0" layoutY="140.0" onMouseClicked="#resetTextFields" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../images/reset.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="btnClose" layoutX="93.0" layoutY="575.0" mnemonicParsing="false" onAction="#closeThisForm" prefHeight="44.0" prefWidth="118.0" style="-fx-background-color: #e01469;" text="Cancelar" textFill="WHITE">
+         <font>
+            <Font name="Verdana Bold" size="18.0" />
+         </font>
+      </Button>
+   </children>
 </AnchorPane>
