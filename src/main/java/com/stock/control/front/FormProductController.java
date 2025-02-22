@@ -64,7 +64,9 @@ public class FormProductController implements Initializable {
 
             productService.saveProduct(product);
             resetTextFields();
-            System.out.println("se guardo");
+
+            //todo pop up de se guardo
+            //todo refrescar la otra lista
         }
     }
 
