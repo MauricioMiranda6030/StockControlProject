@@ -5,6 +5,7 @@ import com.stock.control.service.IProductService;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -38,11 +39,33 @@ public class FormProductController implements Initializable {
     @FXML
     private Button btnSave;
 
+    @FXML
+    private Label lblWarningPrice;
+
+    @FXML
+    private Label lblWarningStock;
+
     private Product product;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         product = new Product();
+
+        txtPrice.textProperty().addListener(
+                (obs, oldValue, newValue) -> validateNumbers(txtPrice, lblWarningPrice)
+        );
+
+        txtStock.textProperty().addListener(
+                (obs, oldValue, newValue) -> validateNumbers(txtStock, lblWarningStock)
+        );
+    }
+
+    private boolean validateNumbers(TextField field, Label labelToShow) {
+        //Verifica que los valores ingresados sean numeros o un .
+        boolean result = field.getText().chars().allMatch( (c) -> (c >= 48 && c <= 56) || c == 46 );
+        labelToShow.setVisible(!result);
+
+        return result;
     }
 
     @FXML
