@@ -4,11 +4,16 @@ import com.stock.control.entity.Product;
 import com.stock.control.service.IProductService;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import org.controlsfx.control.Notifications;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -65,26 +70,28 @@ public class FormProductController implements Initializable {
     private void saveProduct(){
 
         if(!validateNotNullFields())
-            System.out.println("ingresar todos los valores obligatorios");
+            buildNotification("Debe haber valores en los campos obligatorios", "Campos Vacios")
+                    .showError();
         else if (lblWarningPrice.isVisible() || lblWarningStock.isVisible())
-            System.out.println("ingresa valores numericos correctos en los campos price y  stock");
+            buildNotification("Debes ingresar correctamente valores númericos en Precio y Stock","Producto No guardado")
+                    .showWarning();
         else{
             setProduct();
             productService.saveProduct(product);
+
             resetTextFields();
-            //todo implementar controlfx
+            buildNotification("/images/check.png", "Producto guardado correctamente", "Registro de Producto")
+                    .show();
             //todo actualizar la lista de la otra ventana
-            System.out.println("se guardo bien el ak");
         }
     }
 
 
-    private boolean validateNumbers(TextField field, Label labelToShow) {
+    private void validateNumbers(TextField field, Label labelToShow) {
         //Verifica que los valores ingresados sean numeros o un .
         boolean result = field.getText().chars().allMatch( (c) -> (c >= 48 && c <= 56) || c == 46 );
         labelToShow.setVisible(!result);
 
-        return result;
     }
 
     private boolean validateNotNullFields(){
@@ -105,6 +112,30 @@ public class FormProductController implements Initializable {
         txtName.clear();
         txtPrice.clear();
         txtStock.clear();
+    }
+
+    private Notifications buildNotification(String message, String title){
+        return Notifications.create()
+                .text(message)
+                .title(title)
+                .graphic(null)
+                .hideAfter(Duration.seconds(5))
+                .position(Pos.TOP_RIGHT);
+    }
+
+    private Notifications buildNotification(String imgPath, String message, String title){
+
+        Image img = new Image(imgPath);
+        ImageView imageView = new ImageView(img);
+        imageView.setFitHeight(70);
+        imageView.setFitWidth(70);
+
+        return Notifications.create()
+                .text(message)
+                .title(title)
+                .graphic(imageView)
+                .hideAfter(Duration.seconds(3))
+                .position(Pos.TOP_RIGHT);
     }
 
     @FXML
