@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 @Component
@@ -60,6 +61,24 @@ public class FormProductController implements Initializable {
         );
     }
 
+    @FXML
+    private void saveProduct(){
+
+        if(!validateNotNullFields())
+            System.out.println("ingresar todos los valores obligatorios");
+        else if (lblWarningPrice.isVisible() || lblWarningStock.isVisible())
+            System.out.println("ingresa valores numericos correctos en los campos price y  stock");
+        else{
+            setProduct();
+            productService.saveProduct(product);
+            resetTextFields();
+            //todo implementar controlfx
+            //todo actualizar la lista de la otra ventana
+            System.out.println("se guardo bien el ak");
+        }
+    }
+
+
     private boolean validateNumbers(TextField field, Label labelToShow) {
         //Verifica que los valores ingresados sean numeros o un .
         boolean result = field.getText().chars().allMatch( (c) -> (c >= 48 && c <= 56) || c == 46 );
@@ -68,29 +87,16 @@ public class FormProductController implements Initializable {
         return result;
     }
 
-    @FXML
-    private void saveProduct(){
+    private boolean validateNotNullFields(){
+        List<TextField> fieldList = List.of(txtName, txtPrice, txtStock);
+        return fieldList.stream().noneMatch( (field) -> field.getText().isEmpty() );
+    }
 
-        String name = txtName.getText();
-        String description = txtDescription.getText();
-        Double price = Double.valueOf(txtPrice.getText());
-        Integer stock = Integer.valueOf(txtStock.getText());
-
-        if(name.isBlank() || stock == null || price == null || description.isBlank())
-            //todo mensaje de llenar campos
-            System.out.println("hace algo lope");
-        else{
-            product.setName(name);
-            product.setPrice(price);
-            product.setStock(stock);
-            product.setDescription(description);
-
-            productService.saveProduct(product);
-            resetTextFields();
-
-            //todo pop up de se guardo
-            //todo refrescar la otra lista
-        }
+    private void setProduct(){
+        product.setName(txtName.getText());
+        product.setPrice(Double.valueOf(txtPrice.getText()));
+        product.setStock(Integer.valueOf(txtStock.getText()));
+        product.setDescription(txtDescription.getText());
     }
 
     @FXML
