@@ -3,6 +3,7 @@ package com.stock.control.front;
 import com.stock.control.entity.Product;
 import com.stock.control.service.IProductService;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -13,6 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import lombok.Setter;
 import org.controlsfx.control.Notifications;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -82,7 +84,8 @@ public class FormProductController implements Initializable {
             resetTextFields();
             buildNotification("/images/check.png", "Producto guardado correctamente", "Registro de Producto")
                     .show();
-            //todo actualizar la lista de la otra ventana
+            
+            ControllerManager.getMainController().getProducts();
         }
     }
 

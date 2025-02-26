@@ -70,6 +70,8 @@ public class MainController implements Initializable {
                 "/com/stock/control/front/component/form_product.fxml",
                 "Nuevo Producto"
         );
+
+        ControllerManager.setMainController(this);
     }
 
     @FXML
