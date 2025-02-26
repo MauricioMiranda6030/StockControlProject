@@ -23,6 +23,8 @@ public class SpringFXMLController {
     @Setter
     private static ApplicationContext context;
 
+    private static Stage formProductStage;
+
     public static Parent load(String fxmlPath) throws IOException{
         FXMLLoader loader = new FXMLLoader();
         loader.setControllerFactory(context::getBean); //conecta con el componente con Spring
@@ -48,13 +50,19 @@ public class SpringFXMLController {
     public static void openNewWindowAndKeepCurrent(String path, String title) throws IOException{
         Parent root = load(path);
 
-        Stage stage = new Stage();
-        stage.setTitle(title);
+        if (formProductStage != null && formProductStage.isShowing())
+            formProductStage.toFront();
+        else {
+            Stage stage = new Stage();
+            formProductStage = stage;
 
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
+            stage.setTitle(title);
 
-        stage.show();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+
+            stage.show();
+        }
     }
 
 }
