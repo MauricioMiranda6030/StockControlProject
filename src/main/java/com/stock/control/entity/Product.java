@@ -22,7 +22,7 @@ public class Product {
     @Column(nullable = false)
     private int stock;
 
-    @Column(nullable = false, length = 250)
+    @Column(length = 250)
     private String description;
 
 }
