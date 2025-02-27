@@ -33,31 +33,19 @@ public class FormProductController implements Initializable {
     private TextArea txtDescription;
 
     @FXML
-    private TextField txtName;
+    private TextField txtName, txtPrice, txtStock;
 
     @FXML
-    private TextField txtPrice;
+    private Button btnClose, btnSave, btnEdit;
 
     @FXML
-    private TextField txtStock;
-
-    @FXML
-    private Button btnClose;
-
-    @FXML
-    private Button btnSave;
-
-    @FXML
-    private Label lblWarningPrice;
-
-    @FXML
-    private Label lblWarningStock;
+    private Label lblWarningPrice,lblWarningStock, lblTitle ;
 
     private Product product;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        product = new Product();
+
 
         txtPrice.textProperty().addListener(
                 (obs, oldValue, newValue) -> validateNumbers(txtPrice, lblWarningPrice)
@@ -66,20 +54,41 @@ public class FormProductController implements Initializable {
         txtStock.textProperty().addListener(
                 (obs, oldValue, newValue) -> validateNumbers(txtStock, lblWarningStock)
         );
+
+        if(ControllerManager.getFormProductStatus().equals("save"))
+            setUpForSave();
+        else
+            setUpForEdit();
+    }
+
+    private void setUpForSave(){
+        product = new Product();
+        lblTitle.setText("Nuevo Producto");
+        btnSave.setVisible(true);
+        btnEdit.setVisible(false);
+    }
+
+    private void setUpForEdit(){
+        product = ControllerManager.getProductToEdit();
+        lblTitle.setText("Editar Producto");
+
+        setUpFieldsForEdit();
+
+        btnSave.setVisible(false);
+        btnEdit.setVisible(true);
+    }
+
+    private void setUpFieldsForEdit(){
+        txtName.setText(product.getName());
+        txtPrice.setText(String.valueOf(product.getPrice()));
+        txtStock.setText(String.valueOf(product.getStock()));
+        txtDescription.setText(product.getDescription());
     }
 
     @FXML
     private void saveProduct(){
-
-        if(!validateNotNullFields())
-            buildNotification("Debe haber valores en los campos obligatorios", "Campos Vacios")
-                    .showError();
-        else if (lblWarningPrice.isVisible() || lblWarningStock.isVisible())
-            buildNotification("Debes ingresar correctamente valores númericos en Precio y Stock","Producto No guardado")
-                    .showWarning();
-        else{
-            setProduct();
-            productService.saveProduct(product);
+        if (validateAll()) {
+            setAndSave();
 
             resetTextFields();
             buildNotification("/images/check.png", "Producto guardado correctamente", "Registro de Producto")
@@ -89,6 +98,42 @@ public class FormProductController implements Initializable {
         }
     }
 
+    @FXML
+    private void editProduct(){
+        if(validateAll()){
+            setAndSave();
+
+            resetTextFields();
+            buildNotification("/images/check.png", "Producto editado correctamente", "Edición de Producto")
+                    .show();
+
+            ControllerManager.getMainController().getProducts();
+            closeThisForm();
+        }
+    }
+
+    private void setAndSave(){
+        setProduct();
+        productService.saveProduct(product);
+    }
+
+    private boolean validateAll(){
+        if(!validateNotNullFields()){
+            buildNotification("Debe haber valores en los campos obligatorios", "Campos Vacios")
+                    .showError();
+            return false;
+        }
+        else if (validateNoNumberError()){
+            buildNotification("Debes ingresar correctamente valores númericos en Precio y Stock","Producto No guardado")
+                    .showWarning();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validateNoNumberError(){
+        return lblWarningPrice.isVisible() || lblWarningStock.isVisible();
+    }
 
     private void validateNumbers(TextField field, Label labelToShow) {
         //Verifica que los valores ingresados sean numeros o un .

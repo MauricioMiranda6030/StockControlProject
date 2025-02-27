@@ -18,7 +18,7 @@
                   <Image url="@../../../../../images/form%20logo.png" />
                </image>
             </ImageView>
-            <Label layoutX="106.0" layoutY="32.0" prefHeight="44.0" prefWidth="285.0" text="Nuevo Producto" textFill="WHITE">
+            <Label fx:id="lblTitle" layoutX="106.0" layoutY="32.0" prefHeight="44.0" prefWidth="285.0" text="Nuevo Producto" textFill="WHITE">
                <font>
                   <Font name="Verdana" size="35.0" />
                </font>
@@ -101,5 +101,10 @@
             <Font name="Verdana Bold" size="12.0" />
          </font>
       </Label>
+      <Button fx:id="btnEdit" layoutX="419.0" layoutY="575.0" mnemonicParsing="false" onAction="#editProduct" prefHeight="44.0" prefWidth="118.0" style="-fx-background-color: #14e066;" text="Editar" textFill="WHITE" visible="false">
+         <font>
+            <Font name="Verdana Bold" size="19.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
