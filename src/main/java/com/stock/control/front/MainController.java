@@ -46,32 +46,51 @@ public class MainController implements Initializable {
     private TextField txtBusqueda;
 
     @FXML
-    private Button btnAddProduct;
+    private Button btnAddProduct, btnEditProduct;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
         txtBusqueda.textProperty().addListener(
                 (observable, oldValue, newValue) -> searchProducts()
         );
+        btnAddProduct.setOnAction(event -> openFormProduct(event, "save"));
+        btnEditProduct.setOnAction(event -> openFormProduct(event, "edit"));
 
+        setUpColumns();
+        getProducts();
+    }
+
+    @FXML
+    public void setPerson(){
+        ControllerManager.setProductToEdit(tableProducts.getFocusModel().getFocusedItem());
+    }
+
+    @FXML
+    public void openFormProduct(ActionEvent event, String status){
+
+        if(status.equals("edit") && ControllerManager.getProductToEdit() == null)
+            System.out.println("msg seleccionar un producto a editar pls");
+        else{
+                ControllerManager.setFormProductStatus(status);
+                ControllerManager.setMainController(this);
+                try {
+                    SpringFXMLController.openNewWindowAndKeepCurrent(
+                            "/com/stock/control/front/component/form_product.fxml",
+                            "Nuevo Producto"
+                    );
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+        }
+    }
+
+    private void setUpColumns(){
         name.setCellValueFactory(new PropertyValueFactory<Product, String>("name"));
         id.setCellValueFactory(new PropertyValueFactory<Product, Long>("id"));
         price.setCellValueFactory(new PropertyValueFactory<Product, Double>("price"));
         stock.setCellValueFactory(new PropertyValueFactory<Product, Integer>("stock"));
         description.setCellValueFactory(new PropertyValueFactory<Product, String>("description"));
-
-        getProducts();
-    }
-
-    @FXML
-    public void openFormProduct(ActionEvent event) throws IOException{
-        SpringFXMLController.openNewWindowAndKeepCurrent(
-                "/com/stock/control/front/component/form_product.fxml",
-                "Nuevo Producto"
-        );
-
-        ControllerManager.setMainController(this);
     }
 
     @FXML

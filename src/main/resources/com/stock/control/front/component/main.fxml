@@ -32,7 +32,7 @@
                <font>
                   <Font name="Verdana" size="12.0" />
                </font></TextField>
-            <TableView fx:id="tableProducts" layoutX="8.0" layoutY="71.0" prefHeight="378.0" prefWidth="763.0">
+            <TableView fx:id="tableProducts" layoutX="8.0" layoutY="71.0" onMouseClicked="#setPerson" prefHeight="378.0" prefWidth="763.0">
               <columns>
                 <TableColumn fx:id="id" editable="false" prefWidth="45.0" text="id" />
                 <TableColumn fx:id="name" editable="false" prefWidth="232.0" text="nombre" />
@@ -41,7 +41,12 @@
                   <TableColumn fx:id="stock" prefWidth="135.0" text="stock" />
               </columns>
             </TableView>
-            <Button fx:id="btnAddProduct" layoutX="678.0" layoutY="25.0" mnemonicParsing="false" onAction="#openFormProduct" prefHeight="31.0" prefWidth="85.0" style="-fx-background-color: #fcba03;" text="AGREGAR" textFill="WHITE">
+            <Button fx:id="btnAddProduct" layoutX="678.0" layoutY="25.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="85.0" style="-fx-background-color: #fcba03;" text="AGREGAR" textFill="WHITE">
+               <font>
+                  <Font name="Verdana Bold" size="12.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnEditProduct" layoutX="581.0" layoutY="25.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="85.0" style="-fx-background-color: #34c9eb;" text="EDITAR" textFill="WHITE">
                <font>
                   <Font name="Verdana Bold" size="12.0" />
                </font>
