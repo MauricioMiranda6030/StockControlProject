@@ -2,6 +2,7 @@ package com.stock.control.front;
 
 import com.stock.control.entity.Product;
 import com.stock.control.service.IProductService;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Component;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class FormProductController implements Initializable {
@@ -89,12 +91,11 @@ public class FormProductController implements Initializable {
     private void saveProduct(){
         if (validateAll()) {
             setAndSave();
+            ControllerManager.getMainController().getProducts();
 
             resetTextFields();
-            buildNotification("/images/check.png", "Producto guardado correctamente", "Registro de Producto")
+            ControlFXManager.buildNotification("/images/check.png", "Producto guardado correctamente", "Registro de Producto")
                     .show();
-            
-            ControllerManager.getMainController().getProducts();
         }
     }
 
@@ -102,29 +103,25 @@ public class FormProductController implements Initializable {
     private void editProduct(){
         if(validateAll()){
             setAndSave();
-
-            resetTextFields();
-            buildNotification("/images/check.png", "Producto editado correctamente", "Edición de Producto")
-                    .show();
-
             ControllerManager.getMainController().getProducts();
             closeThisForm();
         }
     }
 
     private void setAndSave(){
+        System.out.println("setting and saving");
         setProduct();
         productService.saveProduct(product);
     }
 
     private boolean validateAll(){
         if(!validateNotNullFields()){
-            buildNotification("Debe haber valores en los campos obligatorios", "Campos Vacios")
+            ControlFXManager.buildNotification("Debe haber valores en los campos obligatorios", "Campos Vacios")
                     .showError();
             return false;
         }
         else if (validateNoNumberError()){
-            buildNotification("Debes ingresar correctamente valores númericos en Precio y Stock","Producto No guardado")
+            ControlFXManager.buildNotification("Debes ingresar correctamente valores númericos en Precio y Stock","Producto No guardado")
                     .showWarning();
             return false;
         }
@@ -160,30 +157,6 @@ public class FormProductController implements Initializable {
         txtName.clear();
         txtPrice.clear();
         txtStock.clear();
-    }
-
-    private Notifications buildNotification(String message, String title){
-        return Notifications.create()
-                .text(message)
-                .title(title)
-                .graphic(null)
-                .hideAfter(Duration.seconds(5))
-                .position(Pos.TOP_RIGHT);
-    }
-
-    private Notifications buildNotification(String imgPath, String message, String title){
-
-        Image img = new Image(imgPath);
-        ImageView imageView = new ImageView(img);
-        imageView.setFitHeight(70);
-        imageView.setFitWidth(70);
-
-        return Notifications.create()
-                .text(message)
-                .title(title)
-                .graphic(imageView)
-                .hideAfter(Duration.seconds(3))
-                .position(Pos.TOP_RIGHT);
     }
 
     @FXML
