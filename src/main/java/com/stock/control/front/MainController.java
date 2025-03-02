@@ -3,6 +3,7 @@ package com.stock.control.front;
 import com.stock.control.entity.Product;
 import com.stock.control.service.IProductService;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -95,7 +96,14 @@ public class MainController implements Initializable {
 
     @FXML
     public void getProducts() {
+        resetTable();
         tableProducts.setItems(FXCollections.observableArrayList(productService.getAllProducts()));
+    }
+
+    private void resetTable(){
+        ObservableList<Product> products = tableProducts.getItems();
+        products.clear();
+        tableProducts.setItems(products);
     }
 
     @FXML
