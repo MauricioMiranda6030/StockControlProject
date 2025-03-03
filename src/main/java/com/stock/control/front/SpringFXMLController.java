@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import lombok.Setter;
 import org.springframework.context.ApplicationContext;
@@ -40,6 +41,8 @@ public class SpringFXMLController {
 
         Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         stage.setTitle(title);
+        stage.setResizable(false);
+        stage.getIcons().add(new Image("/images/logo.png"));
 
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -57,6 +60,8 @@ public class SpringFXMLController {
             formProductStage = stage;
 
             stage.setTitle(title);
+            stage.setResizable(false);
+            stage.getIcons().add(new Image("/images/logo.png"));
 
             Scene scene = new Scene(root);
             stage.setScene(scene);
@@ -64,5 +69,4 @@ public class SpringFXMLController {
             stage.show();
         }
     }
-
 }

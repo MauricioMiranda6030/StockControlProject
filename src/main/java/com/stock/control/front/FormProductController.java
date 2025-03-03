@@ -7,12 +7,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import lombok.Setter;
@@ -22,6 +21,7 @@ import org.springframework.stereotype.Component;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 
@@ -30,6 +30,9 @@ public class FormProductController implements Initializable {
 
     @Autowired
     private IProductService productService;
+
+    @FXML
+    private AnchorPane productAnchorPane;
 
     @FXML
     private TextArea txtDescription;
@@ -90,21 +93,25 @@ public class FormProductController implements Initializable {
     @FXML
     private void saveProduct(){
         if (validateAll()) {
-            setAndSave();
-            ControllerManager.getMainController().getProducts();
+            if(confirmationDialog().get() == ButtonType.OK){
+                setAndSave();
+                ControllerManager.getMainController().getProducts();
 
-            resetTextFields();
-            ControlFXManager.buildNotification("/images/check.png", "Producto guardado correctamente", "Registro de Producto")
-                    .show();
+                resetTextFields();
+                ControlFXManager.buildNotification("/images/check.png", "Producto guardado correctamente", "Registro de Producto")
+                        .show();
+            }
         }
     }
 
     @FXML
     private void editProduct(){
         if(validateAll()){
-            setAndSave();
-            ControllerManager.getMainController().getProducts();
-            closeThisForm();
+            if(confirmationDialog().get() == ButtonType.OK){
+                setAndSave();
+                ControllerManager.getMainController().getProducts();
+                closeThisForm();
+            }
         }
     }
 
@@ -163,5 +170,19 @@ public class FormProductController implements Initializable {
     private void closeThisForm(){
         Stage stage = (Stage) btnClose.getScene().getWindow();
         stage.close();
+    }
+
+    private Optional<ButtonType> confirmationDialog(){
+        Stage stage = (Stage) productAnchorPane.getScene().getWindow();
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "");
+
+        alert.initModality(Modality.APPLICATION_MODAL);
+        alert.initOwner(stage);
+
+        alert.getDialogPane().setContentText("Confirmar datos: ¿Está seguro?");
+        alert.getDialogPane().setHeaderText(null);
+
+        return alert.showAndWait();
     }
 }

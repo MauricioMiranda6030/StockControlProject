@@ -4,6 +4,7 @@ import com.stock.control.front.SpringFXMLController;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import lombok.Getter;
 import org.springframework.boot.SpringApplication;
@@ -34,6 +35,8 @@ public class StockControlProjectApplication extends Application {
         Scene scene = new Scene(root);
 
         stage.setTitle("Stock");
+        stage.setResizable(false);
+        stage.getIcons().add(new Image("/images/logo.png"));
         stage.setScene(scene);
 
         stage.show();
