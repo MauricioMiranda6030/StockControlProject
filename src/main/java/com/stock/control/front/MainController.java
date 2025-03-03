@@ -3,17 +3,19 @@ package com.stock.control.front;
 import com.stock.control.entity.Product;
 import com.stock.control.service.IProductService;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ListView;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
+import javafx.event.ActionEvent;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -44,24 +46,65 @@ public class MainController implements Initializable {
     @FXML
     private TextField txtBusqueda;
 
+    @FXML
+    private Button btnAddProduct, btnEditProduct;
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
         txtBusqueda.textProperty().addListener(
                 (observable, oldValue, newValue) -> searchProducts()
         );
+        btnAddProduct.setOnAction(event -> openFormProduct(event, "save"));
+        btnEditProduct.setOnAction(event -> openFormProduct(event, "edit"));
 
+        setUpColumns();
+        getProducts();
+    }
+
+    @FXML
+    public void setPerson(){
+        ControllerManager.setProductToEdit(tableProducts.getFocusModel().getFocusedItem());
+    }
+
+    @FXML
+    public void openFormProduct(ActionEvent event, String status){
+
+        if(status.equals("edit") && ControllerManager.getProductToEdit() == null)
+            ControlFXManager.buildNotification("Debe seleccionar un producto a editar", "Edición de Producto")
+                    .showWarning();
+        else{
+                ControllerManager.setFormProductStatus(status);
+                ControllerManager.setMainController(this);
+                try {
+                    SpringFXMLController.openNewWindowAndKeepCurrent(
+                            "/com/stock/control/front/component/form_product.fxml",
+                            "Nuevo Producto"
+                    );
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+        }
+    }
+
+    private void setUpColumns(){
         name.setCellValueFactory(new PropertyValueFactory<Product, String>("name"));
         id.setCellValueFactory(new PropertyValueFactory<Product, Long>("id"));
         price.setCellValueFactory(new PropertyValueFactory<Product, Double>("price"));
         stock.setCellValueFactory(new PropertyValueFactory<Product, Integer>("stock"));
         description.setCellValueFactory(new PropertyValueFactory<Product, String>("description"));
-
-        getProducts();
     }
 
+    @FXML
     public void getProducts() {
+        resetTable();
         tableProducts.setItems(FXCollections.observableArrayList(productService.getAllProducts()));
+    }
+
+    private void resetTable(){
+        ObservableList<Product> products = tableProducts.getItems();
+        products.clear();
+        tableProducts.setItems(products);
     }
 
     @FXML
