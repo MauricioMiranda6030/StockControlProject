@@ -71,7 +71,8 @@ public class MainController implements Initializable {
     public void openFormProduct(ActionEvent event, String status){
 
         if(status.equals("edit") && ControllerManager.getProductToEdit() == null)
-            System.out.println("msg seleccionar un producto a editar pls");
+            ControlFXManager.buildNotification("Debe seleccionar un producto a editar", "Edición de Producto")
+                    .showWarning();
         else{
                 ControllerManager.setFormProductStatus(status);
                 ControllerManager.setMainController(this);

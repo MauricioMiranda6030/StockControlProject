@@ -29,7 +29,7 @@ public class ControlFXManager {
                 .position(Pos.TOP_RIGHT);
     }
 
-    private static ImageView createImage(String imgPath){
+    public static ImageView createImage(String imgPath){
         Image img = new Image(imgPath);
         ImageView imageView = new ImageView(img);
         imageView.setFitHeight(70);
