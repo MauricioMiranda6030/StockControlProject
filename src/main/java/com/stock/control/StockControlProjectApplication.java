@@ -1,6 +1,6 @@
 package com.stock.control;
 
-import com.stock.control.front.SpringFXMLController;
+import com.stock.control.front.tools.SpringFXMLController;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -31,24 +31,26 @@ public class StockControlProjectApplication extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-        Parent root = SpringFXMLController.load("/com/stock/control/front/component/main.fxml");
+        SpringFXMLController.openNewWindowAndKeepCurrent("/com/stock/control/front/component/main_menu.fxml", "Menú");
+
+        /*
+        Parent root = SpringFXMLController.load(SpringFXMLController.PATH_MAIN);
         Scene scene = new Scene(root);
 
-        stage.setTitle("Stock");
+        stage.setTitle("Menú");
         stage.setResizable(false);
         stage.getIcons().add(new Image("/images/logo.png"));
         stage.setScene(scene);
-
         stage.show();
 
-
+        */
         /*
 
         Inicio previo
 
         //settear el fxml inicial
         FXMLLoader fxmlLoader = new FXMLLoader(
-                getClass().getResource("/com/stock/control/front/component/main.fxml")
+                getClass().getResource("/com/stock/control/front/component/stock_control.fxml")
         );
 
         //unificar controlladores de spring y javafx

@@ -1,6 +1,9 @@
 package com.stock.control.front;
 
 import com.stock.control.entity.Product;
+import com.stock.control.front.tools.ControlFXManager;
+import com.stock.control.front.tools.ControllerManager;
+import com.stock.control.front.tools.SpringFXMLController;
 import com.stock.control.service.IProductService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,7 +23,18 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 @Component
-public class MainController implements Initializable {
+public class StockControlController implements Initializable {
+
+    private static StockControlController instance = null;
+
+    private StockControlController(){}
+
+    // Patron Singleton
+    private static synchronized StockControlController getInstance(){
+        if(instance == null)
+            instance = new StockControlController();
+        return instance;
+    }
 
     @Autowired
     private IProductService productService;
@@ -75,10 +89,10 @@ public class MainController implements Initializable {
                     .showWarning();
         else{
                 ControllerManager.setFormProductStatus(status);
-                ControllerManager.setMainController(this);
+                ControllerManager.setStockControlController(this);
                 try {
                     SpringFXMLController.openNewWindowAndKeepCurrent(
-                            "/com/stock/control/front/component/form_product.fxml",
+                            SpringFXMLController.PATH_PRODUCT_FORM,
                             "Nuevo Producto"
                     );
                 } catch (IOException e) {

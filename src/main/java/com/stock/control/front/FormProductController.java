@@ -1,20 +1,15 @@
 package com.stock.control.front;
 
 import com.stock.control.entity.Product;
+import com.stock.control.front.tools.ControlFXManager;
+import com.stock.control.front.tools.ControllerManager;
 import com.stock.control.service.IProductService;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-import lombok.Setter;
 import org.controlsfx.control.Notifications;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,10 +18,20 @@ import java.net.URL;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.concurrent.TimeUnit;
 
 @Component
 public class FormProductController implements Initializable {
+
+    private static FormProductController instance = null;
+
+    private FormProductController(){}
+
+    //Patron singleton
+    public static synchronized FormProductController getInstance(){
+        if(instance == null)
+            instance = new FormProductController();
+        return instance;
+    }
 
     @Autowired
     private IProductService productService;
@@ -95,7 +100,7 @@ public class FormProductController implements Initializable {
         if (validateAll()) {
             if(confirmationDialog().get() == ButtonType.OK){
                 setAndSave();
-                ControllerManager.getMainController().getProducts();
+                ControllerManager.getStockControlController().getProducts();
 
                 resetTextFields();
                 ControlFXManager.buildNotification("/images/check.png", "Producto guardado correctamente", "Registro de Producto")
@@ -109,7 +114,7 @@ public class FormProductController implements Initializable {
         if(validateAll()){
             if(confirmationDialog().get() == ButtonType.OK){
                 setAndSave();
-                ControllerManager.getMainController().getProducts();
+                ControllerManager.getStockControlController().getProducts();
                 closeThisForm();
             }
         }
