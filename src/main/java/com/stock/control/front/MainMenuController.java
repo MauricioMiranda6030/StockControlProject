@@ -5,6 +5,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -27,6 +29,9 @@ public class MainMenuController implements Initializable {
     }
 
     @FXML
+    private AnchorPane mainAnchorPane;
+
+    @FXML
     private Button btnOpenProductsSection;
 
     @Override
@@ -41,7 +46,7 @@ public class MainMenuController implements Initializable {
                     (
                             SpringFXMLController.PATH_STOCK,
                             "Control de Stock",
-                            event);
+                            (Stage) mainAnchorPane.getScene().getWindow());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
