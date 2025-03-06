@@ -1,4 +1,4 @@
-package com.stock.control.front;
+package com.stock.control.front.tools;
 
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
