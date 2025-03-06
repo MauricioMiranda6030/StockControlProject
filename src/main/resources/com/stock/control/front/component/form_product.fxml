@@ -66,7 +66,7 @@
             <Font name="Verdana Bold" size="19.0" />
          </font>
       </Button>
-      <ImageView id="img-reset" fx:id="imgReset" fitHeight="58.0" fitWidth="53.0" layoutX="490.0" layoutY="140.0" onMouseClicked="#resetTextFields" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="imgReset" fitHeight="58.0" fitWidth="53.0" layoutX="490.0" layoutY="140.0" onMouseClicked="#resetTextFields" pickOnBounds="true" preserveRatio="true" styleClass="button">
          <image>
             <Image url="@../../../../../images/reset.png" />
          </image>

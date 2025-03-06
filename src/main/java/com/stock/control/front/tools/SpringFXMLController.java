@@ -1,6 +1,7 @@
 package com.stock.control.front.tools;
 
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -27,7 +28,7 @@ public class SpringFXMLController {
     public static final String PATH_PRODUCT_FORM = "/com/stock/control/front/component/form_product.fxml";
     public static final String PATH_STOCK = "/com/stock/control/front/component/stock_control.fxml";
 
-    private static Map<String, Stage> windowsOpened = new HashMap<>();
+    private static final Map<String, Stage> windowsOpened = new HashMap<>();
 
     @Setter
     private static ApplicationContext context;
@@ -42,16 +43,17 @@ public class SpringFXMLController {
         return loader.load();
     }
 
-    public static void openNewWindowAndCloseCurrent(String path, String title, ActionEvent event) throws IOException{
+    public static void openNewWindowAndCloseCurrent(String path, String title, Stage currentStage) throws IOException{
         if(windowsOpened.containsKey(path) && windowsOpened.get(path).isShowing()){
             windowsOpened.get(path).toFront();
         }else {
             Parent root = load(path);
             Scene scene = new Scene(root);
 
-            Stage stage = createStage(title, scene, event);
+            Stage stage = createStage(title, scene);
             stage.show();
 
+            currentStage.close();
             windowsOpened.put(path, stage);
 
             stage.setOnCloseRequest(e -> {
@@ -77,16 +79,6 @@ public class SpringFXMLController {
                 windowsOpened.remove(path, stage);
             });
         }
-    }
-
-    private static Stage createStage(String title, Scene scene, ActionEvent event){
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setTitle(title);
-        stage.setResizable(false);
-        stage.getIcons().add(new Image("/images/logo.png"));
-        stage.setScene(scene);
-
-        return stage;
     }
 
     private static Stage createStage(String title, Scene scene){

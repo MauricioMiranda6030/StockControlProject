@@ -14,6 +14,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import javafx.event.ActionEvent;
@@ -35,6 +38,9 @@ public class StockControlController implements Initializable {
             instance = new StockControlController();
         return instance;
     }
+
+    @FXML
+    private AnchorPane stockControlAnchorPane;
 
     @Autowired
     private IProductService productService;
@@ -63,6 +69,8 @@ public class StockControlController implements Initializable {
     @FXML
     private Button btnAddProduct, btnEditProduct;
 
+    @FXML
+    private ImageView btnGoBack;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -71,6 +79,7 @@ public class StockControlController implements Initializable {
         );
         btnAddProduct.setOnAction(event -> openFormProduct(event, "save"));
         btnEditProduct.setOnAction(event -> openFormProduct(event, "edit"));
+        btnGoBack.setOnMouseClicked(mouseEvent -> goBackToMainMenu());
 
         setUpColumns();
         getProducts();
@@ -130,5 +139,18 @@ public class StockControlController implements Initializable {
             getProducts();
         else
             tableProducts.setItems(FXCollections.observableArrayList(productService.getProductsByName(search)));
+    }
+
+    @FXML
+    public void goBackToMainMenu(){
+        try {
+            SpringFXMLController.openNewWindowAndCloseCurrent(
+                    SpringFXMLController.PATH_MAIN,
+                    "Menú Principal",
+                    (Stage) stockControlAnchorPane.getScene().getWindow()
+            );
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

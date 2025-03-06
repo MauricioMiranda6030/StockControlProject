@@ -31,7 +31,7 @@ public class StockControlProjectApplication extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-        SpringFXMLController.openNewWindowAndKeepCurrent("/com/stock/control/front/component/main_menu.fxml", "Menú");
+        SpringFXMLController.openNewWindowAndKeepCurrent(SpringFXMLController.PATH_MAIN, "Menú");
 
         /*
         Parent root = SpringFXMLController.load(SpringFXMLController.PATH_MAIN);
