@@ -24,9 +24,13 @@ import java.util.Map;
 @Component
 public class SpringFXMLController {
 
-    public static final String PATH_MAIN = "/com/stock/control/front/component/main_menu.fxml";
-    public static final String PATH_PRODUCT_FORM = "/com/stock/control/front/component/form_product.fxml";
-    public static final String PATH_STOCK = "/com/stock/control/front/component/stock_control.fxml";
+    private static final String BASE = "/com/stock/control/front/component/";
+    public static final String PATH_MAIN = BASE + "main_menu.fxml";
+    public static final String PATH_PRODUCT_FORM = BASE + "form_product.fxml";
+    public static final String PATH_STOCK = BASE + "stock_control.fxml";
+    public static final String PATH_SALE = BASE + "sales_record.fxml";
+    public static final String PATH_SALE_FORM = BASE + "form_sale.fxml";
+    public static final String PATH_PRODUCT_SEARCH = BASE + "product_search.fxml";
 
     private static final Map<String, Stage> windowsOpened = new HashMap<>();
 
