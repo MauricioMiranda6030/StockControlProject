@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -22,4 +23,7 @@ public class Sale {
 
     @Column(nullable = false)
     private Double finalPrice;
+
+    @Column(nullable = false)
+    private LocalDate dateOfSale;
 }
