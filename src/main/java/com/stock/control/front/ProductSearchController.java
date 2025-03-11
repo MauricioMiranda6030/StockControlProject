@@ -9,6 +9,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -42,11 +44,10 @@ public class ProductSearchController implements Initializable {
 
 
     @FXML
-    public void addProduct() {
-        ControllerManager.getFormSaleController().addProduct(listProducts.getFocusModel().getFocusedItem());
-        ControlFXManager.buildNotification(
-                "/images/check.png","Producto Agregadó","Venta"
-        ).show();
+    public void addProduct(MouseEvent event) {
+        if(event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2){
+            ControllerManager.getFormSaleController().addProduct(listProducts.getFocusModel().getFocusedItem());
+        }
     }
 
     private void getProducts(){
