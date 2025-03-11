@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.ResourceBundle;
@@ -44,10 +45,13 @@ public class FormSaleController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         listProducts.itemsProperty().addListener(
-                (obs, oldValue, newValue) -> updateLabels()
+                (obs, oldValue, newValue) -> {
+                    updateSale();
+                    updateLabels();
+                }
         );
 
-        lblDate.setText(LocalDate.now().toString());
+        lblDate.setText(LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 
         saleDto = new SaleDTO();
         saleDto.setProducts(new ArrayList<>());
@@ -67,10 +71,11 @@ public class FormSaleController implements Initializable {
                             int amount = Integer.parseInt(newValue);
                             if (amount >= 0 && amount <= product.getStock()) {
                                 product.setAmountToSell(amount);
+                                updateSale();
                                 updateLabels();
                             } else {
                                 amountField.setText(oldValue); // Evita valores fuera de rango
-                                ControlFXManager.buildNotification("No puede ingresar una cantidad mayor al stock",
+                                ControlFXManager.buildNotification("¡Stock Disponible es de " + product.getStock()+"!",
                                         "¡Advertencia!")
                                 .showWarning();
                             }
@@ -96,7 +101,7 @@ public class FormSaleController implements Initializable {
                 } else {
 
                     productLabel.setText("Producto: " + product.getName() + "\n"
-                    + "Precio: " + String.format("$%.2f", product.getPrice()) + "\n"
+                    + "Precio: " + String.format("%.2f$", product.getPrice()) + "\n"
                     + "Stock Disponible: " + product.getStock());
                     amountField.setText("1");
 
@@ -121,13 +126,13 @@ public class FormSaleController implements Initializable {
     private void updateSale(){
         firstPrice = calculatePrice();
         saleDto.setFinalPrice(calculateFinalPrice());
-
+        saleDto.setTotalAmount(getTotalAmount());
     }
 
     private void updateLabels() {
-        lblPrice.setText(calculatePrice());
-        lblAmount.setText(getTotalAmount());
-        lblFinalPrice.setText(calculateFinalPrice());
+        lblAmount.setText(String.valueOf(saleDto.getTotalAmount()));
+        lblPrice.setText(String.format("%.2f$", firstPrice));
+        lblFinalPrice.setText(String.format("%.2f$", saleDto.getFinalPrice()));
     }
 
     private Double calculatePrice() {
@@ -136,15 +141,14 @@ public class FormSaleController implements Initializable {
                         .sum();
     }
 
-    private String getTotalAmount() {
-        return String.valueOf(saleDto.getProducts().stream()
+    private int getTotalAmount() {
+        return saleDto.getProducts().stream()
                 .mapToInt(ProductDTO::getAmountToSell)
-                .sum()
-        );
+                .sum();
     }
 
     private Double calculateFinalPrice() {
-        return Double.parseDouble(lblPrice.getText()) * 1.21;
+        return firstPrice * 1.21;
     }
 
     public void addProduct(ProductDTO productDto) {
