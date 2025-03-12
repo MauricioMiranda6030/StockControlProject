@@ -9,8 +9,6 @@ public interface IProductService {
 
     void saveProduct(Product product);
 
-    void saveAllProducts(List<ProductDTO> products);
-
     List<Product> getAllProducts();
 
     List<Product> getProductsByName(String name);
@@ -20,4 +18,6 @@ public interface IProductService {
     Product getProductById(Long id);
 
     void deleteProductById(Long id);
+
+    void updateStock(List<ProductDTO> productsDto);
 }

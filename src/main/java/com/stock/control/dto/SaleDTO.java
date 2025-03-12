@@ -6,7 +6,6 @@ import java.util.List;
 
 @Data
 public class SaleDTO {
-    private long id;
     private Double finalPrice;
     private int totalAmount;
     private List<ProductDTO> products;

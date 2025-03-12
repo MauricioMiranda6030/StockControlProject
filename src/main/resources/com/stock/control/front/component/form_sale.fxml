@@ -61,7 +61,7 @@
                   <Font name="Verdana" size="20.0" />
                </font>
             </Label>
-            <Button fx:id="btnSave" layoutX="81.0" layoutY="564.0" mnemonicParsing="false" prefHeight="62.0" prefWidth="203.0" text="Guardar Venta">
+            <Button fx:id="btnSave" layoutX="81.0" layoutY="564.0" mnemonicParsing="false" onAction="#saveSale" prefHeight="62.0" prefWidth="203.0" text="Guardar Venta">
                <font>
                   <Font name="Verdana Bold" size="21.0" />
                </font>

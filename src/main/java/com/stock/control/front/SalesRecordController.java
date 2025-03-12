@@ -1,6 +1,7 @@
 package com.stock.control.front;
 
-import com.stock.control.dto.SaleDTO;
+import com.stock.control.entity.Sale;
+import com.stock.control.front.tools.ControllerManager;
 import com.stock.control.front.tools.SpringFXMLController;
 import com.stock.control.service.ISaleService;
 import javafx.collections.FXCollections;
@@ -17,7 +18,6 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.ResourceBundle;
 
 @Component
@@ -27,22 +27,19 @@ public class SalesRecordController implements Initializable {
     private ISaleService saleService;
 
     @FXML
-    private TableView<SaleDTO> tableSales;
+    private TableView<Sale> tableSales;
 
     @FXML
-    private TableColumn<SaleDTO, Integer> colAmount;
+    private TableColumn<Sale, Integer> colAmount;
 
     @FXML
-    private TableColumn<SaleDTO, LocalDate> colDate;
+    private TableColumn<Sale, LocalDate> colDate;
 
     @FXML
-    private TableColumn<SaleDTO, Double> colFinalPrice;
+    private TableColumn<Sale, Double> colFinalPrice;
 
     @FXML
-    private TableColumn<SaleDTO, Long> colId;
-
-    @FXML
-    private TableColumn<SaleDTO, List<String> > colProducts;
+    private TableColumn<Sale, Long> colId;
 
     @FXML
     private Button btnSaveSale;
@@ -51,27 +48,28 @@ public class SalesRecordController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         btnSaveSale.setOnAction(event -> openSaleForm());
 
+        ControllerManager.setSalesRecordController(this);
+
         setUpColumns();
         getSales();
     }
 
     private void setUpColumns(){
-        colId.setCellValueFactory(new PropertyValueFactory<SaleDTO, Long>("id"));
-        colAmount.setCellValueFactory(new PropertyValueFactory<SaleDTO, Integer>("amount"));
-        colDate.setCellValueFactory(new PropertyValueFactory<SaleDTO, LocalDate>("date"));
-        colFinalPrice.setCellValueFactory(new PropertyValueFactory<SaleDTO, Double>("price"));
-        colProducts.setCellValueFactory(new PropertyValueFactory<SaleDTO, List<String> >("products"));
+        colId.setCellValueFactory(new PropertyValueFactory<Sale, Long>("id"));
+        colAmount.setCellValueFactory(new PropertyValueFactory<Sale, Integer>("totalAmount"));
+        colDate.setCellValueFactory(new PropertyValueFactory<Sale, LocalDate>("dateOfSale"));
+        colFinalPrice.setCellValueFactory(new PropertyValueFactory<Sale, Double>("finalPrice"));
     }
 
     private void resetTable(){
-        ObservableList<SaleDTO> sales = tableSales.getItems();
+        ObservableList<Sale> sales = tableSales.getItems();
         sales.clear();
         tableSales.setItems(sales);
     }
 
-    private void getSales(){
+    public void getSales(){
         resetTable();
-        tableSales.setItems(FXCollections.observableArrayList(saleService.getAllDtoSales()));
+        tableSales.setItems(FXCollections.observableArrayList(saleService.getAllSales()));
     }
 
     private void openSaleForm(){

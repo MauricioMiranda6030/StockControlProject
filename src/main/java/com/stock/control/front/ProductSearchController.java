@@ -38,7 +38,7 @@ public class ProductSearchController implements Initializable {
         txtName.textProperty().addListener(
                 (obs, oldValue, newValue) ->getProducts()
         );
-
+        ControllerManager.setProductSearchController(this);
         getProducts();
     }
 
@@ -46,11 +46,19 @@ public class ProductSearchController implements Initializable {
     @FXML
     public void addProduct(MouseEvent event) {
         if(event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2){
-            ControllerManager.getFormSaleController().addProduct(listProducts.getFocusModel().getFocusedItem());
+            ProductDTO productDTO = listProducts.getFocusModel().getFocusedItem();
+
+            if (productDTO.getStock() == 0)
+                ControlFXManager.buildNotification(
+                        "¡Producto sin Stock! Añadir más Stock para realizar la compra",
+                        "¡Advertencia!")
+                .showWarning();
+            else
+                ControllerManager.getFormSaleController().addProduct(productDTO);
         }
     }
 
-    private void getProducts(){
+    public void getProducts(){
         listProducts.setItems(FXCollections.observableArrayList(productService.getProductsDtoByName(txtName.getText())));
     }
 
