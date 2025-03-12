@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ISaleService {
 
-    void saveSale(SaleDTO saleDto);
+    Long saveSale(SaleDTO saleDto);
 
     Sale getSale(Long id);
 

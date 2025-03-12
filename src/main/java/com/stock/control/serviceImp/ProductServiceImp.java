@@ -5,6 +5,7 @@ import com.stock.control.entity.Product;
 import com.stock.control.mapper.IProductMapper;
 import com.stock.control.repository.IProductRepository;
 import com.stock.control.service.IProductService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,12 +23,11 @@ public class ProductServiceImp implements IProductService {
     }
 
     @Override
-    public void saveAllProducts(List<ProductDTO> products) {
-        List<Product> listToSave = products.stream()
-                .map(IProductMapper.INSTANCE::productDtoToProduct)
-                .toList();
-
-        productRepository.saveAll(listToSave);
+    @Transactional
+    public void updateStock(List<ProductDTO> productsDto) {
+        for (ProductDTO p : productsDto){
+            productRepository.updateStock(p.getId(),p.getStock() - p.getAmountToSell());
+        }
     }
 
     @Override

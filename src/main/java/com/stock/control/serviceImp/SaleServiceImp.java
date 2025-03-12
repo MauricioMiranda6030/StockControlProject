@@ -4,11 +4,12 @@ import com.stock.control.dto.SaleDTO;
 import com.stock.control.entity.Sale;
 import com.stock.control.mapper.ISaleMapper;
 import com.stock.control.repository.ISaleRepository;
-import com.stock.control.service.IProductService;
 import com.stock.control.service.ISaleService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -17,13 +18,13 @@ public class SaleServiceImp implements ISaleService {
     @Autowired
     private ISaleRepository saleRepository;
 
-    @Autowired
-    private IProductService productService;
-
     @Override
-    public void saveSale(SaleDTO saleDto){
-        productService.saveAllProducts(saleDto.getProducts());
-        saleRepository.save(ISaleMapper.INSTANCE.saleDtoToSale(saleDto));
+    @Transactional
+    public Long saveSale(SaleDTO saleDto){
+        Sale sale = ISaleMapper.INSTANCE.saleDtoToSale(saleDto);
+        sale.setDateOfSale(LocalDate.now());
+
+        return saleRepository.save(sale).getId();
     }
 
     @Override

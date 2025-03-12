@@ -25,9 +25,8 @@
         <columns>
           <TableColumn fx:id="colId" prefWidth="25.0" text="id" />
           <TableColumn fx:id="colDate" prefWidth="177.0" text="Fecha" />
-            <TableColumn fx:id="colProducts" prefWidth="360.0" text="Productos" />
             <TableColumn fx:id="colAmount" minWidth="0.0" prefWidth="124.0" text="Cantidad Total" />
-            <TableColumn fx:id="colFinalPrice" prefWidth="99.0" text="Precio Final" />
+            <TableColumn fx:id="colFinalPrice" prefWidth="139.0" text="Precio Final" />
         </columns>
       </TableView>
       <DatePicker layoutX="151.0" layoutY="152.0" prefHeight="25.0" prefWidth="139.0" />
