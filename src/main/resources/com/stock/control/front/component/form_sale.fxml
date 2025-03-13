@@ -46,17 +46,17 @@
                   <Font name="Verdana" size="20.0" />
                </font>
             </Label>
-            <Label fx:id="lblAmount" layoutX="258.0" layoutY="124.0" text="-">
+            <Label fx:id="lblAmount" layoutX="258.0" layoutY="124.0">
                <font>
                   <Font name="Verdana" size="20.0" />
                </font>
             </Label>
-            <Label fx:id="lblPrice" layoutX="131.0" layoutY="181.0" text="-">
+            <Label fx:id="lblPrice" layoutX="131.0" layoutY="181.0">
                <font>
                   <Font name="Verdana" size="20.0" />
                </font>
             </Label>
-            <Label fx:id="lblFinalPrice" layoutX="149.0" layoutY="499.0" text="-">
+            <Label fx:id="lblFinalPrice" layoutX="149.0" layoutY="499.0">
                <font>
                   <Font name="Verdana" size="20.0" />
                </font>
