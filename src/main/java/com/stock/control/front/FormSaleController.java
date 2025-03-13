@@ -2,14 +2,19 @@ package com.stock.control.front;
 
 import com.stock.control.dto.ProductDTO;
 import com.stock.control.dto.SaleDTO;
+import com.stock.control.entity.Sale;
 import com.stock.control.front.tools.ControlFXManager;
 import com.stock.control.front.tools.ControllerManager;
 import com.stock.control.front.tools.SpringFXMLController;
 import com.stock.control.service.IProductService;
 import com.stock.control.service.ISaleDetailsService;
 import com.stock.control.service.ISaleService;
+import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -17,6 +22,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,7 +32,6 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.ResourceBundle;
 
 @Component
@@ -56,13 +62,27 @@ public class FormSaleController implements Initializable {
 
     private Double firstPrice;
 
+    @Getter @Setter
+    StringProperty amountProperty = new SimpleStringProperty("-");
+    @Getter @Setter
+    StringProperty priceProperty = new SimpleStringProperty("-");
+    @Getter @Setter
+    StringProperty finalPriceProperty = new SimpleStringProperty("-");
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        listProducts.getItems().addListener((ListChangeListener<ProductDTO>) change -> {
-            updateSaleAndLabel();
-        });
-
+        lblAmount.textProperty().bind(amountProperty);
+        lblPrice.textProperty().bind(priceProperty);
+        lblFinalPrice.textProperty().bind(finalPriceProperty);
         lblDate.setText(LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+
+        listProducts.getItems().addListener((ListChangeListener<ProductDTO>) change -> {
+            while (change.next()) {
+                if (change.wasAdded() || change.wasRemoved()) {
+                    Platform.runLater(this::updateSaleAndLabel);
+                }
+            }
+        });
 
         initializeNewSale();
         ControllerManager.setFormSaleController(this);
@@ -79,21 +99,23 @@ public class FormSaleController implements Initializable {
 
             {
                 removeButton.setOnAction(event -> {
-                    saleDto.getProducts().remove(getItem());
-                    getListView().getItems().remove(getItem());
+                    ProductDTO productDto = getItem();
+                    saleDto.getProducts().remove(productDto);
+                    listProducts.setItems(FXCollections.observableArrayList(saleDto.getProducts()));
+                    Platform.runLater(() -> updateSaleAndLabel());
                 });
 
                 amountField.setPrefWidth(50);
                 amountField.textProperty().addListener((
                         obs, oldValue, newValue) -> {
                     ProductDTO product = getItem();
-                    if (!newValue.isBlank()) {
+                    if (!newValue.isBlank() && product != null && !oldValue.equals(newValue)) {
                         try {
                             int amount = Integer.parseInt(newValue); //Evita valores fuera de rango
 
                             if (amount >= 0 && amount <= product.getStock()) {
                                 product.setAmountToSell(amount);
-                                updateSaleAndLabel();
+                                Platform.runLater(() -> updateSaleAndLabel());
                             } else {
                                 amountField.setText(oldValue);
                                 ControlFXManager.buildNotification("¡Stock Disponible es de " + product.getStock() + "!",
@@ -155,9 +177,9 @@ public class FormSaleController implements Initializable {
     }
 
     private void updateLabels() {
-        lblAmount.setText(String.valueOf(saleDto.getTotalAmount()));
-        lblPrice.setText(String.format("%.2f$", firstPrice));
-        lblFinalPrice.setText(String.format("%.2f$", saleDto.getFinalPrice()));
+        amountProperty.set(String.valueOf(saleDto.getTotalAmount()));
+        priceProperty.set(String.format("%.2f$", firstPrice));
+        finalPriceProperty.set(String.format("%.2f$", saleDto.getFinalPrice()));
     }
 
     private Double calculatePrice() {
@@ -173,7 +195,7 @@ public class FormSaleController implements Initializable {
     }
 
     private Double calculateFinalPrice() {
-        return firstPrice * 1.21;
+        return calculatePrice() * 1.21;
     }
 
     public void addProduct(ProductDTO productDto) {
@@ -182,7 +204,8 @@ public class FormSaleController implements Initializable {
             ControlFXManager.buildNotification("Producto ya agregadó", "Venta").showInformation();
         else {
             saleDto.getProducts().add(productDto);
-            listProducts.getItems().add(productDto);
+            listProducts.setItems(FXCollections.observableArrayList(saleDto.getProducts()));
+            Platform.runLater(this::updateSaleAndLabel);
             ControlFXManager.buildNotification(
                             "/images/check.png", "Producto Agregadó",
                             "Venta")
@@ -210,7 +233,9 @@ public class FormSaleController implements Initializable {
     }
 
     private void resetProductList() {
-        listProducts.getItems().clear();
+        ObservableList<ProductDTO> productsDto = listProducts.getItems();
+        productsDto.clear();
+        listProducts.setItems(productsDto);
     }
 
     private void updateSalesRecordList() {

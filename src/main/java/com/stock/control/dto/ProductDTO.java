@@ -8,7 +8,7 @@ public class ProductDTO {
     private String name;
     private Double price;
     private int stock;
-    private int amountToSell;
+    private int amountToSell = 1;
 
     @Override
     public String toString(){
