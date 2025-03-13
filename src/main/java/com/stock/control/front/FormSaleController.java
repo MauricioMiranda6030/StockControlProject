@@ -37,6 +37,8 @@ import java.util.ResourceBundle;
 @Component
 public class FormSaleController implements Initializable {
 
+    private final Double IVA = 1.21;
+
     @Autowired
     private ISaleService saleService;
 
@@ -62,11 +64,14 @@ public class FormSaleController implements Initializable {
 
     private Double firstPrice;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     StringProperty amountProperty = new SimpleStringProperty("-");
-    @Getter @Setter
+    @Getter
+    @Setter
     StringProperty priceProperty = new SimpleStringProperty("-");
-    @Getter @Setter
+    @Getter
+    @Setter
     StringProperty finalPriceProperty = new SimpleStringProperty("-");
 
     @Override
@@ -75,14 +80,6 @@ public class FormSaleController implements Initializable {
         lblPrice.textProperty().bind(priceProperty);
         lblFinalPrice.textProperty().bind(finalPriceProperty);
         lblDate.setText(LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-
-        listProducts.getItems().addListener((ListChangeListener<ProductDTO>) change -> {
-            while (change.next()) {
-                if (change.wasAdded() || change.wasRemoved()) {
-                    Platform.runLater(this::updateSaleAndLabel);
-                }
-            }
-        });
 
         initializeNewSale();
         ControllerManager.setFormSaleController(this);
@@ -99,39 +96,47 @@ public class FormSaleController implements Initializable {
 
             {
                 removeButton.setOnAction(event -> {
-                    ProductDTO productDto = getItem();
-                    saleDto.getProducts().remove(productDto);
-                    listProducts.setItems(FXCollections.observableArrayList(saleDto.getProducts()));
-                    Platform.runLater(() -> updateSaleAndLabel());
+                    deleteProductAndUpdateLabels(getItem());
                 });
+                buildAmountField();
+                buildHBox();
+            }
 
+            private void buildAmountField() {
                 amountField.setPrefWidth(50);
-                amountField.textProperty().addListener((
-                        obs, oldValue, newValue) -> {
-                    ProductDTO product = getItem();
-                    if (!newValue.isBlank() && product != null && !oldValue.equals(newValue)) {
-                        try {
-                            int amount = Integer.parseInt(newValue); //Evita valores fuera de rango
+                amountField.textProperty().addListener(
+                        (obs, oldValue, newValue) -> {
+                            ProductDTO product = getItem();
 
-                            if (amount >= 0 && amount <= product.getStock()) {
-                                product.setAmountToSell(amount);
-                                Platform.runLater(() -> updateSaleAndLabel());
-                            } else {
-                                amountField.setText(oldValue);
-                                ControlFXManager.buildNotification("¡Stock Disponible es de " + product.getStock() + "!",
-                                                "¡Advertencia!")
-                                        .showWarning();
+                            if (!newValue.isBlank() && product != null && !oldValue.equals(newValue)) {
+                                manageAmountInput(oldValue, newValue, product);
                             }
-                        } catch (NumberFormatException e) {
-                            amountField.setText(oldValue); // Evita valores no numéricos
-                            ControlFXManager.buildNotification("¡Solo ingresar números!",
-                                            "¡Advertencia!")
-                                    .showWarning();
-                        }
-                    }
-                });
+                        });
+            }
 
-                //armado de la row a mostrar, spacer para mandar el textfield al final.
+            private void manageAmountInput(String oldValue, String newValue, ProductDTO product) {
+                try {
+                    int amount = Integer.parseInt(newValue); //Evita valores fuera de rango
+
+                    if (amount >= 0 && amount <= product.getStock()) {
+                        product.setAmountToSell(amount);
+                        updateSaleAndLabel();
+                    } else {
+                        amountField.setText(oldValue);
+                        ControlFXManager.buildNotification("¡Stock Disponible es de " + product.getStock() + "!",
+                                        "¡Advertencia!")
+                                .showWarning();
+                    }
+                } catch (NumberFormatException e) {
+                    amountField.setText(oldValue); // Evita valores no numéricos
+                    ControlFXManager.buildNotification("¡Solo ingresar números!",
+                                    "¡Advertencia!")
+                            .showWarning();
+                }
+            }
+
+            //armado de la row a mostrar, spacer para mandar el textfield al final.
+            private void buildHBox() {
                 Region spacer = new Region();
                 HBox.setHgrow(spacer, Priority.ALWAYS);
                 hbox.getChildren().addAll(productLabel, spacer, amountField, removeButton);
@@ -143,19 +148,28 @@ public class FormSaleController implements Initializable {
                 if (empty || product == null) {
                     setGraphic(null);
                 } else {
-                    productLabel.setText("Producto: " + product.getName() + "\n"
-                            + "Precio: " + String.format("%.2f$", product.getPrice()) + "\n"
-                            + "Stock Disponible: " + product.getStock());
-
-                    amountField.setText("1");
-                    removeButton.setText("-");
-                    removeButton.setStyle("-fx-background-color: red;" +
-                            "-fx-text-fill: white");
-
+                    buildHBoxComponents(product);
                     setGraphic(hbox);
                 }
             }
+
+            private void buildHBoxComponents(ProductDTO product) {
+                productLabel.setText("Producto: " + product.getName() + "\n"
+                        + "Precio: " + String.format("%.2f$", product.getPrice()) + "\n"
+                        + "Stock Disponible: " + product.getStock());
+
+                amountField.setText("1");
+                removeButton.setText("❌");
+                removeButton.setStyle("-fx-background-color: transparent;" +
+                                        "-fx-text-fill: red");
+            }
         });
+    }
+
+    private void deleteProductAndUpdateLabels(ProductDTO productDto) {
+        saleDto.getProducts().remove(productDto);
+        listProducts.setItems(FXCollections.observableArrayList(saleDto.getProducts()));
+        updateSaleAndLabel();
     }
 
     @FXML
@@ -170,6 +184,10 @@ public class FormSaleController implements Initializable {
         }
     }
 
+    /*
+     * Updates y Resets
+     */
+    
     private void updateSale() {
         firstPrice = calculatePrice();
         saleDto.setFinalPrice(calculateFinalPrice());
@@ -180,50 +198,6 @@ public class FormSaleController implements Initializable {
         amountProperty.set(String.valueOf(saleDto.getTotalAmount()));
         priceProperty.set(String.format("%.2f$", firstPrice));
         finalPriceProperty.set(String.format("%.2f$", saleDto.getFinalPrice()));
-    }
-
-    private Double calculatePrice() {
-        return saleDto.getProducts().stream()
-                .mapToDouble(product -> product.getPrice() * product.getAmountToSell())
-                .sum();
-    }
-
-    private int getTotalAmount() {
-        return saleDto.getProducts().stream()
-                .mapToInt(ProductDTO::getAmountToSell)
-                .sum();
-    }
-
-    private Double calculateFinalPrice() {
-        return calculatePrice() * 1.21;
-    }
-
-    public void addProduct(ProductDTO productDto) {
-
-        if (saleDto.getProducts().contains(productDto))
-            ControlFXManager.buildNotification("Producto ya agregadó", "Venta").showInformation();
-        else {
-            saleDto.getProducts().add(productDto);
-            listProducts.setItems(FXCollections.observableArrayList(saleDto.getProducts()));
-            Platform.runLater(this::updateSaleAndLabel);
-            ControlFXManager.buildNotification(
-                            "/images/check.png", "Producto Agregadó",
-                            "Venta")
-                    .show();
-        }
-    }
-
-    @FXML
-    public void saveSale() {
-        saveAndUpdate();
-        initializeNewSale();
-        updateListsAndTables();
-    }
-
-    private void saveAndUpdate() {
-        Long id = saleService.saveSale(saleDto);
-        saleDetailsService.saveSaleDetails(saleDto, id);
-        productService.updateStock(saleDto.getProducts());
     }
 
     private void updateListsAndTables() {
@@ -251,4 +225,61 @@ public class FormSaleController implements Initializable {
         updateSale();
         updateLabels();
     }
+    
+    /*
+    * Calculos de SALE
+    */
+    private Double calculatePrice() {
+        return saleDto.getProducts().stream()
+                .mapToDouble(product -> product.getPrice() * product.getAmountToSell())
+                .sum();
+    }
+
+    private int getTotalAmount() {
+        return saleDto.getProducts().stream()
+                .mapToInt(ProductDTO::getAmountToSell)
+                .sum();
+    }
+
+    private Double calculateFinalPrice() {
+        return calculatePrice() * IVA;
+    }
+    
+    /*
+    * Adds y Saves
+    */
+    
+    public void addProduct(ProductDTO productDto) {
+
+        if (saleDto.getProducts().contains(productDto))
+            ControlFXManager.buildNotification("Producto ya agregadó", "Venta").showInformation();
+        else {
+            saleDto.getProducts().add(productDto);
+            listProducts.setItems(FXCollections.observableArrayList(saleDto.getProducts()));
+            updateSaleAndLabel();
+            ControlFXManager.buildNotification(
+                            "/images/check.png", "Producto Agregadó",
+                            "Venta")
+                    .show();
+        }
+    }
+
+    @FXML
+    public void saveSale() {
+        saveSaleDetailsAndUpdateStock();
+        initializeNewSale();
+        updateListsAndTables();
+        ControlFXManager.buildNotification("/images/check.png",
+                "Venta Guardada Correctamente",
+                "Venta")
+                .show();
+    }
+
+    private void saveSaleDetailsAndUpdateStock() {
+        Long id = saleService.saveSale(saleDto);
+        saleDetailsService.saveSaleDetails(saleDto, id);
+        productService.updateStock(saleDto.getProducts());
+    }
+
+    
 }
