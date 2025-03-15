@@ -2,21 +2,19 @@ package com.stock.control.front;
 
 import com.stock.control.dto.ProductDTO;
 import com.stock.control.dto.SaleDTO;
-import com.stock.control.entity.Sale;
 import com.stock.control.front.tools.ControlFXManager;
 import com.stock.control.front.tools.ControllerManager;
-import com.stock.control.front.tools.SpringFXMLController;
+import com.stock.control.front.tools.WindowsManager;
 import com.stock.control.service.IProductService;
 import com.stock.control.service.ISaleDetailsService;
 import com.stock.control.service.ISaleService;
-import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -32,6 +30,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 @Component
@@ -158,10 +157,12 @@ public class FormSaleController implements Initializable {
                         + "Precio: " + String.format("%.2f$", product.getPrice()) + "\n"
                         + "Stock Disponible: " + product.getStock());
 
-                amountField.setText("1");
+                amountField.setText(String.valueOf(product.getAmountToSell()));
+                amountField.setAlignment(Pos.CENTER);
+
                 removeButton.setText("❌");
                 removeButton.setStyle("-fx-background-color: transparent;" +
-                                        "-fx-text-fill: red");
+                                        "-fx-text-fill: red;");
             }
         });
     }
@@ -175,8 +176,8 @@ public class FormSaleController implements Initializable {
     @FXML
     public void openProductSearch() {
         try {
-            SpringFXMLController.openNewWindowAndKeepCurrent(
-                    SpringFXMLController.PATH_PRODUCT_SEARCH,
+            WindowsManager.openNewWindowAndKeepCurrent(
+                    WindowsManager.PATH_PRODUCT_SEARCH,
                     "Busqueda de Productos"
             );
         } catch (IOException e) {
@@ -266,13 +267,22 @@ public class FormSaleController implements Initializable {
 
     @FXML
     public void saveSale() {
-        saveSaleDetailsAndUpdateStock();
-        initializeNewSale();
-        updateListsAndTables();
-        ControlFXManager.buildNotification("/images/check.png",
-                "Venta Guardada Correctamente",
-                "Venta")
-                .show();
+        if(saleDto.getProducts().isEmpty())
+            ControlFXManager.buildNotification(
+                    "¡No se han agregado Productos a la Venta!"
+                            ,"¡Advertencia!")
+                    .showWarning();
+        else {
+            if(confirmationDialog().get() == ButtonType.OK){
+                saveSaleDetailsAndUpdateStock();
+                initializeNewSale();
+                updateListsAndTables();
+                ControlFXManager.buildNotification("/images/check.png",
+                                "Venta Guardada Correctamente",
+                                "Venta")
+                        .show();
+            }
+        }
     }
 
     private void saveSaleDetailsAndUpdateStock() {
@@ -281,5 +291,7 @@ public class FormSaleController implements Initializable {
         productService.updateStock(saleDto.getProducts());
     }
 
-    
+    private Optional<ButtonType> confirmationDialog(){
+        return WindowsManager.confirmDialog(anchorFormSale, "Confirmación de Productos: ¿Esta Seguro?");
+    }
 }

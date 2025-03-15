@@ -3,7 +3,7 @@ package com.stock.control.front;
 import com.stock.control.entity.Product;
 import com.stock.control.front.tools.ControlFXManager;
 import com.stock.control.front.tools.ControllerManager;
-import com.stock.control.front.tools.SpringFXMLController;
+import com.stock.control.front.tools.WindowsManager;
 import com.stock.control.service.IProductService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -100,8 +100,8 @@ public class StockControlController implements Initializable {
                 ControllerManager.setFormProductStatus(status);
                 ControllerManager.setStockControlController(this);
                 try {
-                    SpringFXMLController.openNewWindowAndKeepCurrent(
-                            SpringFXMLController.PATH_PRODUCT_FORM,
+                    WindowsManager.openNewWindowAndKeepCurrent(
+                            WindowsManager.PATH_PRODUCT_FORM,
                             "Nuevo Producto"
                     );
                 } catch (IOException e) {
@@ -144,8 +144,8 @@ public class StockControlController implements Initializable {
     @FXML
     public void goBackToMainMenu(){
         try {
-            SpringFXMLController.openNewWindowAndCloseCurrent(
-                    SpringFXMLController.PATH_MAIN,
+            WindowsManager.openNewWindowAndCloseCurrent(
+                    WindowsManager.PATH_MAIN,
                     "Menú Principal",
                     (Stage) stockControlAnchorPane.getScene().getWindow()
             );

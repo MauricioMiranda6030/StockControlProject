@@ -1,12 +1,13 @@
 package com.stock.control.front.tools;
 
-import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.Setter;
 import org.springframework.context.ApplicationContext;
@@ -16,13 +17,14 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /*
 * Loader para cargar los archivos FXML y los beans de Spring
 * */
 
 @Component
-public class SpringFXMLController {
+public class WindowsManager {
 
     private static final String BASE = "/com/stock/control/front/component/";
     public static final String PATH_MAIN = BASE + "main_menu.fxml";
@@ -41,7 +43,7 @@ public class SpringFXMLController {
         FXMLLoader loader = new FXMLLoader();
         loader.setControllerFactory(context::getBean); //conecta con el componente con Spring
 
-        URL fxmlLocation = SpringFXMLController.class.getResource(fxmlPath);
+        URL fxmlLocation = WindowsManager.class.getResource(fxmlPath);
         loader.setLocation(fxmlLocation);
 
         return loader.load();
@@ -93,5 +95,32 @@ public class SpringFXMLController {
         stage.setScene(scene);
 
         return stage;
+    }
+
+    private static Optional<ButtonType> confirmationDialog(Stage stage){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "");
+
+        alert.initModality(Modality.APPLICATION_MODAL);
+        alert.initOwner(stage);
+
+        alert.getDialogPane().setContentText("Confirmar datos: ¿Está seguro?");
+        alert.getDialogPane().setHeaderText(null);
+
+        return alert.showAndWait();
+    }
+
+    public static Optional<ButtonType> confirmDialog(AnchorPane anchor, String message) {
+        Stage stage = (Stage) anchor.getScene().getWindow();
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "");
+
+        alert.initModality(Modality.APPLICATION_MODAL);
+        alert.initOwner(stage);
+
+        alert.getDialogPane().setContentText(message);
+        alert.setTitle("Confirmación");
+        alert.getDialogPane().setHeaderText(null);
+
+        return alert.showAndWait();
     }
 }

@@ -4,34 +4,41 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="anchorFormSale" prefHeight="767.0" prefWidth="815.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stock.control.front.FormSaleController">
    <children>
-      <Pane prefHeight="105.0" prefWidth="815.0" style="-fx-background-color: lightgreen;">
+      <Pane prefHeight="101.0" prefWidth="815.0" style="-fx-background-color: #14e066;">
          <children>
-            <Label layoutX="34.0" layoutY="31.0" prefHeight="43.0" prefWidth="264.0" text="Nueva Venta" textFill="WHITE">
+            <Label layoutX="97.0" layoutY="34.0" prefHeight="43.0" prefWidth="264.0" text="Nueva Venta" textFill="WHITE">
                <font>
                   <Font name="Verdana" size="34.0" />
                </font>
             </Label>
+            <ImageView fitHeight="79.0" fitWidth="94.0" layoutX="14.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../images/form%20logo.png" />
+               </image>
+            </ImageView>
          </children>
       </Pane>
-      <Pane layoutY="105.0" prefHeight="662.0" prefWidth="365.0" style="-fx-background-color: lightgrey;">
+      <Pane layoutY="99.0" prefHeight="668.0" prefWidth="360.0" styleClass="sale-pane">
          <children>
-            <Label layoutX="14.0" layoutY="69.0" text="Fecha de la Compra:">
+            <Label layoutX="14.0" layoutY="39.0" text="Fecha de la Compra:">
                <font>
-                  <Font name="Verdana" size="20.0" />
+                  <Font name="Verdana" size="18.0" />
                </font>
             </Label>
-            <Label layoutX="14.0" layoutY="124.0" text="Cantidad de Productos:">
+            <Label layoutX="13.0" layoutY="83.0" text="Cantidad de Productos:">
                <font>
-                  <Font name="Verdana" size="20.0" />
+                  <Font name="Verdana" size="18.0" />
                </font>
             </Label>
-            <Label layoutX="14.0" layoutY="181.0" text="Total neto:">
+            <Label layoutX="14.0" layoutY="127.0" text="Total neto:">
                <font>
                   <Font name="Verdana" size="20.0" />
                </font>
@@ -41,45 +48,44 @@
                   <Font name="Verdana" size="20.0" />
                </font>
             </Label>
-            <Label fx:id="lblDate" layoutX="226.0" layoutY="70.0">
+            <Label fx:id="lblDate" layoutX="213.0" layoutY="41.0" text="-">
                <font>
                   <Font name="Verdana" size="20.0" />
                </font>
             </Label>
-            <Label fx:id="lblAmount" layoutX="258.0" layoutY="124.0">
+            <Label fx:id="lblAmount" layoutX="242.0" layoutY="83.0" text="-">
                <font>
                   <Font name="Verdana" size="20.0" />
                </font>
             </Label>
-            <Label fx:id="lblPrice" layoutX="131.0" layoutY="181.0">
+            <Label fx:id="lblPrice" layoutX="128.0" layoutY="127.0" styleClass="price-label" text="-">
                <font>
                   <Font name="Verdana" size="20.0" />
                </font>
             </Label>
-            <Label fx:id="lblFinalPrice" layoutX="149.0" layoutY="499.0">
+            <Label fx:id="lblFinalPrice" layoutX="146.0" layoutY="500.0" styleClass="price-label" text="-">
                <font>
                   <Font name="Verdana" size="20.0" />
                </font>
             </Label>
-            <Button fx:id="btnSave" layoutX="81.0" layoutY="564.0" mnemonicParsing="false" onAction="#saveSale" prefHeight="62.0" prefWidth="203.0" text="Guardar Venta">
+            <Button fx:id="btnSave" layoutX="81.0" layoutY="564.0" mnemonicParsing="false" onAction="#saveSale" prefHeight="62.0" prefWidth="203.0" styleClass="ok-button" text="Guardar Venta" textFill="WHITE">
                <font>
                   <Font name="Verdana Bold" size="21.0" />
                </font>
             </Button>
-            <Button fx:id="btnGoBack" layoutX="14.0" layoutY="21.0" mnemonicParsing="false" text="&lt;" />
-            <Separator layoutX="21.0" layoutY="466.0" prefHeight="0.0" prefWidth="324.0" style="-fx-background-color: black;" />
-            <Label layoutX="23.0" layoutY="434.0" text="+ 21% de IVA">
+            <Separator layoutX="21.0" layoutY="468.0" prefHeight="0.0" prefWidth="324.0" style="-fx-background-color: black;" />
+            <Label layoutX="23.0" layoutY="438.0" text="+ 21% de IVA">
                <font>
                   <Font name="Verdana" size="20.0" />
                </font>
             </Label>
          </children>
       </Pane>
-      <Button fx:id="btnSearchProduct" layoutX="500.0" layoutY="120.0" mnemonicParsing="false" onAction="#openProductSearch" prefHeight="35.0" prefWidth="184.0" text="Buscar Producto">
+      <Button fx:id="btnSearchProduct" layoutX="500.0" layoutY="120.0" mnemonicParsing="false" onAction="#openProductSearch" prefHeight="35.0" prefWidth="184.0" styleClass="add-button" text="Buscar Producto" textFill="WHITE">
          <font>
             <Font name="Verdana Bold" size="17.0" />
          </font>
       </Button>
-      <ListView fx:id="listProducts" layoutX="391.0" layoutY="169.0" prefHeight="580.0" prefWidth="402.0" />
+      <ListView fx:id="listProducts" layoutX="374.0" layoutY="169.0" prefHeight="585.0" prefWidth="427.0" />
    </children>
 </AnchorPane>

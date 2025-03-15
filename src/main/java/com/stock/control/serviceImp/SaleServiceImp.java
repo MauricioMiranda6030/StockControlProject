@@ -28,24 +28,12 @@ public class SaleServiceImp implements ISaleService {
     }
 
     @Override
-    public Sale getSale(Long id) {
-        return saleRepository.findById(id).orElseThrow();
-    }
-
-    @Override
     public List<Sale> getAllSales() {
         return saleRepository.findAll();
     }
 
     @Override
-    public List<SaleDTO> getAllDtoSales() {
-        return getAllSales().stream()
-                .map(ISaleMapper.INSTANCE::saleToSaleDto)
-                .toList();
-    }
-
-    @Override
-    public void deleteSale(Long id) {
-        saleRepository.deleteById(id);
+    public List<Sale> getSalesByDate(LocalDate date) {
+        return saleRepository.findAllByDateOfSaleBetween(date, LocalDate.now());
     }
 }

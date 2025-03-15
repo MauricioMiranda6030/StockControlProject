@@ -51,7 +51,7 @@
                   <Font name="Verdana Bold" size="12.0" />
                </font>
             </Button>
-            <ImageView fx:id="btnGoBack" fitHeight="41.0" fitWidth="35.0" layoutX="16.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true" styleClass="button">
+            <ImageView fx:id="btnGoBack" fitHeight="31.0" fitWidth="33.0" layoutX="21.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true" styleClass="button">
                <image>
                   <Image url="@../../../../../images/arrow.png" />
                </image>

@@ -1,10 +1,7 @@
 package com.stock.control;
 
-import com.stock.control.front.tools.SpringFXMLController;
+import com.stock.control.front.tools.WindowsManager;
 import javafx.application.Application;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import lombok.Getter;
 import org.springframework.boot.SpringApplication;
@@ -25,14 +22,12 @@ public class StockControlProjectApplication extends Application {
     @Override
     public void init(){
         context = SpringApplication.run(StockControlProjectApplication.class);
-        SpringFXMLController.setContext(context);
+        WindowsManager.setContext(context);
     }
 
     @Override
     public void start(Stage stage) throws Exception {
-
-        //todo acordate cambiar esto xd
-        SpringFXMLController.openNewWindowAndKeepCurrent(SpringFXMLController.PATH_SALE, "Menú");
+        WindowsManager.openNewWindowAndKeepCurrent(WindowsManager.PATH_MAIN, "Menú");
     }
 
     //sale de la app
