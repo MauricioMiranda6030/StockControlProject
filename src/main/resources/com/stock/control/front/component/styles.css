@@ -71,4 +71,62 @@
 
 .anchorSection{
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 5, 0, 0, 3);
+    -fx-font-family: Verdana;
+}
+
+.anchorSection:hover{
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+/* LIST DE VENTA DE PRODUCTOS */
+
+/* Estilo general de la ListView */
+.list-view {
+    -fx-background-color: #f4f4f4;
+    -fx-border-radius: 10px;
+    -fx-padding: 5px;
+    -fx-border-width: 1;
+    -fx-border-color: #8bb3a5;
+    -fx-font-size: 9pt;
+    -fx-font-family: Verdana;
+}
+
+.scroll-bar{
+    -fx-background-color: transparent;
+}
+
+.sale-pane{
+    -fx-background-color: rgba(119, 226, 217, 0.2);
+}
+
+.sale-pane .label{
+    -fx-font-size: 15pt;
+    -fx-font-weight: bold;
+}
+
+.price-label{
+    -fx-text-fill: #3ae072;
+}
+
+/* ESTILOS DE TABLA SALES*/
+
+.table-view .column-header {
+    -fx-background-color: #3063a1;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 9pt;
+    -fx-font-family: Verdana;
+}
+
+.table-cell {
+    -fx-font-size: 10pt;
+    -fx-alignment: LEFT;
+}
+
+.scroll-bar {
+    -fx-background-color: transparent;
 }

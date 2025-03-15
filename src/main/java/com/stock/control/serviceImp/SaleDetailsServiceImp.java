@@ -30,9 +30,15 @@ public class SaleDetailsServiceImp implements ISaleDetailsService{
                             SaleDetails saleDetails = new SaleDetails();
                             saleDetails.setSale(sale);
                             saleDetails.setProduct(IProductMapper.INSTANCE.productDtoToProduct(product));
+                            saleDetails.setQuantity(product.getAmountToSell());
 
                             saleDetailsRepository.save(saleDetails);
                         }
                 );
+    }
+
+    @Override
+    public List<SaleDetails> getSaleDetailsBySaleId(Long id) {
+        return saleDetailsRepository.findAllBySaleId(id);
     }
 }
