@@ -5,10 +5,12 @@ import com.stock.control.front.tools.ControlFXManager;
 import com.stock.control.front.tools.ControllerManager;
 import com.stock.control.front.tools.WindowsManager;
 import com.stock.control.service.IProductService;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -45,17 +47,34 @@ public class FormProductController implements Initializable {
     private TextField txtName, txtPrice, txtStock;
 
     @FXML
-    private Button btnClose, btnSave, btnEdit;
+    private Button btnSave, btnEdit;
 
     @FXML
     private Label lblWarningPrice,lblWarningStock, lblTitle ;
 
+    @FXML
+    private Pane topBar;
+
     private Product product;
+
+    private Double x = 0d, y = 0d;
+
+    private Stage thisWindowStage;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setListenersToTxtFields();
         setUpForm();
+        Platform.runLater(() -> thisWindowStage = (Stage) productAnchorPane.getScene().getWindow());
+        setMovementToTopBar();
+    }
+
+    private void setMovementToTopBar() {
+        topBar.setOnMousePressed(event -> {
+            x = event.getScreenX() - thisWindowStage.getX();
+            y = event.getScreenY() - thisWindowStage.getY();
+        });
+        topBar.setOnMouseDragged(event -> WindowsManager.moveWindow(thisWindowStage, event, x, y));
     }
 
     private void setUpForm() {
@@ -177,8 +196,12 @@ public class FormProductController implements Initializable {
 
     @FXML
     private void closeThisForm(){
-        Stage stage = (Stage) btnClose.getScene().getWindow();
-        stage.close();
+        WindowsManager.closeForm(thisWindowStage);
+    }
+
+    @FXML
+    private void minWindow(){
+        WindowsManager.minWindow(thisWindowStage);
     }
 
     private Optional<ButtonType> confirmationDialog(){
