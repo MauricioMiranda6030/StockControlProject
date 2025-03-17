@@ -54,13 +54,15 @@ public class SalesRecordController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        btnSaveSale.setOnAction(event -> openSaleForm());
-        datePicker.setOnAction(event -> filterSaleByDate());
-
+        setOnActionEvents();
         ControllerManager.setSalesRecordController(this);
-
         setUpColumns();
         getSales();
+    }
+
+    private void setOnActionEvents() {
+        btnSaveSale.setOnAction(event -> openSaleForm());
+        datePicker.setOnAction(event -> filterSaleByDate());
     }
 
     private void setUpColumns(){

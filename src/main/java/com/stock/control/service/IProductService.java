@@ -15,9 +15,5 @@ public interface IProductService {
 
     List<ProductDTO> getProductsDtoByName(String name);
 
-    Product getProductById(Long id);
-
-    void deleteProductById(Long id);
-
     void updateStock(List<ProductDTO> productsDto);
 }

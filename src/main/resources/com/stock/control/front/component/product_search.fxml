@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="719.0" prefWidth="420.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stock.control.front.ProductSearchController">
+<AnchorPane fx:id="anchorSearch" prefHeight="719.0" prefWidth="420.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stock.control.front.ProductSearchController">
    <children>
       <Pane fx:id="anchorSearch" prefHeight="101.0" prefWidth="480.0" style="-fx-background-color: #64cded;">
          <children>

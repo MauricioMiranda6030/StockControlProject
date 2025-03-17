@@ -46,14 +46,4 @@ public class ProductServiceImp implements IProductService {
                 .map(IProductMapper.INSTANCE::productToProductDto)
                 .toList();
     }
-
-    @Override
-    public Product getProductById(Long id) {
-        return productRepository.findById(id).orElseThrow();
-    }
-
-    @Override
-    public void deleteProductById(Long id) {
-        productRepository.deleteById(id);
-    }
 }

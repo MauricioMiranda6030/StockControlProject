@@ -5,11 +5,14 @@ import com.stock.control.front.FormSaleController;
 import com.stock.control.front.ProductSearchController;
 import com.stock.control.front.SalesRecordController;
 import com.stock.control.front.StockControlController;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
+
+/*
+* Clase creada para pasar instancias entre controladores de FXML
+*/
 @Component
 public class ControllerManager {
 

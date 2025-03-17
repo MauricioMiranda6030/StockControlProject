@@ -4,6 +4,7 @@ import com.stock.control.dto.ProductDTO;
 import com.stock.control.front.tools.ControlFXManager;
 import com.stock.control.front.tools.ControllerManager;
 import com.stock.control.service.IProductService;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -12,6 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -35,11 +37,23 @@ public class ProductSearchController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        moveWindowToTheRight();
+        setListenerToTxtField();
+        ControllerManager.setProductSearchController(this);
+        getProducts();
+    }
+
+    private void moveWindowToTheRight() {
+        Platform.runLater(() -> {
+            Stage stage = (Stage) anchorSearch.getScene().getWindow();
+            stage.setX(1400);
+        });
+    }
+
+    private void setListenerToTxtField() {
         txtName.textProperty().addListener(
                 (obs, oldValue, newValue) ->getProducts()
         );
-        ControllerManager.setProductSearchController(this);
-        getProducts();
     }
 
 

@@ -75,18 +75,17 @@ public class FormSaleController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        lblAmount.textProperty().bind(amountProperty);
-        lblPrice.textProperty().bind(priceProperty);
-        lblFinalPrice.textProperty().bind(finalPriceProperty);
-        lblDate.setText(LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-
+        setUpLabels();
         initializeNewSale();
         ControllerManager.setFormSaleController(this);
+        createListCell();
+    }
 
-        /*
+    /*
         Creación de un listCell, a partir de la listview con los productos dto crea una list cell con el producto
         y un seleccionador de cantidad a agregar y botón para eliminar el producto
-         */
+    */
+    private void createListCell() {
         listProducts.setCellFactory(param -> new ListCell<ProductDTO>() {
             private final HBox hbox = new HBox(20);
             private final Label productLabel = new Label();
@@ -94,11 +93,15 @@ public class FormSaleController implements Initializable {
             private final Button removeButton = new Button();
 
             {
+                setUpRemoveButtonAction();
+                buildAmountField();
+                buildHBox();
+            }
+
+            private void setUpRemoveButtonAction() {
                 removeButton.setOnAction(event -> {
                     deleteProductAndUpdateLabels(getItem());
                 });
-                buildAmountField();
-                buildHBox();
             }
 
             private void buildAmountField() {
@@ -122,7 +125,7 @@ public class FormSaleController implements Initializable {
                         updateSaleAndLabel();
                     } else {
                         amountField.setText(oldValue);
-                        ControlFXManager.buildNotification("¡Stock Disponible es de " + product.getStock() + "!",
+                        ControlFXManager.buildNotification( "!"+ newValue + " supera el Stock Disponible (" + product.getStock() + ")!",
                                         "¡Advertencia!")
                                 .showWarning();
                     }
@@ -165,6 +168,13 @@ public class FormSaleController implements Initializable {
                                         "-fx-text-fill: red;");
             }
         });
+    }
+
+    private void setUpLabels() {
+        lblAmount.textProperty().bind(amountProperty);
+        lblPrice.textProperty().bind(priceProperty);
+        lblFinalPrice.textProperty().bind(finalPriceProperty);
+        lblDate.setText(LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
     }
 
     private void deleteProductAndUpdateLabels(ProductDTO productDto) {
@@ -253,13 +263,13 @@ public class FormSaleController implements Initializable {
     public void addProduct(ProductDTO productDto) {
 
         if (saleDto.getProducts().contains(productDto))
-            ControlFXManager.buildNotification("Producto ya agregadó", "Venta").showInformation();
+            ControlFXManager.buildNotification("Producto ya Agregado", "Venta").showInformation();
         else {
             saleDto.getProducts().add(productDto);
             listProducts.setItems(FXCollections.observableArrayList(saleDto.getProducts()));
             updateSaleAndLabel();
             ControlFXManager.buildNotification(
-                            "/images/check.png", "Producto Agregadó",
+                            "/images/check.png", "Producto Agregado",
                             "Venta")
                     .show();
         }

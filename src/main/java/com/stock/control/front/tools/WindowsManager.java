@@ -20,8 +20,8 @@ import java.util.Map;
 import java.util.Optional;
 
 /*
-* Loader para cargar los archivos FXML y los beans de Spring
-* */
+* Clase para cargar los archivos FXML y los beans de Spring, dialogos de confirmación.
+*/
 
 @Component
 public class WindowsManager {
@@ -50,41 +50,34 @@ public class WindowsManager {
     }
 
     public static void openNewWindowAndCloseCurrent(String path, String title, Stage currentStage) throws IOException{
-        if(windowsOpened.containsKey(path) && windowsOpened.get(path).isShowing()){
+        if(isWindowCreatedAndIsShowing(path))
             windowsOpened.get(path).toFront();
-        }else {
-            Parent root = load(path);
-            Scene scene = new Scene(root);
-
-            Stage stage = createStage(title, scene);
-            stage.show();
-
+        else {
             currentStage.close();
-            windowsOpened.put(path, stage);
-
-            stage.setOnCloseRequest(e -> {
-                windowsOpened.remove(path, stage);
-            });
+            OpenWindow(path, title);
         }
     }
 
     public static void openNewWindowAndKeepCurrent(String path, String title) throws IOException{
-
-        if(windowsOpened.containsKey(path) && windowsOpened.get(path).isShowing()){
+        if(isWindowCreatedAndIsShowing(path))
            windowsOpened.get(path).toFront();
-        }else{
-            Parent root = load(path);
-            Scene scene = new Scene(root);
-
-            Stage stage = createStage(title, scene);
-            stage.show();
-
-            windowsOpened.put(path, stage);
-
-            stage.setOnCloseRequest(event -> {
-                windowsOpened.remove(path, stage);
-            });
+        else{
+            OpenWindow(path, title);
         }
+    }
+
+    private static void OpenWindow(String path, String title) throws IOException {
+        Parent root = load(path);
+        Scene scene = new Scene(root);
+
+        Stage stage = createStage(title, scene);
+        stage.show();
+
+        windowsOpened.put(path, stage);
+    }
+
+    private static boolean isWindowCreatedAndIsShowing(String path) {
+        return windowsOpened.containsKey(path) && windowsOpened.get(path).isShowing();
     }
 
     private static Stage createStage(String title, Scene scene){
@@ -92,21 +85,10 @@ public class WindowsManager {
         stage.setTitle(title);
         stage.setResizable(false);
         stage.getIcons().add(new Image("/images/logo.png"));
+
         stage.setScene(scene);
 
         return stage;
-    }
-
-    private static Optional<ButtonType> confirmationDialog(Stage stage){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "");
-
-        alert.initModality(Modality.APPLICATION_MODAL);
-        alert.initOwner(stage);
-
-        alert.getDialogPane().setContentText("Confirmar datos: ¿Está seguro?");
-        alert.getDialogPane().setHeaderText(null);
-
-        return alert.showAndWait();
     }
 
     public static Optional<ButtonType> confirmDialog(AnchorPane anchor, String message) {
