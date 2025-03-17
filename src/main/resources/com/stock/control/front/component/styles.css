@@ -130,3 +130,19 @@
 .scroll-bar {
     -fx-background-color: transparent;
 }
+
+.close-button{
+    -fx-background-color: transparent;
+}
+
+.close-button:hover{
+    -fx-background-color: #ff2b2b;
+}
+
+.min-button{
+    -fx-background-color: transparent;
+}
+
+.min-button:hover{
+    -fx-background-color: #2ac5e8;
+}

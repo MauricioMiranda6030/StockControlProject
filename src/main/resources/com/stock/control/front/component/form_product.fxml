@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
@@ -7,86 +8,109 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="productAnchorPane" prefHeight="651.0" prefWidth="600.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stock.control.front.FormProductController">
+<AnchorPane fx:id="productAnchorPane" prefHeight="680.0" prefWidth="600.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stock.control.front.FormProductController">
    <children>
-      <AnchorPane prefHeight="105.0" prefWidth="600.0" style="-fx-background-color: #14e066;">
+      <AnchorPane layoutY="17.0" prefHeight="105.0" prefWidth="600.0" style="-fx-background-color: #14e066;">
          <children>
-            <ImageView fitHeight="79.0" fitWidth="94.0" layoutX="17.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="69.0" fitWidth="72.0" layoutX="12.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../../../images/form%20logo.png" />
                </image>
             </ImageView>
-            <Label fx:id="lblTitle" layoutX="106.0" layoutY="32.0" prefHeight="44.0" prefWidth="285.0" text="Nuevo Producto" textFill="WHITE">
+            <Label fx:id="lblTitle" layoutX="91.0" layoutY="43.0" prefHeight="44.0" prefWidth="285.0" text="Nuevo Producto" textFill="WHITE">
                <font>
                   <Font name="Verdana" size="35.0" />
                </font>
             </Label>
+            <Pane fx:id="topBar" layoutX="-4.0" layoutY="-17.0" prefHeight="37.0" prefWidth="612.0" style="-fx-background-color: #10b652;">
+               <children>
+                  <HBox alignment="CENTER_RIGHT" layoutX="527.0" layoutY="3.0" prefHeight="33.0" prefWidth="80.0">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#minWindow" prefHeight="23.0" prefWidth="33.0" styleClass="min-button" text="_" textFill="WHITE">
+                           <font>
+                              <Font name="Verdana Bold" size="12.0" />
+                           </font>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#closeThisForm" prefHeight="23.0" prefWidth="33.0" styleClass="close-button" text="X" textFill="WHITE">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font name="Verdana Bold" size="12.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+            </Pane>
          </children>
       </AnchorPane>
-      <Label layoutX="60.0" layoutY="132.0" text="Nombre">
+      <Label layoutX="53.0" layoutY="157.0" text="Nombre">
          <font>
             <Font name="Verdana" size="16.0" />
          </font>
       </Label>
-      <Label layoutX="60.0" layoutY="197.0" prefHeight="20.0" prefWidth="64.0" text="Precio">
+      <Label layoutX="53.0" layoutY="218.0" prefHeight="20.0" prefWidth="64.0" text="Precio">
          <font>
             <Font name="Verdana" size="16.0" />
          </font>
       </Label>
-      <Label layoutX="60.0" layoutY="258.0" text="Stock">
+      <Label layoutX="56.0" layoutY="277.0" text="Stock">
          <font>
             <Font name="Verdana" size="16.0" />
          </font>
       </Label>
-      <Label layoutX="59.0" layoutY="324.0" text="Descripción">
+      <Label layoutX="55.0" layoutY="339.0" text="Descripción">
          <font>
             <Font name="Verdana" size="16.0" />
          </font>
       </Label>
-      <TextField fx:id="txtName" layoutX="59.0" layoutY="152.0" prefHeight="25.0" prefWidth="295.0" promptText="Ingrese nombre de producto">
+      <TextField fx:id="txtName" layoutX="54.0" layoutY="179.0" prefHeight="25.0" prefWidth="295.0" promptText="Ingrese nombre de producto">
          <font>
             <Font name="Verdana" size="14.0" />
          </font></TextField>
-      <TextField fx:id="txtPrice" layoutX="60.0" layoutY="217.0" prefHeight="30.0" prefWidth="109.0" promptText="123">
+      <TextField fx:id="txtPrice" layoutX="53.0" layoutY="239.0" prefHeight="30.0" prefWidth="109.0" promptText="123.00">
          <font>
             <Font name="Verdana" size="14.0" />
          </font></TextField>
-      <TextField fx:id="txtStock" layoutX="60.0" layoutY="278.0" prefHeight="25.0" prefWidth="109.0" promptText="123">
+      <TextField fx:id="txtStock" layoutX="55.0" layoutY="300.0" prefHeight="25.0" prefWidth="109.0" promptText="123">
          <font>
             <Font name="Verdana" size="14.0" />
          </font></TextField>
-      <TextArea fx:id="txtDescription" layoutX="59.0" layoutY="345.0" prefHeight="203.0" prefWidth="502.0">
+      <TextArea fx:id="txtDescription" layoutX="54.0" layoutY="360.0" prefHeight="203.0" prefWidth="502.0">
          <font>
             <Font name="Verdana" size="12.0" />
          </font></TextArea>
-      <Button fx:id="btnSave" layoutX="419.0" layoutY="575.0" mnemonicParsing="false" onAction="#saveProduct" prefHeight="44.0" prefWidth="118.0" styleClass="ok-button" text="Guardar" textFill="WHITE">
+      <Button fx:id="btnSave" layoutX="419.0" layoutY="589.0" mnemonicParsing="false" onAction="#saveProduct" prefHeight="44.0" prefWidth="118.0" styleClass="ok-button" text="Guardar" textFill="WHITE">
          <font>
             <Font name="Verdana Bold" size="19.0" />
          </font>
       </Button>
-      <ImageView fx:id="imgReset" fitHeight="58.0" fitWidth="53.0" layoutX="490.0" layoutY="140.0" onMouseClicked="#resetTextFields" pickOnBounds="true" preserveRatio="true" styleClass="button">
+      <ImageView fx:id="imgReset" fitHeight="58.0" fitWidth="53.0" layoutX="484.0" layoutY="157.0" onMouseClicked="#resetTextFields" pickOnBounds="true" preserveRatio="true" styleClass="button">
          <image>
             <Image url="@../../../../../images/reset.png" />
          </image>
       </ImageView>
-      <Button fx:id="btnClose" layoutX="93.0" layoutY="575.0" mnemonicParsing="false" onAction="#closeThisForm" prefHeight="44.0" prefWidth="118.0" styleClass="cancel-button" text="Cancelar" textFill="WHITE">
+      <Button fx:id="btnClose" layoutX="93.0" layoutY="589.0" mnemonicParsing="false" onAction="#closeThisForm" prefHeight="44.0" prefWidth="118.0" styleClass="cancel-button" text="Cancelar" textFill="WHITE">
          <font>
             <Font name="Verdana Bold" size="18.0" />
          </font>
       </Button>
-      <Label layoutX="125.0" layoutY="132.0" text="*" textFill="RED">
+      <Label layoutX="123.0" layoutY="157.0" text="*" textFill="RED">
          <font>
             <Font name="Verdana" size="16.0" />
          </font>
       </Label>
-      <Label layoutX="109.0" layoutY="197.0" text="*" textFill="RED">
+      <Label layoutX="104.0" layoutY="216.0" text="*" textFill="RED">
          <font>
             <Font name="Verdana" size="16.0" />
          </font>
       </Label>
-      <Label layoutX="108.0" layoutY="258.0" text="*" textFill="RED">
+      <Label layoutX="102.0" layoutY="276.0" text="*" textFill="RED">
          <font>
             <Font name="Verdana" size="16.0" />
          </font>
