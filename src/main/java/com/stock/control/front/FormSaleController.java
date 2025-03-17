@@ -8,6 +8,7 @@ import com.stock.control.front.tools.WindowsManager;
 import com.stock.control.service.IProductService;
 import com.stock.control.service.ISaleDetailsService;
 import com.stock.control.service.ISaleService;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -16,10 +17,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
+import javafx.scene.layout.*;
+import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,13 +50,13 @@ public class FormSaleController implements Initializable {
     private AnchorPane anchorFormSale;
 
     @FXML
-    private Button btnGoBack, btnSave, btnSearchProduct;
-
-    @FXML
     private Label lblAmount, lblDate, lblFinalPrice, lblPrice;
 
     @FXML
     private ListView<ProductDTO> listProducts;
+
+    @FXML
+    private Pane topBar;
 
     private SaleDTO saleDto;
 
@@ -73,12 +72,18 @@ public class FormSaleController implements Initializable {
     @Setter
     StringProperty finalPriceProperty = new SimpleStringProperty("-");
 
+    private Stage thisWindowStage;
+
+    private Double x = 0d, y = 0d;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setUpLabels();
         initializeNewSale();
         ControllerManager.setFormSaleController(this);
         createListCell();
+        Platform.runLater(() -> thisWindowStage = (Stage) anchorFormSale.getScene().getWindow());
+        setMovementToTopBar();
     }
 
     /*
@@ -276,7 +281,7 @@ public class FormSaleController implements Initializable {
     }
 
     @FXML
-    public void saveSale() {
+    private void saveSale() {
         if(saleDto.getProducts().isEmpty())
             ControlFXManager.buildNotification(
                     "¡No se han agregado Productos a la Venta!"
@@ -303,5 +308,23 @@ public class FormSaleController implements Initializable {
 
     private Optional<ButtonType> confirmationDialog(){
         return WindowsManager.confirmDialog(anchorFormSale, "Confirmación de Productos: ¿Esta Seguro?");
+    }
+
+    private void setMovementToTopBar() {
+        topBar.setOnMousePressed(event -> {
+            x = event.getScreenX() - thisWindowStage.getX();
+            y = event.getScreenY() - thisWindowStage.getY();
+        });
+        topBar.setOnMouseDragged(event -> WindowsManager.moveWindow(thisWindowStage, event, x, y));
+    }
+
+    @FXML
+    private void minWindow(){
+        WindowsManager.minWindow(thisWindowStage);
+    }
+
+    @FXML
+    private void closeThisForm(){
+        WindowsManager.closeForm(thisWindowStage);
     }
 }

@@ -3,6 +3,7 @@ package com.stock.control.front;
 import com.stock.control.dto.ProductDTO;
 import com.stock.control.front.tools.ControlFXManager;
 import com.stock.control.front.tools.ControllerManager;
+import com.stock.control.front.tools.WindowsManager;
 import com.stock.control.service.IProductService;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -32,20 +33,32 @@ public class ProductSearchController implements Initializable {
     @FXML
     private TextField txtName;
 
+    @FXML
+    private Pane topBar;
+
     @Autowired
     private IProductService productService;
 
+    private Stage thisWindowStage;
+
+    private Double x = 0d, y = 0d;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        moveWindowToTheRight();
-        setListenerToTxtField();
+        Platform.runLater(() -> thisWindowStage = (Stage) anchorSearch.getScene().getWindow());
         ControllerManager.setProductSearchController(this);
+
+        setListenerToTxtField();
         getProducts();
+
+        moveWindowToTheRight();
+        setMovementToTopBar();
+
     }
 
     private void moveWindowToTheRight() {
         Platform.runLater(() -> {
-            Stage stage = (Stage) anchorSearch.getScene().getWindow();
+            Stage stage = thisWindowStage;
             stage.setX(1400);
         });
     }
@@ -55,7 +68,6 @@ public class ProductSearchController implements Initializable {
                 (obs, oldValue, newValue) ->getProducts()
         );
     }
-
 
     @FXML
     public void addProduct(MouseEvent event) {
@@ -76,4 +88,22 @@ public class ProductSearchController implements Initializable {
         listProducts.setItems(FXCollections.observableArrayList(productService.getProductsDtoByName(txtName.getText())));
     }
 
+    private void setMovementToTopBar() {
+        topBar.setOnMousePressed(event -> {
+            x = event.getScreenX() - thisWindowStage.getX();
+            y = event.getScreenY() - thisWindowStage.getY();
+        });
+        topBar.setOnMouseDragged(event -> WindowsManager.moveWindow(thisWindowStage, event, x, y));
+    }
+
+    @FXML
+    private void minWindow(){
+        WindowsManager.minWindow(thisWindowStage);
+    }
+
+    @FXML
+    private void closeThisForm(){
+        WindowsManager.closeForm(thisWindowStage);
+
+    }
 }

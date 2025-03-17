@@ -5,6 +5,7 @@ import com.stock.control.front.tools.ControlFXManager;
 import com.stock.control.front.tools.ControllerManager;
 import com.stock.control.front.tools.WindowsManager;
 import com.stock.control.service.IProductService;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,6 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -72,12 +74,21 @@ public class StockControlController implements Initializable {
     @FXML
     private ImageView btnGoBack;
 
+    @FXML
+    private Pane topBar;
+
+    private Stage thisWindowStage;
+
+    private Double x = 0d, y = 0d;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setUpTxtSearch();
         setUpButtons();
         setUpColumns();
         getProducts();
+        Platform.runLater(() -> thisWindowStage = (Stage) stockControlAnchorPane.getScene().getWindow());
+        setMovementToTopBar();
     }
 
     private void setUpTxtSearch() {
@@ -93,12 +104,12 @@ public class StockControlController implements Initializable {
     }
 
     @FXML
-    public void setPerson(){
+    private void setPerson(){
         ControllerManager.setProductToEdit(tableProducts.getFocusModel().getFocusedItem());
     }
 
     @FXML
-    public void openFormProduct(ActionEvent event, String status){
+    private void openFormProduct(ActionEvent event, String status){
 
         if(status.equals("edit") && ControllerManager.getProductToEdit() == null)
             ControlFXManager.buildNotification("Debe seleccionar un producto a editar", "Edición de Producto")
@@ -138,7 +149,7 @@ public class StockControlController implements Initializable {
     }
 
     @FXML
-    public void searchProducts() {
+    private void searchProducts() {
 
         String search = txtBusqueda.getText();
 
@@ -149,15 +160,34 @@ public class StockControlController implements Initializable {
     }
 
     @FXML
-    public void goBackToMainMenu(){
+    private void goBackToMainMenu(){
         try {
             WindowsManager.openNewWindowAndCloseCurrent(
                     WindowsManager.PATH_MAIN,
                     "Menú Principal",
-                    (Stage) stockControlAnchorPane.getScene().getWindow()
+                    thisWindowStage
             );
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void setMovementToTopBar() {
+        topBar.setOnMousePressed(event -> {
+            x = event.getScreenX() - thisWindowStage.getX();
+            y = event.getScreenY() - thisWindowStage.getY();
+        });
+        topBar.setOnMouseDragged(event -> WindowsManager.moveWindow(thisWindowStage, event, x, y));
+    }
+
+    @FXML
+    private void minWindow(){
+        WindowsManager.minWindow(thisWindowStage);
+    }
+
+    @FXML
+    private void closeThisForm(){
+        WindowsManager.closeForm(thisWindowStage);
+        goBackToMainMenu();
     }
 }
