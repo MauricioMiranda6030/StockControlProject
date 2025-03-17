@@ -13,9 +13,15 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
+<<<<<<< HEAD
 <AnchorPane fx:id="salesAnchorPane" prefHeight="615.0" prefWidth="956.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stock.control.front.SalesRecordController">
    <children>
       <Pane layoutY="36.0" prefHeight="105.0" prefWidth="956.0" style="-fx-background-color: orange;">
+=======
+<AnchorPane fx:id="salesAnchorPane" prefHeight="615.0" prefWidth="817.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stock.control.front.SalesRecordController">
+   <children>
+      <Pane layoutY="36.0" prefHeight="105.0" prefWidth="817.0" style="-fx-background-color: orange;">
+>>>>>>> bdc4949 (Barra custom hecha)
          <children>
             <Label layoutX="94.0" layoutY="35.0" prefHeight="40.0" prefWidth="346.0" text="Registro de Ventas" textFill="WHITE">
                <font>
@@ -29,11 +35,19 @@
             </ImageView>
          </children>
       </Pane>
+<<<<<<< HEAD
       <Button fx:id="btnSaveSale" layoutX="824.0" layoutY="167.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="121.0" styleClass="add-button" text="Nueva venta" textFill="WHITE">
          <font>
             <Font name="Verdana Bold" size="13.0" />
          </font></Button>
       <TableView fx:id="tableSales" layoutX="14.0" layoutY="204.0" prefHeight="398.0" prefWidth="933.0" styleClass="table-sales">
+=======
+      <Button fx:id="btnSaveSale" layoutX="672.0" layoutY="157.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="121.0" styleClass="add-button" text="Nueva venta" textFill="WHITE">
+         <font>
+            <Font name="Verdana Bold" size="13.0" />
+         </font></Button>
+      <TableView fx:id="tableSales" layoutX="14.0" layoutY="204.0" prefHeight="398.0" prefWidth="789.0" styleClass="table-sales">
+>>>>>>> bdc4949 (Barra custom hecha)
         <columns>
           <TableColumn fx:id="colId" prefWidth="26.0" text="id" />
           <TableColumn fx:id="colDate" prefWidth="99.0" styleClass="col-date" text="Fecha" />
@@ -42,20 +56,35 @@
             <TableColumn fx:id="colFinalPrice" prefWidth="134.0" styleClass="col-price" text="Precio Final" />
         </columns>
       </TableView>
+<<<<<<< HEAD
       <DatePicker fx:id="datePicker" layoutX="190.0" layoutY="174.0" prefHeight="25.0" prefWidth="121.0" />
       <Label layoutX="58.0" layoutY="179.0" prefHeight="17.0" prefWidth="130.0" text="Seleccione una fecha">
+=======
+      <DatePicker fx:id="datePicker" layoutX="194.0" layoutY="162.0" prefHeight="25.0" prefWidth="139.0" />
+      <Label layoutX="58.0" layoutY="166.0" prefHeight="17.0" prefWidth="130.0" text="Seleccione una fecha">
+>>>>>>> bdc4949 (Barra custom hecha)
          <font>
             <Font name="Verdana" size="12.0" />
          </font>
       </Label>
+<<<<<<< HEAD
       <ImageView fx:id="btnGoBack" fitHeight="32.0" fitWidth="27.0" layoutX="20.0" layoutY="173.0" onMouseClicked="#goBackToMainMenu" onMouseReleased="#closeThisForm" pickOnBounds="true" preserveRatio="true" styleClass="button">
+=======
+      <ImageView fx:id="btnGoBack" fitHeight="32.0" fitWidth="27.0" layoutX="21.0" layoutY="161.0" onMouseClicked="#goBackToMainMenu" pickOnBounds="true" preserveRatio="true" styleClass="button">
+>>>>>>> bdc4949 (Barra custom hecha)
          <image>
             <Image url="@../../../../../images/arrow.png" />
          </image>
       </ImageView>
+<<<<<<< HEAD
       <Pane fx:id="topBar" prefHeight="37.0" prefWidth="956.0" style="-fx-background-color: #f49f00;">
          <children>
             <HBox alignment="CENTER_RIGHT" layoutX="869.0" layoutY="2.0" prefHeight="33.0" prefWidth="80.0">
+=======
+      <Pane fx:id="topBar" prefHeight="37.0" prefWidth="817.0" style="-fx-background-color: #f49f00;">
+         <children>
+            <HBox alignment="CENTER_RIGHT" layoutX="733.0" layoutY="1.0" prefHeight="33.0" prefWidth="80.0">
+>>>>>>> bdc4949 (Barra custom hecha)
                <children>
                   <Button mnemonicParsing="false" onAction="#minWindow" prefHeight="23.0" prefWidth="33.0" styleClass="min-button" text="_" textFill="WHITE">
                      <font>
@@ -74,10 +103,13 @@
             </HBox>
          </children>
       </Pane>
+<<<<<<< HEAD
       <Button layoutX="323.0" layoutY="173.0" mnemonicParsing="false" onAction="#resetDatePicker" style="-fx-background-color: lightgrey;" text="Limpiar" textFill="WHITE">
          <font>
             <Font name="Verdana Bold" size="12.0" />
          </font>
       </Button>
+=======
+>>>>>>> bdc4949 (Barra custom hecha)
    </children>
 </AnchorPane>

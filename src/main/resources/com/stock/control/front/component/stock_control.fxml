@@ -13,9 +13,15 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
+<<<<<<< HEAD
 <AnchorPane fx:id="stockControlAnchorPane" prefHeight="713.0" prefWidth="930.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stock.control.front.StockControlController">
    <children>
       <AnchorPane id="panelTitulo" layoutY="36.0" prefHeight="105.0" prefWidth="930.0" style="-fx-background-color: orange;">
+=======
+<AnchorPane fx:id="stockControlAnchorPane" prefHeight="718.0" prefWidth="809.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stock.control.front.StockControlController">
+   <children>
+      <AnchorPane id="panelTitulo" layoutY="36.0" prefHeight="105.0" prefWidth="809.0" style="-fx-background-color: orange;">
+>>>>>>> bdc4949 (Barra custom hecha)
          <children>
             <ImageView fitHeight="85.0" fitWidth="87.0" layoutX="14.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -31,11 +37,19 @@
       </AnchorPane>
       <AnchorPane layoutX="13.0" layoutY="147.0" prefHeight="399.0" prefWidth="784.0" stylesheets="@styles.css">
          <children>
+<<<<<<< HEAD
             <TextField id="txtSearch" fx:id="txtSearch" layoutX="51.0" layoutY="18.0" prefHeight="25.0" prefWidth="394.0" promptText="Ingrese nombre de producto a buscar">
                <font>
                   <Font name="Verdana" size="12.0" />
                </font></TextField>
             <TableView fx:id="tableProducts" layoutY="55.0" onMouseClicked="#setPerson" prefHeight="500.0" prefWidth="902.0">
+=======
+            <TextField id="txtSearch" fx:id="txtBusqueda" layoutX="56.0" layoutY="18.0" prefHeight="25.0" prefWidth="394.0" promptText="Ingrese nombre de producto a buscar">
+               <font>
+                  <Font name="Verdana" size="12.0" />
+               </font></TextField>
+            <TableView fx:id="tableProducts" layoutX="10.0" layoutY="55.0" onMouseClicked="#setPerson" prefHeight="500.0" prefWidth="765.0">
+>>>>>>> bdc4949 (Barra custom hecha)
               <columns>
                 <TableColumn fx:id="id" editable="false" prefWidth="27.0" text="id" />
                 <TableColumn fx:id="name" editable="false" prefWidth="188.0" text="nombre" />
@@ -44,26 +58,44 @@
                   <TableColumn fx:id="stock" prefWidth="73.0" text="stock" />
               </columns>
             </TableView>
+<<<<<<< HEAD
             <Button fx:id="btnAddProduct" layoutX="817.0" layoutY="14.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="85.0" styleClass="add-button" text="AGREGAR" textFill="WHITE">
+=======
+            <Button fx:id="btnAddProduct" layoutX="675.0" layoutY="13.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="85.0" styleClass="add-button" text="AGREGAR" textFill="WHITE">
+>>>>>>> bdc4949 (Barra custom hecha)
                <font>
                   <Font name="Verdana Bold" size="12.0" />
                </font>
             </Button>
+<<<<<<< HEAD
             <Button fx:id="btnEditProduct" layoutX="720.0" layoutY="14.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="85.0" styleClass="edit-button" text="EDITAR" textFill="WHITE">
+=======
+            <Button fx:id="btnEditProduct" layoutX="576.0" layoutY="13.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="85.0" styleClass="edit-button" text="EDITAR" textFill="WHITE">
+>>>>>>> bdc4949 (Barra custom hecha)
                <font>
                   <Font name="Verdana Bold" size="12.0" />
                </font>
             </Button>
+<<<<<<< HEAD
             <ImageView fx:id="btnGoBack" fitHeight="32.0" fitWidth="27.0" layoutX="9.0" layoutY="18.0" onMouseClicked="#closeThisForm" onMouseReleased="#closeThisForm" pickOnBounds="true" preserveRatio="true" styleClass="button">
+=======
+            <ImageView fx:id="btnGoBack" fitHeight="32.0" fitWidth="27.0" layoutX="16.0" layoutY="17.0" onMouseClicked="#goBackToMainMenu" pickOnBounds="true" preserveRatio="true" styleClass="button">
+>>>>>>> bdc4949 (Barra custom hecha)
                <image>
                   <Image url="@../../../../../images/arrow.png" />
                </image>
             </ImageView>
          </children>
       </AnchorPane>
+<<<<<<< HEAD
       <Pane fx:id="topBar" prefHeight="37.0" prefWidth="930.0" style="-fx-background-color: #f49f00;">
          <children>
             <HBox alignment="CENTER_RIGHT" layoutX="843.0" layoutY="2.0" prefHeight="33.0" prefWidth="80.0">
+=======
+      <Pane fx:id="topBar" prefHeight="37.0" prefWidth="809.0" style="-fx-background-color: #f49f00;">
+         <children>
+            <HBox alignment="CENTER_RIGHT" layoutX="726.0" layoutY="3.0" prefHeight="33.0" prefWidth="80.0">
+>>>>>>> bdc4949 (Barra custom hecha)
                <children>
                   <Button mnemonicParsing="false" onAction="#minWindow" prefHeight="23.0" prefWidth="33.0" styleClass="min-button" text="_" textFill="WHITE">
                      <font>
