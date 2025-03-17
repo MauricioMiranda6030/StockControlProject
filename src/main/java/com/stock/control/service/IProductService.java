@@ -1,20 +1,19 @@
 package com.stock.control.service;
 
+import com.stock.control.dto.ProductDTO;
 import com.stock.control.entity.Product;
 
 import java.util.List;
 
 public interface IProductService {
 
-    Product saveProduct(Product product);
+    void saveProduct(Product product);
 
     List<Product> getAllProducts();
 
     List<Product> getProductsByName(String name);
 
-    Product getProductById(Long id);
+    List<ProductDTO> getProductsDtoByName(String name);
 
-    void deleteProductById(Long id);
-
-    Product updateProduct(Product product, Long id);
+    void updateStock(List<ProductDTO> productsDto);
 }

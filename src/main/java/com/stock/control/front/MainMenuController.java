@@ -1,10 +1,8 @@
 package com.stock.control.front;
 
-import com.stock.control.front.tools.SpringFXMLController;
-import javafx.event.ActionEvent;
+import com.stock.control.front.tools.WindowsManager;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.springframework.stereotype.Component;
@@ -31,21 +29,30 @@ public class MainMenuController implements Initializable {
     @FXML
     private AnchorPane mainAnchorPane;
 
-    @FXML
-    private Button btnOpenProductsSection;
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-            btnOpenProductsSection.setOnAction(this::openProductController);
     }
 
     @FXML
-    private void openProductController(ActionEvent event) {
+    private void openProductController() {
         try {
-            SpringFXMLController.openNewWindowAndCloseCurrent
+            WindowsManager.openNewWindowAndCloseCurrent
                     (
-                            SpringFXMLController.PATH_STOCK,
+                            WindowsManager.PATH_STOCK,
                             "Control de Stock",
+                            (Stage) mainAnchorPane.getScene().getWindow());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    private void openSaleRecordController() {
+        try {
+            WindowsManager.openNewWindowAndCloseCurrent
+                    (
+                            WindowsManager.PATH_SALE,
+                            "Gestión de Ventas",
                             (Stage) mainAnchorPane.getScene().getWindow());
         } catch (IOException e) {
             throw new RuntimeException(e);

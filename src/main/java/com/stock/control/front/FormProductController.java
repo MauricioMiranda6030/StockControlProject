@@ -3,14 +3,13 @@ package com.stock.control.front;
 import com.stock.control.entity.Product;
 import com.stock.control.front.tools.ControlFXManager;
 import com.stock.control.front.tools.ControllerManager;
+import com.stock.control.front.tools.WindowsManager;
 import com.stock.control.service.IProductService;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import org.controlsfx.control.Notifications;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -55,8 +54,18 @@ public class FormProductController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        setListenersToTxtFields();
+        setUpForm();
+    }
 
+    private void setUpForm() {
+        if(ControllerManager.getFormProductStatus().equals("save"))
+            setUpForSave();
+        else
+            setUpForEdit();
+    }
 
+    private void setListenersToTxtFields() {
         txtPrice.textProperty().addListener(
                 (obs, oldValue, newValue) -> validateNumbers(txtPrice, lblWarningPrice)
         );
@@ -64,11 +73,6 @@ public class FormProductController implements Initializable {
         txtStock.textProperty().addListener(
                 (obs, oldValue, newValue) -> validateNumbers(txtStock, lblWarningStock)
         );
-
-        if(ControllerManager.getFormProductStatus().equals("save"))
-            setUpForSave();
-        else
-            setUpForEdit();
     }
 
     private void setUpForSave(){
@@ -178,16 +182,6 @@ public class FormProductController implements Initializable {
     }
 
     private Optional<ButtonType> confirmationDialog(){
-        Stage stage = (Stage) productAnchorPane.getScene().getWindow();
-
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "");
-
-        alert.initModality(Modality.APPLICATION_MODAL);
-        alert.initOwner(stage);
-
-        alert.getDialogPane().setContentText("Confirmar datos: ¿Está seguro?");
-        alert.getDialogPane().setHeaderText(null);
-
-        return alert.showAndWait();
+        return WindowsManager.confirmDialog(productAnchorPane, "Confirmación de Datos: ¿Esta Seguro?");
     }
 }

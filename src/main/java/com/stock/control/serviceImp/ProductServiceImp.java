@@ -1,8 +1,11 @@
 package com.stock.control.serviceImp;
 
+import com.stock.control.dto.ProductDTO;
 import com.stock.control.entity.Product;
+import com.stock.control.mapper.IProductMapper;
 import com.stock.control.repository.IProductRepository;
 import com.stock.control.service.IProductService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +18,16 @@ public class ProductServiceImp implements IProductService {
     private IProductRepository productRepository;
 
     @Override
-    public Product saveProduct(Product product) {
-        return productRepository.save(product);
+    public void saveProduct(Product product) {
+        productRepository.save(product);
+    }
+
+    @Override
+    @Transactional
+    public void updateStock(List<ProductDTO> productsDto) {
+        for (ProductDTO p : productsDto){
+            productRepository.updateStock(p.getId(),p.getStock() - p.getAmountToSell());
+        }
     }
 
     @Override
@@ -30,21 +41,9 @@ public class ProductServiceImp implements IProductService {
     }
 
     @Override
-    public Product getProductById(Long id) {
-        return productRepository.findById(id).orElseThrow();
-    }
-
-    @Override
-    public void deleteProductById(Long id) {
-        productRepository.deleteById(id);
-    }
-
-    @Override
-    public Product updateProduct(Product product, Long id) {
-        Product productToUpdate = productRepository.findById(id).orElseThrow();
-        productToUpdate = product;
-        productToUpdate.setId(id);
-
-        return productRepository.save(productToUpdate);
+    public List<ProductDTO> getProductsDtoByName(String name) {
+        return getProductsByName(name).stream()
+                .map(IProductMapper.INSTANCE::productToProductDto)
+                .toList();
     }
 }

@@ -1,19 +1,16 @@
 package com.stock.control.service;
 
+import com.stock.control.dto.SaleDTO;
 import com.stock.control.entity.Sale;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface ISaleService {
 
-    Sale saveSale(Sale sale);
-
-    Sale getSale(Long id);
+    Long saveSale(SaleDTO saleDto);
 
     List<Sale> getAllSales();
 
-    void deleteSale(Long id);
-
-    Sale updateSale(Sale sale, Long id);
-
+    List<Sale> getSalesByDate(LocalDate date);
 }

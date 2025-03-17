@@ -20,7 +20,6 @@ public class ControlFXManager {
     }
 
     public static Notifications buildNotification(String imgPath, String message, String title){
-        System.out.println("a ve si mandas el mensaje digo yo no");
         return Notifications.create()
                 .text(message)
                 .title(title)

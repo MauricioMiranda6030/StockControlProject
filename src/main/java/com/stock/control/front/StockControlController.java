@@ -3,10 +3,11 @@ package com.stock.control.front;
 import com.stock.control.entity.Product;
 import com.stock.control.front.tools.ControlFXManager;
 import com.stock.control.front.tools.ControllerManager;
-import com.stock.control.front.tools.SpringFXMLController;
+import com.stock.control.front.tools.WindowsManager;
 import com.stock.control.service.IProductService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -19,7 +20,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import javafx.event.ActionEvent;
 
 import java.io.IOException;
 import java.net.URL;
@@ -74,15 +74,22 @@ public class StockControlController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        setUpTxtSearch();
+        setUpButtons();
+        setUpColumns();
+        getProducts();
+    }
+
+    private void setUpTxtSearch() {
         txtBusqueda.textProperty().addListener(
                 (observable, oldValue, newValue) -> searchProducts()
         );
+    }
+
+    private void setUpButtons() {
         btnAddProduct.setOnAction(event -> openFormProduct(event, "save"));
         btnEditProduct.setOnAction(event -> openFormProduct(event, "edit"));
         btnGoBack.setOnMouseClicked(mouseEvent -> goBackToMainMenu());
-
-        setUpColumns();
-        getProducts();
     }
 
     @FXML
@@ -100,8 +107,8 @@ public class StockControlController implements Initializable {
                 ControllerManager.setFormProductStatus(status);
                 ControllerManager.setStockControlController(this);
                 try {
-                    SpringFXMLController.openNewWindowAndKeepCurrent(
-                            SpringFXMLController.PATH_PRODUCT_FORM,
+                    WindowsManager.openNewWindowAndKeepCurrent(
+                            WindowsManager.PATH_PRODUCT_FORM,
                             "Nuevo Producto"
                     );
                 } catch (IOException e) {
@@ -144,8 +151,8 @@ public class StockControlController implements Initializable {
     @FXML
     public void goBackToMainMenu(){
         try {
-            SpringFXMLController.openNewWindowAndCloseCurrent(
-                    SpringFXMLController.PATH_MAIN,
+            WindowsManager.openNewWindowAndCloseCurrent(
+                    WindowsManager.PATH_MAIN,
                     "Menú Principal",
                     (Stage) stockControlAnchorPane.getScene().getWindow()
             );

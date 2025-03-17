@@ -1,20 +1,14 @@
 package com.stock.control.service;
 
+import com.stock.control.dto.SaleDTO;
+import com.stock.control.entity.Sale;
 import com.stock.control.entity.SaleDetails;
 
 import java.util.List;
 
 public interface ISaleDetailsService {
 
-    SaleDetails saveSaleDetails(SaleDetails saleDetails);
+    void saveSaleDetails(SaleDTO saleDto, Long id);
 
-    SaleDetails getSaleDetailsByID(Long id);
-
-    List<SaleDetails> getAllSaleDetails();
-
-    void deleteSaleDetailsByID(Long id);
-
-    SaleDetails updateSaleDetails(SaleDetails saleDetails, Long id);
-
-
+    List<SaleDetails> getSaleDetailsBySaleId(Long id);
 }
