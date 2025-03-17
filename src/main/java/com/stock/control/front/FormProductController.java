@@ -54,8 +54,18 @@ public class FormProductController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        setListenersToTxtFields();
+        setUpForm();
+    }
 
+    private void setUpForm() {
+        if(ControllerManager.getFormProductStatus().equals("save"))
+            setUpForSave();
+        else
+            setUpForEdit();
+    }
 
+    private void setListenersToTxtFields() {
         txtPrice.textProperty().addListener(
                 (obs, oldValue, newValue) -> validateNumbers(txtPrice, lblWarningPrice)
         );
@@ -63,11 +73,6 @@ public class FormProductController implements Initializable {
         txtStock.textProperty().addListener(
                 (obs, oldValue, newValue) -> validateNumbers(txtStock, lblWarningStock)
         );
-
-        if(ControllerManager.getFormProductStatus().equals("save"))
-            setUpForSave();
-        else
-            setUpForEdit();
     }
 
     private void setUpForSave(){
