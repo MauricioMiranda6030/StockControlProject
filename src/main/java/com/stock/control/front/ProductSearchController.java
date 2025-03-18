@@ -1,6 +1,6 @@
 package com.stock.control.front;
 
-import com.stock.control.dto.ProductDTO;
+import com.stock.control.dto.ProductForSaleDTO;
 import com.stock.control.front.tools.ControlFXManager;
 import com.stock.control.front.tools.ControllerManager;
 import com.stock.control.front.tools.WindowsManager;
@@ -29,7 +29,7 @@ public class ProductSearchController implements Initializable {
     private Pane anchorSearch;
 
     @FXML
-    private ListView<ProductDTO> listProducts;
+    private ListView<ProductForSaleDTO> listProducts;
 
     @FXML
     private TextField txtName;
@@ -73,15 +73,15 @@ public class ProductSearchController implements Initializable {
     @FXML
     public void addProduct(MouseEvent event) {
         if(event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2){
-            ProductDTO productDTO = listProducts.getFocusModel().getFocusedItem();
+            ProductForSaleDTO productForSaleDTO = listProducts.getFocusModel().getFocusedItem();
 
-            if (productDTO.getStock() == 0)
+            if (productForSaleDTO.getStock() == 0)
                 ControlFXManager.buildNotification(
                         "¡Producto sin Stock! Añadir más Stock para realizar la compra",
                         "¡Advertencia!")
                 .showWarning();
             else
-                ControllerManager.getFormSaleController().addProduct(productDTO);
+                ControllerManager.getFormSaleController().addProduct(productForSaleDTO);
         }
     }
 

@@ -1,7 +1,6 @@
 package com.stock.control.front;
 
 import com.stock.control.dto.SaleViewDTO;
-import com.stock.control.entity.Sale;
 import com.stock.control.front.tools.ControllerManager;
 import com.stock.control.front.tools.WindowsManager;
 import com.stock.control.service.ISaleDetailsService;
@@ -32,9 +31,6 @@ public class SalesRecordController implements Initializable {
 
     @Autowired
     private ISaleService saleService;
-
-    @Autowired
-    private ISaleDetailsService saleDetailsService;
 
     @FXML
     private AnchorPane salesAnchorPane;
@@ -86,25 +82,22 @@ public class SalesRecordController implements Initializable {
 
     public void getSales(){
         resetTable();
-        List<Sale> sales = saleService.getAllSales();
-        buildSaleView(sales);
+        List<SaleViewDTO> salesDto = saleService.getAllSalesViewDto();
+        setSalesViewInTable(salesDto);
     }
 
     private void filterSaleByDate() {
         resetTable();
         if(datePicker.getValue() != null){
-            List<Sale> sales = saleService.getSalesByDate(datePicker.getValue());
-            buildSaleView(sales);
+            List<SaleViewDTO> salesDto = saleService.getSalesByDateDto(datePicker.getValue());
+            setSalesViewInTable(salesDto);
             tableSales.getSortOrder().add(colDate);
         }else
             getSales();
     }
 
-    private void buildSaleView(List<Sale> sales) {
-        List<SaleViewDTO> salesViewDto = sales.stream()
-                .map(s -> new SaleViewDTO(s,saleDetailsService.getSaleDetailsBySaleId(s.getId())))
-                .toList();
-        tableSales.setItems(FXCollections.observableArrayList(salesViewDto));
+    private void setSalesViewInTable(List<SaleViewDTO> sales){
+        tableSales.setItems(FXCollections.observableArrayList(sales));
     }
 
     private void openSaleForm(){
@@ -138,6 +131,11 @@ public class SalesRecordController implements Initializable {
         }
     }
 
+    @FXML
+    private void resetDatePicker(){
+        datePicker.setValue(null);
+    }
+
     private void setMovementToTopBar() {
         topBar.setOnMousePressed(event -> {
             x = event.getScreenX() - thisWindowStage.getX();
@@ -154,7 +152,8 @@ public class SalesRecordController implements Initializable {
     @FXML
     private void closeThisForm(){
         if(ControllerManager.getFormSaleController() != null)
-            WindowsManager.closeWindow(ControllerManager.getFormSaleController().getThisWindowStage());
+            if(ControllerManager.getFormSaleController().getThisWindowStage().isShowing())
+                ControllerManager.getFormSaleController().closeThisForm();
         goBackToMainMenu();
         WindowsManager.closeWindow(thisWindowStage);
     }
