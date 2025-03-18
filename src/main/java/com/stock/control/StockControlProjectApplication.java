@@ -1,5 +1,6 @@
 package com.stock.control;
 
+import com.stock.control.db.BackUpScheduler;
 import com.stock.control.front.tools.WindowsManager;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -28,6 +29,7 @@ public class StockControlProjectApplication extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         WindowsManager.openNewWindowAndKeepCurrent(WindowsManager.PATH_MAIN, "Menú");
+        BackUpScheduler.startBackUpScheduler();
     }
 
     //sale de la app

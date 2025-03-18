@@ -12,6 +12,9 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import lombok.Getter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,19 +26,10 @@ import java.util.ResourceBundle;
 @Component
 public class FormProductController implements Initializable {
 
-    private static FormProductController instance = null;
-
-    private FormProductController(){}
-
-    //Patron singleton
-    public static synchronized FormProductController getInstance(){
-        if(instance == null)
-            instance = new FormProductController();
-        return instance;
-    }
-
     @Autowired
     private IProductService productService;
+
+    private final Logger log = LoggerFactory.getLogger(FormProductController.class);
 
     @FXML
     private AnchorPane productAnchorPane;
@@ -59,13 +53,15 @@ public class FormProductController implements Initializable {
 
     private Double x = 0d, y = 0d;
 
+    @Getter
     private Stage thisWindowStage;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        Platform.runLater(() -> thisWindowStage = (Stage) productAnchorPane.getScene().getWindow());
         setListenersToTxtFields();
         setUpForm();
-        Platform.runLater(() -> thisWindowStage = (Stage) productAnchorPane.getScene().getWindow());
+        ControllerManager.setFormProductController(this);
         setMovementToTopBar();
     }
 
@@ -123,13 +119,19 @@ public class FormProductController implements Initializable {
         if (validateAll()) {
             if(confirmationDialog().get() == ButtonType.OK){
                 setAndSave();
-                ControllerManager.getStockControlController().getProducts();
-
+                updateProductRegisterTable();
                 resetTextFields();
+
+                log.info("New product just saved: {}", product.getName());
+                product = new Product();
                 ControlFXManager.buildNotification("/images/check.png", "Producto guardado correctamente", "Registro de Producto")
                         .show();
             }
         }
+    }
+
+    private static void updateProductRegisterTable() {
+        ControllerManager.getStockControlController().getProducts();
     }
 
     @FXML
@@ -137,14 +139,15 @@ public class FormProductController implements Initializable {
         if(validateAll()){
             if(confirmationDialog().get() == ButtonType.OK){
                 setAndSave();
-                ControllerManager.getStockControlController().getProducts();
+                updateProductRegisterTable();
                 closeThisForm();
+
+                log.info("Updating product with id: {}", product.getId());
             }
         }
     }
 
     private void setAndSave(){
-        System.out.println("setting and saving");
         setProduct();
         productService.saveProduct(product);
     }
@@ -182,7 +185,7 @@ public class FormProductController implements Initializable {
     private void setProduct(){
         product.setName(txtName.getText());
         product.setPrice(Double.valueOf(txtPrice.getText()));
-        product.setStock(Integer.valueOf(txtStock.getText()));
+        product.setStock(Integer.parseInt(txtStock.getText()));
         product.setDescription(txtDescription.getText());
     }
 
@@ -196,7 +199,7 @@ public class FormProductController implements Initializable {
 
     @FXML
     private void closeThisForm(){
-        WindowsManager.closeForm(thisWindowStage);
+        WindowsManager.closeWindow(thisWindowStage);
     }
 
     @FXML
