@@ -45,7 +45,7 @@
 }
 
 .table-view .column-header .label{
-    -fx-alignment: LEFT;
+    -fx-alignment: CENTER_LEFT;
 }
 
 .redirect-button {
@@ -124,7 +124,6 @@
 
 .table-cell {
     -fx-font-size: 10pt;
-    -fx-alignment: LEFT;
 }
 
 .scroll-bar {

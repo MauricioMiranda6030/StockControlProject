@@ -15,6 +15,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -39,6 +40,7 @@ public class ProductSearchController implements Initializable {
     @Autowired
     private IProductService productService;
 
+    @Getter
     private Stage thisWindowStage;
 
     private Double x = 0d, y = 0d;
@@ -47,7 +49,6 @@ public class ProductSearchController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Platform.runLater(() -> thisWindowStage = (Stage) anchorSearch.getScene().getWindow());
         ControllerManager.setProductSearchController(this);
-
         setListenerToTxtField();
         getProducts();
 
@@ -103,7 +104,6 @@ public class ProductSearchController implements Initializable {
 
     @FXML
     private void closeThisForm(){
-        WindowsManager.closeForm(thisWindowStage);
-
+        WindowsManager.closeWindow(thisWindowStage);
     }
 }

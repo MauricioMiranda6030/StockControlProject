@@ -1,5 +1,6 @@
 package com.stock.control.front;
 
+import com.stock.control.dto.ProductViewDto;
 import com.stock.control.entity.Product;
 import com.stock.control.front.tools.ControlFXManager;
 import com.stock.control.front.tools.ControllerManager;
@@ -30,17 +31,6 @@ import java.util.ResourceBundle;
 @Component
 public class StockControlController implements Initializable {
 
-    private static StockControlController instance = null;
-
-    private StockControlController(){}
-
-    // Patron Singleton
-    private static synchronized StockControlController getInstance(){
-        if(instance == null)
-            instance = new StockControlController();
-        return instance;
-    }
-
     @FXML
     private AnchorPane stockControlAnchorPane;
 
@@ -48,22 +38,13 @@ public class StockControlController implements Initializable {
     private IProductService productService;
 
     @FXML
-    private TableView<Product> tableProducts;
+    private TableView<ProductViewDto> tableProducts;
 
     @FXML
-    private TableColumn<Product, String> description;
+    private TableColumn<ProductViewDto, String> description, name, price, stock;
 
     @FXML
-    private TableColumn<Product, Long> id;
-
-    @FXML
-    private TableColumn<Product, String> name;
-
-    @FXML
-    private TableColumn<Product, Double> price;
-
-    @FXML
-    private TableColumn<Product, Integer> stock;
+    private TableColumn<ProductViewDto, Long> id;
 
     @FXML
     private TextField txtBusqueda;
@@ -129,11 +110,11 @@ public class StockControlController implements Initializable {
     }
 
     private void setUpColumns(){
-        name.setCellValueFactory(new PropertyValueFactory<Product, String>("name"));
-        id.setCellValueFactory(new PropertyValueFactory<Product, Long>("id"));
-        price.setCellValueFactory(new PropertyValueFactory<Product, Double>("price"));
-        stock.setCellValueFactory(new PropertyValueFactory<Product, Integer>("stock"));
-        description.setCellValueFactory(new PropertyValueFactory<Product, String>("description"));
+        name.setCellValueFactory(new PropertyValueFactory<ProductViewDto, String>("name"));
+        id.setCellValueFactory(new PropertyValueFactory<ProductViewDto, Long>("id"));
+        price.setCellValueFactory(new PropertyValueFactory<ProductViewDto, String>("price"));
+        stock.setCellValueFactory(new PropertyValueFactory<ProductViewDto, String>("stock"));
+        description.setCellValueFactory(new PropertyValueFactory<ProductViewDto, String>("description"));
     }
 
     @FXML
@@ -187,7 +168,9 @@ public class StockControlController implements Initializable {
 
     @FXML
     private void closeThisForm(){
-        WindowsManager.closeForm(thisWindowStage);
+        WindowsManager.closeWindow(thisWindowStage);
+        if(ControllerManager.getFormProductController() != null)
+            WindowsManager.closeWindow(ControllerManager.getFormProductController().getThisWindowStage());
         goBackToMainMenu();
     }
 }

@@ -153,7 +153,9 @@ public class SalesRecordController implements Initializable {
 
     @FXML
     private void closeThisForm(){
-        WindowsManager.closeForm(thisWindowStage);
+        if(ControllerManager.getFormSaleController() != null)
+            WindowsManager.closeWindow(ControllerManager.getFormSaleController().getThisWindowStage());
         goBackToMainMenu();
+        WindowsManager.closeWindow(thisWindowStage);
     }
 }

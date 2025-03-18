@@ -121,7 +121,7 @@ public class WindowsManager {
         stage.setIconified(true);
     }
 
-    public static void closeForm(Stage stage){
+    public static void closeWindow(Stage stage){
         stage.close();
     }
 }
