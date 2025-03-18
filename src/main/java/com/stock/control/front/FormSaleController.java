@@ -1,6 +1,6 @@
 package com.stock.control.front;
 
-import com.stock.control.dto.ProductDTO;
+import com.stock.control.dto.ProductForSaleDTO;
 import com.stock.control.dto.SaleDTO;
 import com.stock.control.front.tools.ControlFXManager;
 import com.stock.control.front.tools.ControllerManager;
@@ -31,7 +31,6 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 @Component
@@ -57,7 +56,7 @@ public class FormSaleController implements Initializable {
     private Label lblAmount, lblDate, lblFinalPrice, lblPrice;
 
     @FXML
-    private ListView<ProductDTO> listProducts;
+    private ListView<ProductForSaleDTO> listProducts;
 
     @FXML
     private Pane topBar;
@@ -96,7 +95,7 @@ public class FormSaleController implements Initializable {
         y un seleccionador de cantidad a agregar y botón para eliminar el producto
     */
     private void createListCell() {
-        listProducts.setCellFactory(param -> new ListCell<ProductDTO>() {
+        listProducts.setCellFactory(param -> new ListCell<ProductForSaleDTO>() {
             private final HBox hbox = new HBox(20);
             private final Label productLabel = new Label();
             private final TextField amountField = new TextField();
@@ -118,7 +117,7 @@ public class FormSaleController implements Initializable {
                 amountField.setPrefWidth(50);
                 amountField.textProperty().addListener(
                         (obs, oldValue, newValue) -> {
-                            ProductDTO product = getItem();
+                            ProductForSaleDTO product = getItem();
 
                             if (!newValue.isBlank() && product != null && !oldValue.equals(newValue)) {
                                 manageAmountInput(oldValue, newValue, product);
@@ -126,7 +125,7 @@ public class FormSaleController implements Initializable {
                         });
             }
 
-            private void manageAmountInput(String oldValue, String newValue, ProductDTO product) {
+            private void manageAmountInput(String oldValue, String newValue, ProductForSaleDTO product) {
                 try {
                     int amount = Integer.parseInt(newValue); //Evita valores fuera de rango
 
@@ -155,7 +154,7 @@ public class FormSaleController implements Initializable {
             }
 
             @Override
-            protected void updateItem(ProductDTO product, boolean empty) {
+            protected void updateItem(ProductForSaleDTO product, boolean empty) {
                 super.updateItem(product, empty);
                 if (empty || product == null) {
                     setGraphic(null);
@@ -165,7 +164,7 @@ public class FormSaleController implements Initializable {
                 }
             }
 
-            private void buildHBoxComponents(ProductDTO product) {
+            private void buildHBoxComponents(ProductForSaleDTO product) {
                 productLabel.setText("Producto: " + product.getName() + "\n"
                         + "Precio: " + String.format("%.2f$", product.getPrice()) + "\n"
                         + "Stock Disponible: " + product.getStock());
@@ -187,8 +186,8 @@ public class FormSaleController implements Initializable {
         lblDate.setText(LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
     }
 
-    private void deleteProductAndUpdateLabels(ProductDTO productDto) {
-        saleDto.getProducts().remove(productDto);
+    private void deleteProductAndUpdateLabels(ProductForSaleDTO productForSaleDto) {
+        saleDto.getProducts().remove(productForSaleDto);
         listProducts.setItems(FXCollections.observableArrayList(saleDto.getProducts()));
         updateSaleAndLabel();
     }
@@ -228,7 +227,7 @@ public class FormSaleController implements Initializable {
     }
 
     private void resetProductList() {
-        ObservableList<ProductDTO> productsDto = listProducts.getItems();
+        ObservableList<ProductForSaleDTO> productsDto = listProducts.getItems();
         productsDto.clear();
         listProducts.setItems(productsDto);
     }
@@ -258,7 +257,7 @@ public class FormSaleController implements Initializable {
 
     private int getTotalAmount() {
         return saleDto.getProducts().stream()
-                .mapToInt(ProductDTO::getAmountToSell)
+                .mapToInt(ProductForSaleDTO::getAmountToSell)
                 .sum();
     }
 
@@ -270,12 +269,12 @@ public class FormSaleController implements Initializable {
     * Adds y Saves
     */
     
-    public void addProduct(ProductDTO productDto) {
+    public void addProduct(ProductForSaleDTO productForSaleDto) {
 
-        if (saleDto.getProducts().contains(productDto))
+        if (saleDto.getProducts().contains(productForSaleDto))
             ControlFXManager.buildNotification("Producto ya Agregado", "Venta").showInformation();
         else {
-            saleDto.getProducts().add(productDto);
+            saleDto.getProducts().add(productForSaleDto);
             listProducts.setItems(FXCollections.observableArrayList(saleDto.getProducts()));
             updateSaleAndLabel();
             ControlFXManager.buildNotification(
@@ -293,7 +292,7 @@ public class FormSaleController implements Initializable {
                             ,"¡Advertencia!")
                     .showWarning();
         else {
-            if(confirmationDialog().get() == ButtonType.OK){
+            if(confirmDialog("¿Esta Seguro de los Productos Elegidos?")){
                 saveSaleDetailsAndUpdateStock();
                 log.info("Sale just saved with a total amount of ({}) products and a final price of {}",
                         saleDto.getProducts().size(),
@@ -317,10 +316,6 @@ public class FormSaleController implements Initializable {
         productService.updateStock(saleDto.getProducts());
     }
 
-    private Optional<ButtonType> confirmationDialog(){
-        return WindowsManager.confirmDialog(anchorFormSale, "Confirmación de Productos: ¿Esta Seguro?");
-    }
-
     private void setMovementToTopBar() {
         topBar.setOnMousePressed(event -> {
             x = event.getScreenX() - thisWindowStage.getX();
@@ -335,9 +330,24 @@ public class FormSaleController implements Initializable {
     }
 
     @FXML
-    private void closeThisForm(){
+    public void closeThisForm(){
+        if(!saleDto.getProducts().isEmpty()){
+            if(confirmDialog("¿Esta Seguro de Cancelar la Venta?")){
+                closeProductSearchIfExists();
+                WindowsManager.closeWindow(thisWindowStage);
+            }
+        }else{
+            closeProductSearchIfExists();
+            WindowsManager.closeWindow(thisWindowStage);
+        }
+    }
+
+    private void closeProductSearchIfExists() {
         if(ControllerManager.getProductSearchController() != null)
             WindowsManager.closeWindow(ControllerManager.getProductSearchController().getThisWindowStage());
-        WindowsManager.closeWindow(thisWindowStage);
+    }
+
+    private boolean confirmDialog(String msg){
+        return WindowsManager.confirmDialog(anchorFormSale, msg).get() == ButtonType.OK;
     }
 }

@@ -8,5 +8,5 @@ import java.util.List;
 public class SaleDTO {
     private Double finalPrice;
     private int totalAmount;
-    private List<ProductDTO> products;
+    private List<ProductForSaleDTO> products;
 }

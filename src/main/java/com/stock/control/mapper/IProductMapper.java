@@ -1,7 +1,8 @@
 package com.stock.control.mapper;
 
 
-import com.stock.control.dto.ProductDTO;
+import com.stock.control.dto.ProductForSaleDTO;
+import com.stock.control.dto.ProductSaveDto;
 import com.stock.control.entity.Product;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -13,8 +14,10 @@ public interface IProductMapper {
     IProductMapper INSTANCE = Mappers.getMapper(IProductMapper.class);
 
     @Mapping(source = "name", target = "name")
-    ProductDTO productToProductDto(Product product);
+    ProductForSaleDTO productToProductDto(Product product);
+    Product productDtoToProduct(ProductForSaleDTO productForSaleDto);
 
-    Product productDtoToProduct(ProductDTO productDto);
+    ProductSaveDto productToProductSaveDto(Product product);
+    Product productSaveDtoToProduct(ProductSaveDto productSaveDto);
 
 }
