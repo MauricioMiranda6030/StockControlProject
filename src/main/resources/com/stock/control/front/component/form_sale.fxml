@@ -13,11 +13,15 @@
 <?import javafx.scene.text.Font?>
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 <AnchorPane fx:id="anchorFormSale" prefHeight="761.0" prefWidth="815.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stock.control.front.FormSaleController">
    <children>
       <Pane layoutY="23.0" prefHeight="90.0" prefWidth="815.0" style="-fx-background-color: #14e066;">
 =======
 <AnchorPane fx:id="anchorFormSale" prefHeight="770.0" prefWidth="815.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stock.control.front.FormSaleController">
+=======
+<AnchorPane fx:id="anchorFormSale" prefHeight="770.0" prefWidth="815.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stock.control.front.FormSaleController">
+>>>>>>> ff2788c (title bar, backups y logs)
    <children>
       <Pane layoutY="33.0" prefHeight="90.0" prefWidth="815.0" style="-fx-background-color: #14e066;">
 >>>>>>> bdc4949 (Barra custom hecha)
