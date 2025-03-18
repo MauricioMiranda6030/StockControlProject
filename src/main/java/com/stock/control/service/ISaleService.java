@@ -1,6 +1,7 @@
 package com.stock.control.service;
 
 import com.stock.control.dto.SaleDTO;
+import com.stock.control.dto.SaleViewDTO;
 import com.stock.control.entity.Sale;
 
 import java.time.LocalDate;
@@ -13,4 +14,8 @@ public interface ISaleService {
     List<Sale> getAllSales();
 
     List<Sale> getSalesByDate(LocalDate date);
+
+    List<SaleViewDTO> getAllSalesViewDto();
+
+    List<SaleViewDTO> getSalesByDateDto(LocalDate value);
 }

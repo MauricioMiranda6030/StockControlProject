@@ -1,7 +1,6 @@
 package com.stock.control.front;
 
-import com.stock.control.dto.ProductViewDto;
-import com.stock.control.entity.Product;
+import com.stock.control.dto.ProductSaveDto;
 import com.stock.control.front.tools.ControlFXManager;
 import com.stock.control.front.tools.ControllerManager;
 import com.stock.control.front.tools.WindowsManager;
@@ -12,10 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -26,6 +22,8 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 @Component
@@ -38,16 +36,22 @@ public class StockControlController implements Initializable {
     private IProductService productService;
 
     @FXML
-    private TableView<ProductViewDto> tableProducts;
+    private TableView<ProductSaveDto> tableProducts;
 
     @FXML
-    private TableColumn<ProductViewDto, String> description, name, price, stock;
+    private TableColumn<ProductSaveDto, String> description, name;
 
     @FXML
-    private TableColumn<ProductViewDto, Long> id;
+    private TableColumn<ProductSaveDto, Integer> stock;
 
     @FXML
-    private TextField txtBusqueda;
+    private TableColumn<ProductSaveDto, Double> price;
+
+    @FXML
+    private TableColumn<ProductSaveDto, Long> id;
+
+    @FXML
+    private TextField txtSearch;
 
     @FXML
     private Button btnAddProduct, btnEditProduct;
@@ -73,7 +77,7 @@ public class StockControlController implements Initializable {
     }
 
     private void setUpTxtSearch() {
-        txtBusqueda.textProperty().addListener(
+        txtSearch.textProperty().addListener(
                 (observable, oldValue, newValue) -> searchProducts()
         );
     }
@@ -110,21 +114,34 @@ public class StockControlController implements Initializable {
     }
 
     private void setUpColumns(){
-        name.setCellValueFactory(new PropertyValueFactory<ProductViewDto, String>("name"));
-        id.setCellValueFactory(new PropertyValueFactory<ProductViewDto, Long>("id"));
-        price.setCellValueFactory(new PropertyValueFactory<ProductViewDto, String>("price"));
-        stock.setCellValueFactory(new PropertyValueFactory<ProductViewDto, String>("stock"));
-        description.setCellValueFactory(new PropertyValueFactory<ProductViewDto, String>("description"));
+        name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        id.setCellValueFactory(new PropertyValueFactory<>("id"));
+        price.setCellValueFactory(new PropertyValueFactory<>("price"));
+        stock.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        description.setCellValueFactory(new PropertyValueFactory<>("description"));
+        formatPriceColumn();
+    }
+
+    private void formatPriceColumn() {
+        price.setCellFactory(column -> new TableCell<>(){
+            private final NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(new Locale("es", "AR"));
+
+            @Override
+            protected void updateItem(Double price, boolean empty){
+                super.updateItem(price, empty);
+                setText(empty || price == null ? null : currencyFormatter.format(price));
+            }
+        });
     }
 
     @FXML
     public void getProducts() {
         resetTable();
-        tableProducts.setItems(FXCollections.observableArrayList(productService.getAllProducts()));
+        tableProducts.setItems(FXCollections.observableArrayList(productService.getAllProductsDto()));
     }
 
     private void resetTable(){
-        ObservableList<Product> products = tableProducts.getItems();
+        ObservableList<ProductSaveDto> products = tableProducts.getItems();
         products.clear();
         tableProducts.setItems(products);
     }
@@ -132,12 +149,12 @@ public class StockControlController implements Initializable {
     @FXML
     private void searchProducts() {
 
-        String search = txtBusqueda.getText();
+        String search = txtSearch.getText();
 
         if(search.isEmpty())
             getProducts();
         else
-            tableProducts.setItems(FXCollections.observableArrayList(productService.getProductsByName(search)));
+            tableProducts.setItems(FXCollections.observableArrayList(productService.getProductsByNameSaveDto(search)));
     }
 
     @FXML
@@ -168,9 +185,10 @@ public class StockControlController implements Initializable {
 
     @FXML
     private void closeThisForm(){
-        WindowsManager.closeWindow(thisWindowStage);
         if(ControllerManager.getFormProductController() != null)
             WindowsManager.closeWindow(ControllerManager.getFormProductController().getThisWindowStage());
+        WindowsManager.closeWindow(thisWindowStage);
         goBackToMainMenu();
+
     }
 }

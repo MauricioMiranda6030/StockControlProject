@@ -1,5 +1,6 @@
 package com.stock.control.front.tools;
 
+import com.stock.control.dto.ProductSaveDto;
 import com.stock.control.entity.Product;
 import com.stock.control.front.*;
 import javafx.stage.Stage;
@@ -34,5 +35,5 @@ public class ControllerManager {
     private static String formProductStatus;
 
     @Getter @Setter
-    private static Product productToEdit;
+    private static ProductSaveDto productToEdit;
 }

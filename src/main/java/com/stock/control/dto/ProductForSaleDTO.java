@@ -3,7 +3,7 @@ package com.stock.control.dto;
 import lombok.Data;
 
 @Data
-public class ProductDTO {
+public class ProductForSaleDTO {
     private long id;
     private String name;
     private Double price;

@@ -1,6 +1,6 @@
 package com.stock.control.front;
 
-import com.stock.control.entity.Product;
+import com.stock.control.dto.ProductSaveDto;
 import com.stock.control.front.tools.ControlFXManager;
 import com.stock.control.front.tools.ControllerManager;
 import com.stock.control.front.tools.WindowsManager;
@@ -49,7 +49,7 @@ public class FormProductController implements Initializable {
     @FXML
     private Pane topBar;
 
-    private Product product;
+    private ProductSaveDto productDto;
 
     private Double x = 0d, y = 0d;
 
@@ -91,14 +91,14 @@ public class FormProductController implements Initializable {
     }
 
     private void setUpForSave(){
-        product = new Product();
+        productDto = new ProductSaveDto();
         lblTitle.setText("Nuevo Producto");
         btnSave.setVisible(true);
         btnEdit.setVisible(false);
     }
 
     private void setUpForEdit(){
-        product = ControllerManager.getProductToEdit();
+        productDto = ControllerManager.getProductToEdit();
         lblTitle.setText("Editar Producto");
 
         setUpFieldsForEdit();
@@ -108,10 +108,10 @@ public class FormProductController implements Initializable {
     }
 
     private void setUpFieldsForEdit(){
-        txtName.setText(product.getName());
-        txtPrice.setText(String.valueOf(product.getPrice()));
-        txtStock.setText(String.valueOf(product.getStock()));
-        txtDescription.setText(product.getDescription());
+        txtName.setText(productDto.getName());
+        txtPrice.setText(String.valueOf(productDto.getPrice()));
+        txtStock.setText(String.valueOf(productDto.getStock()));
+        txtDescription.setText(productDto.getDescription());
     }
 
     @FXML
@@ -122,8 +122,8 @@ public class FormProductController implements Initializable {
                 updateProductRegisterTable();
                 resetTextFields();
 
-                log.info("New product just saved: {}", product.getName());
-                product = new Product();
+                log.info("New product just saved: {}", productDto.getName());
+                productDto = new ProductSaveDto();
                 ControlFXManager.buildNotification("/images/check.png", "Producto guardado correctamente", "Registro de Producto")
                         .show();
             }
@@ -142,14 +142,14 @@ public class FormProductController implements Initializable {
                 updateProductRegisterTable();
                 closeThisForm();
 
-                log.info("Updating product with id: {}", product.getId());
+                log.info("Updating product with id: {}", productDto.getId());
             }
         }
     }
 
     private void setAndSave(){
-        setProduct();
-        productService.saveProduct(product);
+        setProductDto();
+        productService.saveProduct(productDto);
     }
 
     private boolean validateAll(){
@@ -182,11 +182,11 @@ public class FormProductController implements Initializable {
         return fieldList.stream().noneMatch( (field) -> field.getText().isEmpty() );
     }
 
-    private void setProduct(){
-        product.setName(txtName.getText());
-        product.setPrice(Double.valueOf(txtPrice.getText()));
-        product.setStock(Integer.parseInt(txtStock.getText()));
-        product.setDescription(txtDescription.getText());
+    private void setProductDto(){
+        productDto.setName(txtName.getText());
+        productDto.setPrice(Double.valueOf(txtPrice.getText()));
+        productDto.setStock(Integer.parseInt(txtStock.getText()));
+        productDto.setDescription(txtDescription.getText());
     }
 
     @FXML
