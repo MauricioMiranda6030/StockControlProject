@@ -21,6 +21,8 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -36,6 +38,8 @@ import java.util.ResourceBundle;
 public class FormSaleController implements Initializable {
 
     private final Double IVA = 1.21;
+
+    private final Logger log = LoggerFactory.getLogger(FormSaleController.class);
 
     @Autowired
     private ISaleService saleService;
@@ -72,17 +76,18 @@ public class FormSaleController implements Initializable {
     @Setter
     StringProperty finalPriceProperty = new SimpleStringProperty("-");
 
+    @Getter
     private Stage thisWindowStage;
 
     private Double x = 0d, y = 0d;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        Platform.runLater(() -> thisWindowStage = (Stage) anchorFormSale.getScene().getWindow());
         setUpLabels();
         initializeNewSale();
         ControllerManager.setFormSaleController(this);
         createListCell();
-        Platform.runLater(() -> thisWindowStage = (Stage) anchorFormSale.getScene().getWindow());
         setMovementToTopBar();
     }
 
@@ -290,12 +295,18 @@ public class FormSaleController implements Initializable {
         else {
             if(confirmationDialog().get() == ButtonType.OK){
                 saveSaleDetailsAndUpdateStock();
+                log.info("Sale just saved with a total amount of ({}) products and a final price of {}",
+                        saleDto.getProducts().size(),
+                        saleDto.getFinalPrice()
+                );
+
                 initializeNewSale();
                 updateListsAndTables();
                 ControlFXManager.buildNotification("/images/check.png",
                                 "Venta Guardada Correctamente",
                                 "Venta")
                         .show();
+
             }
         }
     }
@@ -325,6 +336,8 @@ public class FormSaleController implements Initializable {
 
     @FXML
     private void closeThisForm(){
-        WindowsManager.closeForm(thisWindowStage);
+        if(ControllerManager.getProductSearchController() != null)
+            WindowsManager.closeWindow(ControllerManager.getProductSearchController().getThisWindowStage());
+        WindowsManager.closeWindow(thisWindowStage);
     }
 }

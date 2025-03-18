@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="stockControlAnchorPane" prefHeight="718.0" prefWidth="809.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stock.control.front.StockControlController">
+<AnchorPane fx:id="stockControlAnchorPane" prefHeight="718.0" prefWidth="809.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stock.control.front.StockControlController">
    <children>
       <AnchorPane id="panelTitulo" layoutY="36.0" prefHeight="105.0" prefWidth="809.0" style="-fx-background-color: orange;">
          <children>

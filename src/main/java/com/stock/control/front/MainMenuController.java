@@ -21,20 +21,9 @@ public class MainMenuController implements Initializable {
     @FXML
     private Pane topBar;
 
-    private static MainMenuController instance = null;
-
-    private MainMenuController(){}
-
     private Stage thisWindowStage;
 
     private Double x = 0d, y = 0d;
-
-    //Patron singleton
-    private static synchronized MainMenuController getInstance(){
-        if(instance == null)
-            instance = new MainMenuController();
-        return instance;
-    }
 
     @FXML
     private AnchorPane mainAnchorPane;
@@ -87,7 +76,7 @@ public class MainMenuController implements Initializable {
     @FXML
     private void closeThisForm(){
         if (confirmDialog())
-            WindowsManager.closeForm(thisWindowStage);
+            Platform.exit();
     }
 
     private boolean confirmDialog() {
