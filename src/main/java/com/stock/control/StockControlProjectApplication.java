@@ -1,6 +1,7 @@
 package com.stock.control;
 
 import com.stock.control.db.BackUpScheduler;
+import com.stock.control.db.SetUpDatabase;
 import com.stock.control.front.tools.WindowsManager;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -18,10 +19,10 @@ public class StockControlProjectApplication extends Application {
         launch();
     }
 
-
     //iniciar spring
     @Override
     public void init(){
+        SetUpDatabase.setUp();
         context = SpringApplication.run(StockControlProjectApplication.class);
         WindowsManager.setContext(context);
     }

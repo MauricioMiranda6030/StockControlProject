@@ -20,9 +20,9 @@ public class SQLiteBackUp {
         createDirIfNotExists(bkUpPath);
         try {
             Files.copy(dbFile.toPath(), bkUpFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            log.info("BACKUP DONE");
+            log.info("Backup Done successfully");
         } catch (IOException e) {
-            log.error("ERROR WHILE DATA BASE BUCK UP: {}", e.getMessage());
+            log.error("Error while creating a backup: {}", e.getMessage());
         }
     }
 

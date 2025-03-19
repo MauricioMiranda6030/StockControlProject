@@ -11,8 +11,9 @@ public class BackUpScheduler {
 
     private static final Logger log = LoggerFactory.getLogger(BackUpScheduler.class);
 
-    private static final String DB_PATH = "stock_control.db",
-    DB_BACKUP_PATH = System.getProperty("user.home") + "/AppData/StockControlBackUp/stock_control.bak"; //backup se guarda en el appdata del usuario
+    private static final String BASE_PATH = System.getProperty("user.home") + "/AppData/Roaming/",
+    DB_PATH = BASE_PATH + "StockControl/stock_control.db",
+    DB_BACKUP_PATH = BASE_PATH + "StockControlBackUp/stock_control.bak"; //backup se guarda en el appdata del usuario
 
     public static void startBackUpScheduler(){
         Timer timer = new Timer(true);
@@ -21,7 +22,7 @@ public class BackUpScheduler {
             @Override
             public void run() {
                 try {
-                    log.info("CREATING BACKUP");
+                    log.info("Creating a backup at {} ...", DB_BACKUP_PATH);
                     SQLiteBackUp.backUpDataBase(DB_PATH, DB_BACKUP_PATH);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
