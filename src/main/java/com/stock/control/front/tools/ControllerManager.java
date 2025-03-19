@@ -1,10 +1,10 @@
 package com.stock.control.front.tools;
 
+import com.stock.control.dto.ProductSaveDto;
 import com.stock.control.entity.Product;
-import com.stock.control.front.FormSaleController;
-import com.stock.control.front.ProductSearchController;
-import com.stock.control.front.SalesRecordController;
-import com.stock.control.front.StockControlController;
+import com.stock.control.front.*;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
@@ -23,6 +23,9 @@ public class ControllerManager {
     private static FormSaleController formSaleController;
 
     @Getter @Setter
+    private static FormProductController formProductController;
+
+    @Getter @Setter
     private static SalesRecordController salesRecordController;
 
     @Getter @Setter
@@ -32,5 +35,5 @@ public class ControllerManager {
     private static String formProductStatus;
 
     @Getter @Setter
-    private static Product productToEdit;
+    private static ProductSaveDto productToEdit;
 }

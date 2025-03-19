@@ -1,15 +1,20 @@
 package com.stock.control.front;
 
-import com.stock.control.entity.Product;
+import com.stock.control.dto.ProductSaveDto;
 import com.stock.control.front.tools.ControlFXManager;
 import com.stock.control.front.tools.ControllerManager;
 import com.stock.control.front.tools.WindowsManager;
 import com.stock.control.service.IProductService;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import lombok.Getter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,19 +26,10 @@ import java.util.ResourceBundle;
 @Component
 public class FormProductController implements Initializable {
 
-    private static FormProductController instance = null;
-
-    private FormProductController(){}
-
-    //Patron singleton
-    public static synchronized FormProductController getInstance(){
-        if(instance == null)
-            instance = new FormProductController();
-        return instance;
-    }
-
     @Autowired
     private IProductService productService;
+
+    private final Logger log = LoggerFactory.getLogger(FormProductController.class);
 
     @FXML
     private AnchorPane productAnchorPane;
@@ -45,17 +41,36 @@ public class FormProductController implements Initializable {
     private TextField txtName, txtPrice, txtStock;
 
     @FXML
-    private Button btnClose, btnSave, btnEdit;
+    private Button btnSave, btnEdit;
 
     @FXML
     private Label lblWarningPrice,lblWarningStock, lblTitle ;
 
-    private Product product;
+    @FXML
+    private Pane topBar;
+
+    private ProductSaveDto productDto;
+
+    private Double x = 0d, y = 0d;
+
+    @Getter
+    private Stage thisWindowStage;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        Platform.runLater(() -> thisWindowStage = (Stage) productAnchorPane.getScene().getWindow());
         setListenersToTxtFields();
         setUpForm();
+        ControllerManager.setFormProductController(this);
+        setMovementToTopBar();
+    }
+
+    private void setMovementToTopBar() {
+        topBar.setOnMousePressed(event -> {
+            x = event.getScreenX() - thisWindowStage.getX();
+            y = event.getScreenY() - thisWindowStage.getY();
+        });
+        topBar.setOnMouseDragged(event -> WindowsManager.moveWindow(thisWindowStage, event, x, y));
     }
 
     private void setUpForm() {
@@ -76,14 +91,14 @@ public class FormProductController implements Initializable {
     }
 
     private void setUpForSave(){
-        product = new Product();
+        productDto = new ProductSaveDto();
         lblTitle.setText("Nuevo Producto");
         btnSave.setVisible(true);
         btnEdit.setVisible(false);
     }
 
     private void setUpForEdit(){
-        product = ControllerManager.getProductToEdit();
+        productDto = ControllerManager.getProductToEdit();
         lblTitle.setText("Editar Producto");
 
         setUpFieldsForEdit();
@@ -93,10 +108,10 @@ public class FormProductController implements Initializable {
     }
 
     private void setUpFieldsForEdit(){
-        txtName.setText(product.getName());
-        txtPrice.setText(String.valueOf(product.getPrice()));
-        txtStock.setText(String.valueOf(product.getStock()));
-        txtDescription.setText(product.getDescription());
+        txtName.setText(productDto.getName());
+        txtPrice.setText(String.valueOf(productDto.getPrice()));
+        txtStock.setText(String.valueOf(productDto.getStock()));
+        txtDescription.setText(productDto.getDescription());
     }
 
     @FXML
@@ -104,13 +119,19 @@ public class FormProductController implements Initializable {
         if (validateAll()) {
             if(confirmationDialog().get() == ButtonType.OK){
                 setAndSave();
-                ControllerManager.getStockControlController().getProducts();
-
+                updateProductRegisterTable();
                 resetTextFields();
+
+                log.info("New product just saved: {}", productDto.getName());
+                productDto = new ProductSaveDto();
                 ControlFXManager.buildNotification("/images/check.png", "Producto guardado correctamente", "Registro de Producto")
                         .show();
             }
         }
+    }
+
+    private static void updateProductRegisterTable() {
+        ControllerManager.getStockControlController().getProducts();
     }
 
     @FXML
@@ -118,16 +139,17 @@ public class FormProductController implements Initializable {
         if(validateAll()){
             if(confirmationDialog().get() == ButtonType.OK){
                 setAndSave();
-                ControllerManager.getStockControlController().getProducts();
+                updateProductRegisterTable();
                 closeThisForm();
+
+                log.info("Updating product with id: {}", productDto.getId());
             }
         }
     }
 
     private void setAndSave(){
-        System.out.println("setting and saving");
-        setProduct();
-        productService.saveProduct(product);
+        setProductDto();
+        productService.saveProduct(productDto);
     }
 
     private boolean validateAll(){
@@ -160,11 +182,11 @@ public class FormProductController implements Initializable {
         return fieldList.stream().noneMatch( (field) -> field.getText().isEmpty() );
     }
 
-    private void setProduct(){
-        product.setName(txtName.getText());
-        product.setPrice(Double.valueOf(txtPrice.getText()));
-        product.setStock(Integer.valueOf(txtStock.getText()));
-        product.setDescription(txtDescription.getText());
+    private void setProductDto(){
+        productDto.setName(txtName.getText());
+        productDto.setPrice(Double.valueOf(txtPrice.getText()));
+        productDto.setStock(Integer.parseInt(txtStock.getText()));
+        productDto.setDescription(txtDescription.getText());
     }
 
     @FXML
@@ -177,8 +199,12 @@ public class FormProductController implements Initializable {
 
     @FXML
     private void closeThisForm(){
-        Stage stage = (Stage) btnClose.getScene().getWindow();
-        stage.close();
+        WindowsManager.closeWindow(thisWindowStage);
+    }
+
+    @FXML
+    private void minWindow(){
+        WindowsManager.minWindow(thisWindowStage);
     }
 
     private Optional<ButtonType> confirmationDialog(){

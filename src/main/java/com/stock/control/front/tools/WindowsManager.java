@@ -6,9 +6,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import lombok.Setter;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -50,8 +52,10 @@ public class WindowsManager {
     }
 
     public static void openNewWindowAndCloseCurrent(String path, String title, Stage currentStage) throws IOException{
-        if(isWindowCreatedAndIsShowing(path))
+        if(isWindowCreatedAndIsShowing(path)){
             windowsOpened.get(path).toFront();
+            windowsOpened.get(path).setIconified(false);
+        }
         else {
             currentStage.close();
             OpenWindow(path, title);
@@ -59,11 +63,12 @@ public class WindowsManager {
     }
 
     public static void openNewWindowAndKeepCurrent(String path, String title) throws IOException{
-        if(isWindowCreatedAndIsShowing(path))
-           windowsOpened.get(path).toFront();
-        else{
-            OpenWindow(path, title);
+        if(isWindowCreatedAndIsShowing(path)){
+            windowsOpened.get(path).toFront();
+            windowsOpened.get(path).setIconified(false);
         }
+        else
+            OpenWindow(path, title);
     }
 
     private static void OpenWindow(String path, String title) throws IOException {
@@ -83,6 +88,7 @@ public class WindowsManager {
     private static Stage createStage(String title, Scene scene){
         Stage stage = new Stage();
         stage.setTitle(title);
+        stage.initStyle(StageStyle.UNDECORATED);
         stage.setResizable(false);
         stage.getIcons().add(new Image("/images/logo.png"));
 
@@ -104,5 +110,18 @@ public class WindowsManager {
         alert.getDialogPane().setHeaderText(null);
 
         return alert.showAndWait();
+    }
+
+    public static void moveWindow(Stage stage, MouseEvent event, Double x, Double y){
+        stage.setX(event.getScreenX() - x);
+        stage.setY(event.getScreenY() - y);
+    }
+
+    public static void minWindow(Stage stage){
+        stage.setIconified(true);
+    }
+
+    public static void closeWindow(Stage stage){
+        stage.close();
     }
 }

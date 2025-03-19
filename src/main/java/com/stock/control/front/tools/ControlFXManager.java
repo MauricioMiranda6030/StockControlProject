@@ -7,6 +7,10 @@ import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 import org.springframework.stereotype.Component;
 
+/*
+ * Clase que se encargaa de construir Notificaciones
+ */
+
 @Component
 public class ControlFXManager {
 
@@ -15,7 +19,7 @@ public class ControlFXManager {
                 .text(message)
                 .title(title)
                 .graphic(null)
-                .hideAfter(Duration.seconds(5))
+                .hideAfter(Duration.seconds(3))
                 .position(Pos.TOP_RIGHT);
     }
 
@@ -24,7 +28,7 @@ public class ControlFXManager {
                 .text(message)
                 .title(title)
                 .graphic(createImage(imgPath))
-                .hideAfter(Duration.seconds(3))
+                .hideAfter(Duration.seconds(2))
                 .position(Pos.TOP_RIGHT);
     }
 

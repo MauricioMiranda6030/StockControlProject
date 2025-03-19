@@ -1,9 +1,12 @@
 package com.stock.control.front;
 
 import com.stock.control.front.tools.WindowsManager;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.springframework.stereotype.Component;
 
@@ -15,22 +18,20 @@ import java.util.ResourceBundle;
 @Component
 public class MainMenuController implements Initializable {
 
-    private static MainMenuController instance = null;
+    @FXML
+    private Pane topBar;
 
-    private MainMenuController(){}
+    private Stage thisWindowStage;
 
-    //Patron singleton
-    private static synchronized MainMenuController getInstance(){
-        if(instance == null)
-            instance = new MainMenuController();
-        return instance;
-    }
+    private Double x = 0d, y = 0d;
 
     @FXML
     private AnchorPane mainAnchorPane;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        Platform.runLater(() -> thisWindowStage = (Stage) mainAnchorPane.getScene().getWindow());
+        setMovementToTopBar();
     }
 
     @FXML
@@ -57,5 +58,28 @@ public class MainMenuController implements Initializable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void setMovementToTopBar() {
+        topBar.setOnMousePressed(event -> {
+            x = event.getScreenX() - thisWindowStage.getX();
+            y = event.getScreenY() - thisWindowStage.getY();
+        });
+        topBar.setOnMouseDragged(event -> WindowsManager.moveWindow(thisWindowStage, event, x, y));
+    }
+
+    @FXML
+    private void minWindow(){
+        WindowsManager.minWindow(thisWindowStage);
+    }
+
+    @FXML
+    private void closeThisForm(){
+        if (confirmDialog())
+            Platform.exit();
+    }
+
+    private boolean confirmDialog() {
+        return WindowsManager.confirmDialog(mainAnchorPane, "¿Esta seguro de salir de la Aplicación?").get() == ButtonType.OK;
     }
 }

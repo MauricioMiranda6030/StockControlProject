@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
@@ -8,48 +9,75 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="salesAnchorPane" prefHeight="559.0" prefWidth="817.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stock.control.front.SalesRecordController">
+<AnchorPane fx:id="salesAnchorPane" prefHeight="615.0" prefWidth="956.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stock.control.front.SalesRecordController">
    <children>
-      <Pane prefHeight="105.0" prefWidth="817.0" style="-fx-background-color: orange;">
+      <Pane layoutY="36.0" prefHeight="105.0" prefWidth="956.0" style="-fx-background-color: orange;">
          <children>
-            <Label layoutX="94.0" layoutY="37.0" prefHeight="40.0" prefWidth="346.0" text="Registro de Ventas" textFill="WHITE">
+            <Label layoutX="94.0" layoutY="35.0" prefHeight="40.0" prefWidth="346.0" text="Registro de Ventas" textFill="WHITE">
                <font>
                   <Font name="Verdana" size="32.0" />
                </font>
             </Label>
-            <ImageView fitHeight="70.0" fitWidth="68.0" layoutX="14.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="70.0" fitWidth="68.0" layoutX="14.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../../../images/folder.png" />
                </image>
             </ImageView>
          </children>
       </Pane>
-      <Button fx:id="btnSaveSale" layoutX="679.0" layoutY="129.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="121.0" styleClass="add-button" text="Nueva venta" textFill="WHITE">
+      <Button fx:id="btnSaveSale" layoutX="824.0" layoutY="167.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="121.0" styleClass="add-button" text="Nueva venta" textFill="WHITE">
          <font>
             <Font name="Verdana Bold" size="13.0" />
          </font></Button>
-      <TableView fx:id="tableSales" layoutX="14.0" layoutY="172.0" prefHeight="378.0" prefWidth="789.0" styleClass="table-sales">
+      <TableView fx:id="tableSales" layoutX="14.0" layoutY="204.0" prefHeight="398.0" prefWidth="933.0" styleClass="table-sales">
         <columns>
           <TableColumn fx:id="colId" prefWidth="26.0" text="id" />
           <TableColumn fx:id="colDate" prefWidth="99.0" styleClass="col-date" text="Fecha" />
-            <TableColumn fx:id="colProducts" prefWidth="425.0" text="Productos" />
-            <TableColumn fx:id="colAmount" minWidth="0.0" prefWidth="126.0" styleClass="col-total" text="Cantidad Total" />
-            <TableColumn fx:id="colFinalPrice" prefWidth="112.0" styleClass="col-price" text="Precio Final" />
+            <TableColumn fx:id="colProducts" prefWidth="514.0" text="Productos" />
+            <TableColumn fx:id="colAmount" minWidth="0.0" prefWidth="159.0" styleClass="col-total" text="Cantidad Total" />
+            <TableColumn fx:id="colFinalPrice" prefWidth="134.0" styleClass="col-price" text="Precio Final" />
         </columns>
       </TableView>
-      <DatePicker fx:id="datePicker" layoutX="188.0" layoutY="135.0" prefHeight="25.0" prefWidth="139.0" />
-      <Label layoutX="50.0" layoutY="140.0" prefHeight="17.0" prefWidth="130.0" text="Seleccione una fecha">
+      <DatePicker fx:id="datePicker" layoutX="190.0" layoutY="174.0" prefHeight="25.0" prefWidth="121.0" />
+      <Label layoutX="58.0" layoutY="179.0" prefHeight="17.0" prefWidth="130.0" text="Seleccione una fecha">
          <font>
             <Font name="Verdana" size="12.0" />
          </font>
       </Label>
-      <ImageView fx:id="btnGoBack" fitHeight="32.0" fitWidth="27.0" layoutX="14.0" layoutY="136.0" onMouseClicked="#goBackToMainMenu" pickOnBounds="true" preserveRatio="true" styleClass="button">
+      <ImageView fx:id="btnGoBack" fitHeight="32.0" fitWidth="27.0" layoutX="20.0" layoutY="173.0" onMouseClicked="#goBackToMainMenu" onMouseReleased="#closeThisForm" pickOnBounds="true" preserveRatio="true" styleClass="button">
          <image>
             <Image url="@../../../../../images/arrow.png" />
          </image>
       </ImageView>
+      <Pane fx:id="topBar" prefHeight="37.0" prefWidth="956.0" style="-fx-background-color: #f49f00;">
+         <children>
+            <HBox alignment="CENTER_RIGHT" layoutX="869.0" layoutY="2.0" prefHeight="33.0" prefWidth="80.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#minWindow" prefHeight="23.0" prefWidth="33.0" styleClass="min-button" text="_" textFill="WHITE">
+                     <font>
+                        <Font name="Verdana Bold" size="12.0" />
+                     </font>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#closeThisForm" prefHeight="23.0" prefWidth="33.0" styleClass="close-button" text="X" textFill="WHITE">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font name="Verdana Bold" size="12.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </Pane>
+      <Button layoutX="323.0" layoutY="173.0" mnemonicParsing="false" onAction="#resetDatePicker" style="-fx-background-color: lightgrey;" text="Limpiar" textFill="WHITE">
+         <font>
+            <Font name="Verdana Bold" size="12.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

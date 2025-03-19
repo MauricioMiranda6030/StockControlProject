@@ -1,43 +1,33 @@
 package com.stock.control.front;
 
-import com.stock.control.entity.Product;
+import com.stock.control.dto.ProductSaveDto;
 import com.stock.control.front.tools.ControlFXManager;
 import com.stock.control.front.tools.ControllerManager;
 import com.stock.control.front.tools.WindowsManager;
 import com.stock.control.service.IProductService;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 @Component
 public class StockControlController implements Initializable {
-
-    private static StockControlController instance = null;
-
-    private StockControlController(){}
-
-    // Patron Singleton
-    private static synchronized StockControlController getInstance(){
-        if(instance == null)
-            instance = new StockControlController();
-        return instance;
-    }
 
     @FXML
     private AnchorPane stockControlAnchorPane;
@@ -46,25 +36,22 @@ public class StockControlController implements Initializable {
     private IProductService productService;
 
     @FXML
-    private TableView<Product> tableProducts;
+    private TableView<ProductSaveDto> tableProducts;
 
     @FXML
-    private TableColumn<Product, String> description;
+    private TableColumn<ProductSaveDto, String> description, name;
 
     @FXML
-    private TableColumn<Product, Long> id;
+    private TableColumn<ProductSaveDto, Integer> stock;
 
     @FXML
-    private TableColumn<Product, String> name;
+    private TableColumn<ProductSaveDto, Double> price;
 
     @FXML
-    private TableColumn<Product, Double> price;
+    private TableColumn<ProductSaveDto, Long> id;
 
     @FXML
-    private TableColumn<Product, Integer> stock;
-
-    @FXML
-    private TextField txtBusqueda;
+    private TextField txtSearch;
 
     @FXML
     private Button btnAddProduct, btnEditProduct;
@@ -72,16 +59,25 @@ public class StockControlController implements Initializable {
     @FXML
     private ImageView btnGoBack;
 
+    @FXML
+    private Pane topBar;
+
+    private Stage thisWindowStage;
+
+    private Double x = 0d, y = 0d;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setUpTxtSearch();
         setUpButtons();
         setUpColumns();
         getProducts();
+        Platform.runLater(() -> thisWindowStage = (Stage) stockControlAnchorPane.getScene().getWindow());
+        setMovementToTopBar();
     }
 
     private void setUpTxtSearch() {
-        txtBusqueda.textProperty().addListener(
+        txtSearch.textProperty().addListener(
                 (observable, oldValue, newValue) -> searchProducts()
         );
     }
@@ -93,12 +89,12 @@ public class StockControlController implements Initializable {
     }
 
     @FXML
-    public void setPerson(){
+    private void setPerson(){
         ControllerManager.setProductToEdit(tableProducts.getFocusModel().getFocusedItem());
     }
 
     @FXML
-    public void openFormProduct(ActionEvent event, String status){
+    private void openFormProduct(ActionEvent event, String status){
 
         if(status.equals("edit") && ControllerManager.getProductToEdit() == null)
             ControlFXManager.buildNotification("Debe seleccionar un producto a editar", "Edición de Producto")
@@ -118,46 +114,81 @@ public class StockControlController implements Initializable {
     }
 
     private void setUpColumns(){
-        name.setCellValueFactory(new PropertyValueFactory<Product, String>("name"));
-        id.setCellValueFactory(new PropertyValueFactory<Product, Long>("id"));
-        price.setCellValueFactory(new PropertyValueFactory<Product, Double>("price"));
-        stock.setCellValueFactory(new PropertyValueFactory<Product, Integer>("stock"));
-        description.setCellValueFactory(new PropertyValueFactory<Product, String>("description"));
+        name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        id.setCellValueFactory(new PropertyValueFactory<>("id"));
+        price.setCellValueFactory(new PropertyValueFactory<>("price"));
+        stock.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        description.setCellValueFactory(new PropertyValueFactory<>("description"));
+        formatPriceColumn();
+    }
+
+    private void formatPriceColumn() {
+        price.setCellFactory(column -> new TableCell<>(){
+            private final NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(new Locale("es", "AR"));
+
+            @Override
+            protected void updateItem(Double price, boolean empty){
+                super.updateItem(price, empty);
+                setText(empty || price == null ? null : currencyFormatter.format(price));
+            }
+        });
     }
 
     @FXML
     public void getProducts() {
         resetTable();
-        tableProducts.setItems(FXCollections.observableArrayList(productService.getAllProducts()));
+        tableProducts.setItems(FXCollections.observableArrayList(productService.getAllProductsDto()));
     }
 
     private void resetTable(){
-        ObservableList<Product> products = tableProducts.getItems();
+        ObservableList<ProductSaveDto> products = tableProducts.getItems();
         products.clear();
         tableProducts.setItems(products);
     }
 
     @FXML
-    public void searchProducts() {
+    private void searchProducts() {
 
-        String search = txtBusqueda.getText();
+        String search = txtSearch.getText();
 
         if(search.isEmpty())
             getProducts();
         else
-            tableProducts.setItems(FXCollections.observableArrayList(productService.getProductsByName(search)));
+            tableProducts.setItems(FXCollections.observableArrayList(productService.getProductsByNameSaveDto(search)));
     }
 
     @FXML
-    public void goBackToMainMenu(){
+    private void goBackToMainMenu(){
         try {
             WindowsManager.openNewWindowAndCloseCurrent(
                     WindowsManager.PATH_MAIN,
                     "Menú Principal",
-                    (Stage) stockControlAnchorPane.getScene().getWindow()
+                    thisWindowStage
             );
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void setMovementToTopBar() {
+        topBar.setOnMousePressed(event -> {
+            x = event.getScreenX() - thisWindowStage.getX();
+            y = event.getScreenY() - thisWindowStage.getY();
+        });
+        topBar.setOnMouseDragged(event -> WindowsManager.moveWindow(thisWindowStage, event, x, y));
+    }
+
+    @FXML
+    private void minWindow(){
+        WindowsManager.minWindow(thisWindowStage);
+    }
+
+    @FXML
+    private void closeThisForm(){
+        if(ControllerManager.getFormProductController() != null)
+            WindowsManager.closeWindow(ControllerManager.getFormProductController().getThisWindowStage());
+        WindowsManager.closeWindow(thisWindowStage);
+        goBackToMainMenu();
+
     }
 }

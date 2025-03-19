@@ -1,8 +1,9 @@
 package com.stock.control.front;
 
-import com.stock.control.dto.ProductDTO;
+import com.stock.control.dto.ProductForSaleDTO;
 import com.stock.control.front.tools.ControlFXManager;
 import com.stock.control.front.tools.ControllerManager;
+import com.stock.control.front.tools.WindowsManager;
 import com.stock.control.service.IProductService;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -14,6 +15,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,25 +29,37 @@ public class ProductSearchController implements Initializable {
     private Pane anchorSearch;
 
     @FXML
-    private ListView<ProductDTO> listProducts;
+    private ListView<ProductForSaleDTO> listProducts;
 
     @FXML
     private TextField txtName;
 
+    @FXML
+    private Pane topBar;
+
     @Autowired
     private IProductService productService;
 
+    @Getter
+    private Stage thisWindowStage;
+
+    private Double x = 0d, y = 0d;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        moveWindowToTheRight();
-        setListenerToTxtField();
+        Platform.runLater(() -> thisWindowStage = (Stage) anchorSearch.getScene().getWindow());
         ControllerManager.setProductSearchController(this);
+        setListenerToTxtField();
         getProducts();
+
+        moveWindowToTheRight();
+        setMovementToTopBar();
+
     }
 
     private void moveWindowToTheRight() {
         Platform.runLater(() -> {
-            Stage stage = (Stage) anchorSearch.getScene().getWindow();
+            Stage stage = thisWindowStage;
             stage.setX(1400);
         });
     }
@@ -56,19 +70,18 @@ public class ProductSearchController implements Initializable {
         );
     }
 
-
     @FXML
     public void addProduct(MouseEvent event) {
         if(event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2){
-            ProductDTO productDTO = listProducts.getFocusModel().getFocusedItem();
+            ProductForSaleDTO productForSaleDTO = listProducts.getFocusModel().getFocusedItem();
 
-            if (productDTO.getStock() == 0)
+            if (productForSaleDTO.getStock() == 0)
                 ControlFXManager.buildNotification(
                         "¡Producto sin Stock! Añadir más Stock para realizar la compra",
                         "¡Advertencia!")
                 .showWarning();
             else
-                ControllerManager.getFormSaleController().addProduct(productDTO);
+                ControllerManager.getFormSaleController().addProduct(productForSaleDTO);
         }
     }
 
@@ -76,4 +89,21 @@ public class ProductSearchController implements Initializable {
         listProducts.setItems(FXCollections.observableArrayList(productService.getProductsDtoByName(txtName.getText())));
     }
 
+    private void setMovementToTopBar() {
+        topBar.setOnMousePressed(event -> {
+            x = event.getScreenX() - thisWindowStage.getX();
+            y = event.getScreenY() - thisWindowStage.getY();
+        });
+        topBar.setOnMouseDragged(event -> WindowsManager.moveWindow(thisWindowStage, event, x, y));
+    }
+
+    @FXML
+    private void minWindow(){
+        WindowsManager.minWindow(thisWindowStage);
+    }
+
+    @FXML
+    private void closeThisForm(){
+        WindowsManager.closeWindow(thisWindowStage);
+    }
 }
