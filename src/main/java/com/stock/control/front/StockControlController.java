@@ -97,8 +97,15 @@ public class StockControlController implements Initializable {
     private void openFormProduct(ActionEvent event, String status){
 
         if(status.equals("edit") && ControllerManager.getProductToEdit() == null)
-            ControlFXManager.buildNotification("Debe seleccionar un producto a editar", "Edición de Producto")
-                    .showWarning();
+            ControlFXManager.buildNotification(
+                    "Debe seleccionar un producto a editar",
+                        "Edición de Producto")
+            .showWarning();
+        else if (status.equals("edit") && ControllerManager.getFormProductController().getThisWindowStage().isShowing())
+            ControlFXManager.buildNotification(
+                        "Debe cerrar el Formulario de Nuevo Producto para poder Editar",
+                            "Edición de Producto")
+            .showWarning();
         else{
                 ControllerManager.setFormProductStatus(status);
                 ControllerManager.setStockControlController(this);

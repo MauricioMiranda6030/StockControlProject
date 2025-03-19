@@ -11,9 +11,6 @@ public interface ISaleMapper {
 
     ISaleMapper INSTANCE = Mappers.getMapper(ISaleMapper.class);
 
-    @Mapping(target = "products", ignore = true)
-    SaleDTO saleToSaleDto(Sale sale);
-
     @Mapping(target = "id", ignore = true)
     Sale saleDtoToSale(SaleDTO saleDto);
 }
