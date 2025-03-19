@@ -14,6 +14,7 @@ public class BackUpScheduler {
     private static final String BASE_PATH = System.getProperty("user.home") + "/AppData/Roaming/",
     DB_PATH = BASE_PATH + "StockControl/stock_control.db",
     DB_BACKUP_PATH = BASE_PATH + "StockControlBackUp/stock_control.bak"; //backup se guarda en el appdata del usuario
+    private static final int HOURS_FOR_BACKUP = 7200000; //2 Horas en milisegundos
 
     public static void startBackUpScheduler(){
         Timer timer = new Timer(true);
@@ -28,6 +29,6 @@ public class BackUpScheduler {
                     throw new RuntimeException(e);
                 }
             }
-        }, 0, 7200000); //back up programado cada 2 horas
+        }, 0, HOURS_FOR_BACKUP); //back up programado cada 2 horas
     }
 }
