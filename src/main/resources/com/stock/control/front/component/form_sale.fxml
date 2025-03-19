@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchorFormSale" prefHeight="761.0" prefWidth="815.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stock.control.front.FormSaleController">
+<AnchorPane fx:id="anchorFormSale" prefHeight="761.0" prefWidth="815.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stock.control.front.FormSaleController">
    <children>
       <Pane layoutY="23.0" prefHeight="90.0" prefWidth="815.0" style="-fx-background-color: #14e066;">
          <children>
