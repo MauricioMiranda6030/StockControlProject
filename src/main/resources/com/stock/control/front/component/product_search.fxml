@@ -11,15 +11,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 <AnchorPane fx:id="anchorSearch" prefHeight="766.0" prefWidth="465.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stock.control.front.ProductSearchController">
-=======
-<AnchorPane fx:id="anchorSearch" prefHeight="766.0" prefWidth="465.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stock.control.front.ProductSearchController">
->>>>>>> bdc4949 (Barra custom hecha)
-=======
-<AnchorPane fx:id="anchorSearch" prefHeight="766.0" prefWidth="465.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stock.control.front.ProductSearchController">
->>>>>>> ff2788c (title bar, backups y logs)
    <children>
       <Pane fx:id="anchorSearch" layoutY="30.0" prefHeight="101.0" prefWidth="481.0" style="-fx-background-color: #64cded;">
          <children>

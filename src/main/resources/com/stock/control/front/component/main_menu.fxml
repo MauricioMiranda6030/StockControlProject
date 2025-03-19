@@ -10,15 +10,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 <AnchorPane fx:id="mainAnchorPane" prefHeight="557.0" prefWidth="848.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stock.control.front.MainMenuController">
-=======
-<AnchorPane fx:id="mainAnchorPane" prefHeight="557.0" prefWidth="848.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stock.control.front.MainMenuController">
->>>>>>> bdc4949 (Barra custom hecha)
-=======
-<AnchorPane fx:id="mainAnchorPane" prefHeight="557.0" prefWidth="848.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stock.control.front.MainMenuController">
->>>>>>> ff2788c (title bar, backups y logs)
    <children>
       <AnchorPane layoutY="33.0" prefHeight="95.0" prefWidth="848.0" style="-fx-background-color: #3095e3;">
          <children>

@@ -12,19 +12,9 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 <AnchorPane fx:id="anchorFormSale" prefHeight="761.0" prefWidth="815.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stock.control.front.FormSaleController">
    <children>
       <Pane layoutY="23.0" prefHeight="90.0" prefWidth="815.0" style="-fx-background-color: #14e066;">
-=======
-<AnchorPane fx:id="anchorFormSale" prefHeight="770.0" prefWidth="815.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stock.control.front.FormSaleController">
-=======
-<AnchorPane fx:id="anchorFormSale" prefHeight="770.0" prefWidth="815.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stock.control.front.FormSaleController">
->>>>>>> ff2788c (title bar, backups y logs)
-   <children>
-      <Pane layoutY="33.0" prefHeight="90.0" prefWidth="815.0" style="-fx-background-color: #14e066;">
->>>>>>> bdc4949 (Barra custom hecha)
          <children>
             <Label layoutX="97.0" layoutY="28.0" prefHeight="43.0" prefWidth="264.0" text="Nueva Venta" textFill="WHITE">
                <font>
@@ -38,11 +28,7 @@
             </ImageView>
          </children>
       </Pane>
-<<<<<<< HEAD
       <Pane layoutY="113.0" prefHeight="647.0" prefWidth="360.0" styleClass="sale-pane">
-=======
-      <Pane layoutY="123.0" prefHeight="668.0" prefWidth="360.0" styleClass="sale-pane">
->>>>>>> bdc4949 (Barra custom hecha)
          <children>
             <Label layoutX="19.0" layoutY="474.0" text="Precio Final:">
                <font>
@@ -101,26 +87,15 @@
             </Pane>
          </children>
       </Pane>
-<<<<<<< HEAD
       <Button fx:id="btnSearchProduct" layoutX="496.0" layoutY="124.0" mnemonicParsing="false" onAction="#openProductSearch" prefHeight="35.0" prefWidth="184.0" styleClass="add-button" text="Buscar Producto" textFill="WHITE">
-=======
-      <Button fx:id="btnSearchProduct" layoutX="496.0" layoutY="137.0" mnemonicParsing="false" onAction="#openProductSearch" prefHeight="35.0" prefWidth="184.0" styleClass="add-button" text="Buscar Producto" textFill="WHITE">
->>>>>>> bdc4949 (Barra custom hecha)
          <font>
             <Font name="Verdana Bold" size="17.0" />
          </font>
       </Button>
-<<<<<<< HEAD
       <ListView fx:id="listProducts" layoutX="373.0" layoutY="173.0" prefHeight="576.0" prefWidth="427.0" />
       <Pane fx:id="topBar" layoutY="-4.0" prefHeight="35.0" prefWidth="815.0" style="-fx-background-color: #10b652;">
          <children>
             <HBox alignment="CENTER_RIGHT" layoutX="733.0" layoutY="2.0" prefHeight="33.0" prefWidth="79.0">
-=======
-      <ListView fx:id="listProducts" layoutX="374.0" layoutY="187.0" prefHeight="591.0" prefWidth="427.0" />
-      <Pane fx:id="topBar" layoutY="-4.0" prefHeight="43.0" prefWidth="815.0" style="-fx-background-color: #10b652;">
-         <children>
-            <HBox alignment="CENTER_RIGHT" layoutX="733.0" layoutY="8.0" prefHeight="33.0" prefWidth="79.0">
->>>>>>> bdc4949 (Barra custom hecha)
                <children>
                   <Button alignment="CENTER" mnemonicParsing="false" onAction="#minWindow" prefHeight="23.0" prefWidth="33.0" styleClass="min-button" text="_" textFill="WHITE">
                      <font>
