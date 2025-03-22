@@ -18,6 +18,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.Setter;
@@ -87,7 +88,16 @@ public class FormSaleController implements Initializable {
         initializeNewSale();
         ControllerManager.setFormSaleController(this);
         createListCell();
+        moveWindowToLeft();
         setMovementToTopBar();
+    }
+
+    private void moveWindowToLeft() {
+        Platform.runLater(() -> {
+            Stage stage = thisWindowStage;
+            double screenWidth = Screen.getPrimary().getBounds().getWidth();
+            stage.setX(screenWidth * 0.1);
+        });
     }
 
     /*

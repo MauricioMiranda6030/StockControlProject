@@ -14,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +61,8 @@ public class ProductSearchController implements Initializable {
     private void moveWindowToTheRight() {
         Platform.runLater(() -> {
             Stage stage = thisWindowStage;
-            stage.setX(1400);
+            double screenWidth = Screen.getPrimary().getBounds().getWidth();
+            stage.setX(screenWidth * 0.55);
         });
     }
 
