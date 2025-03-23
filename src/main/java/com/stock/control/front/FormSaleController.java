@@ -29,9 +29,11 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 @Component
@@ -226,8 +228,12 @@ public class FormSaleController implements Initializable {
 
     private void updateLabels() {
         amountProperty.set(String.valueOf(saleDto.getTotalAmount()));
-        priceProperty.set(String.format("%.2f$", firstPrice));
-        finalPriceProperty.set(String.format("%.2f$", saleDto.getFinalPrice()));
+        priceProperty.set(getCurrencyFormat(firstPrice));
+        finalPriceProperty.set(getCurrencyFormat(saleDto.getFinalPrice()));
+    }
+
+    private String getCurrencyFormat(Double price) {
+        return NumberFormat.getCurrencyInstance(new Locale("es", "AR")).format(price);
     }
 
     private void updateListsAndTables() {

@@ -5,8 +5,10 @@ import com.stock.control.entity.SaleDetails;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.text.NumberFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Getter
@@ -20,7 +22,7 @@ public class SaleViewDTO {
     public SaleViewDTO(Sale sale, List<SaleDetails> saleDetails){
         this.id = sale.getId();
         this.dateOfSale = sale.getDateOfSale().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        this.finalPrice = String.format("%.2f$", sale.getFinalPrice());
+        this.finalPrice = NumberFormat.getCurrencyInstance(new Locale("es", "AR")).format(sale.getFinalPrice());
         this.totalAmount = sale.getTotalAmount() + " Unidades";
 
         productsDetails = saleDetails.stream()
