@@ -4,13 +4,12 @@ import com.stock.control.dto.ProductForSaleDTO;
 import com.stock.control.dto.SaleDTO;
 import com.stock.control.front.tools.ControlFXManager;
 import com.stock.control.front.tools.ControllerManager;
+import com.stock.control.front.tools.CurrencyFormater;
 import com.stock.control.front.tools.WindowsManager;
 import com.stock.control.service.IProductService;
 import com.stock.control.service.ISaleDetailsService;
 import com.stock.control.service.ISaleService;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -21,7 +20,6 @@ import javafx.scene.layout.*;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import lombok.Getter;
-import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +27,9 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URL;
-import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.ResourceBundle;
 
 @Component
@@ -69,16 +65,6 @@ public class FormSaleController implements Initializable {
     private Double firstPrice;
 
     @Getter
-    @Setter
-    StringProperty amountProperty = new SimpleStringProperty("-");
-    @Getter
-    @Setter
-    StringProperty priceProperty = new SimpleStringProperty("-");
-    @Getter
-    @Setter
-    StringProperty finalPriceProperty = new SimpleStringProperty("-");
-
-    @Getter
     private Stage thisWindowStage;
 
     private Double x = 0d, y = 0d;
@@ -86,10 +72,10 @@ public class FormSaleController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Platform.runLater(() -> thisWindowStage = (Stage) anchorFormSale.getScene().getWindow());
-        setUpLabels();
         initializeNewSale();
         ControllerManager.setFormSaleController(this);
         createListCell();
+        setUpLabels();
         moveWindowToLeft();
         setMovementToTopBar();
     }
@@ -177,10 +163,7 @@ public class FormSaleController implements Initializable {
             }
 
             private void buildHBoxComponents(ProductForSaleDTO product) {
-                productLabel.setText("Producto: " + product.getName() + "\n"
-                        + "Precio: " + String.format("%.2f$", product.getPrice()) + "\n"
-                        + "Stock Disponible: " + product.getStock());
-
+                productLabel.setText(product.toString());
                 amountField.setText(String.valueOf(product.getAmountToSell()));
                 amountField.setAlignment(Pos.CENTER);
 
@@ -192,9 +175,9 @@ public class FormSaleController implements Initializable {
     }
 
     private void setUpLabels() {
-        lblAmount.textProperty().bind(amountProperty);
-        lblPrice.textProperty().bind(priceProperty);
-        lblFinalPrice.textProperty().bind(finalPriceProperty);
+        lblAmount.setText("-");
+        lblPrice.setText("-");
+        lblFinalPrice.setText("-");
         lblDate.setText(LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
     }
 
@@ -227,13 +210,13 @@ public class FormSaleController implements Initializable {
     }
 
     private void updateLabels() {
-        amountProperty.set(String.valueOf(saleDto.getTotalAmount()));
-        priceProperty.set(getCurrencyFormat(firstPrice));
-        finalPriceProperty.set(getCurrencyFormat(saleDto.getFinalPrice()));
+        lblAmount.setText(String.valueOf(saleDto.getTotalAmount()));
+        lblPrice.setText(getCurrencyFormat(firstPrice));
+        lblFinalPrice.setText(getCurrencyFormat(saleDto.getFinalPrice()));
     }
 
     private String getCurrencyFormat(Double price) {
-        return NumberFormat.getCurrencyInstance(new Locale("es", "AR")).format(price);
+        return CurrencyFormater.getCurrency(price);
     }
 
     private void updateListsAndTables() {
@@ -316,6 +299,7 @@ public class FormSaleController implements Initializable {
                 );
 
                 initializeNewSale();
+                setUpLabels();
                 updateListsAndTables();
                 ControlFXManager.buildNotification("/images/check.png",
                                 "Venta Guardada Correctamente",

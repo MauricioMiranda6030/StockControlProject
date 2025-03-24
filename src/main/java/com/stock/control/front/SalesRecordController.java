@@ -3,7 +3,6 @@ package com.stock.control.front;
 import com.stock.control.dto.SaleViewDTO;
 import com.stock.control.front.tools.ControllerManager;
 import com.stock.control.front.tools.WindowsManager;
-import com.stock.control.service.ISaleDetailsService;
 import com.stock.control.service.ISaleService;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;

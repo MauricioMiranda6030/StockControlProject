@@ -172,7 +172,7 @@ public class FormProductController implements Initializable {
 
     private void validateNumbers(TextField field, Label labelToShow) {
         //Verifica que los valores ingresados sean numeros o un .
-        boolean result = field.getText().chars().allMatch( (c) -> (c >= 48 && c <= 56) || c == 46 );
+        boolean result = field.getText().chars().allMatch( (c) -> (c >= 48 && c <= 57) || c == 46 );
         labelToShow.setVisible(!result);
 
     }

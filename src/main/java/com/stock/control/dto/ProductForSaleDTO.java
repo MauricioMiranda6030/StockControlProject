@@ -1,6 +1,10 @@
 package com.stock.control.dto;
 
+import com.stock.control.front.tools.CurrencyFormater;
 import lombok.Data;
+
+import java.text.NumberFormat;
+import java.util.Locale;
 
 @Data
 public class ProductForSaleDTO {
@@ -12,6 +16,8 @@ public class ProductForSaleDTO {
 
     @Override
     public String toString(){
-        return "Nombre: " + name + " \nPrecio: " + price + "$ \nStock Disponible: " + stock;
+        return "Nombre: " + name + " \n" +
+                "Precio: " + CurrencyFormater.getCurrency(price) + "\n" +
+                "Stock Disponible: " + stock;
     }
 }

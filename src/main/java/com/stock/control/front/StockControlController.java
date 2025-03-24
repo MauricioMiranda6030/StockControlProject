@@ -3,6 +3,7 @@ package com.stock.control.front;
 import com.stock.control.dto.ProductSaveDto;
 import com.stock.control.front.tools.ControlFXManager;
 import com.stock.control.front.tools.ControllerManager;
+import com.stock.control.front.tools.CurrencyFormater;
 import com.stock.control.front.tools.WindowsManager;
 import com.stock.control.service.IProductService;
 import javafx.application.Platform;
@@ -22,8 +23,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URL;
-import java.text.NumberFormat;
-import java.util.Locale;
 import java.util.ResourceBundle;
 
 @Component
@@ -131,12 +130,10 @@ public class StockControlController implements Initializable {
 
     private void formatPriceColumn() {
         price.setCellFactory(column -> new TableCell<>(){
-            private final NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(new Locale("es", "AR"));
-
             @Override
             protected void updateItem(Double price, boolean empty){
                 super.updateItem(price, empty);
-                setText(empty || price == null ? null : currencyFormatter.format(price));
+                setText(empty || price == null ? null : CurrencyFormater.getCurrency(price));
             }
         });
     }
