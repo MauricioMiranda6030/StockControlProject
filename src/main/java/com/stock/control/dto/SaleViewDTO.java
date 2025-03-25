@@ -2,6 +2,7 @@ package com.stock.control.dto;
 
 import com.stock.control.entity.Sale;
 import com.stock.control.entity.SaleDetails;
+import com.stock.control.front.tools.CurrencyFormater;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,7 +23,7 @@ public class SaleViewDTO {
     public SaleViewDTO(Sale sale, List<SaleDetails> saleDetails){
         this.id = sale.getId();
         this.dateOfSale = sale.getDateOfSale().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        this.finalPrice = NumberFormat.getCurrencyInstance(new Locale("es", "AR")).format(sale.getFinalPrice());
+        this.finalPrice = CurrencyFormater.getCurrency(sale.getFinalPrice());
         this.totalAmount = sale.getTotalAmount() + " Unidades";
 
         productsDetails = saleDetails.stream()
