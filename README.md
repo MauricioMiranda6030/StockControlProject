@@ -17,6 +17,7 @@ La aplicación nos permite guardar y editar productos con sus respectivos contro
 - ControlFX
 - Lombok
 - MapStruct
+- CSS
 
 ## Patrones de Diseño
 - Service Layer
@@ -42,3 +43,12 @@ Una vez clonado el proyecto deberemos hacer las siguientes configuraciones:
 Ir a Settings > Build, Execution, Deployment > Compiler > Annotation Processors > Annotations profile for StockControlProject > Marcamos la casilla de "Enable annotation processing" y seleccionar "Obtain processors from project classpath"
 
 4. Tener instalado JDK 17 como mínimo y ejecutar la aplicación.
+
+## Créditos a Imágenes Gratis Utilizadas
+arrow.png made by chehuna from flaticon.com/free-icons/back-arrow
+check.png made by hqrloveq from flaticon.com/free-icons/foursquare-check-in
+folder.png is made by Freepik www.flaticon.com/free-icons/folder
+form logo.png made by Flat icons from www.flaticon.com/free-icons/consent
+logo.png made by Freepik from flaticon.com/free-icons/product
+reset.png made by Maxim Basinski Premium from flaticon.com/free-icons/refresh
+search.png made by freepik from https://cdn-icons-png.freepik.com/512/5358/5358562.png
