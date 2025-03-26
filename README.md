@@ -1,6 +1,6 @@
 # Stock Control Project
 <p>
-Este proyecto se hizo con fines de uso reales y remunerado, a su vez sirve como ejemplo de mis conocimientos en Java y Backend con Spring. Tambien sirvio como desafio a aprender tecnologias nuevas como JavaFX, una BD embebida, SQLite y la creación de una Aplicación de Escritorio con Spring.
+Este proyecto se hizo con fines de uso reales y remunerado, a su vez sirve como ejemplo de mis conocimientos en Java y Backend con Spring. También sirvió como desafío a aprender tecnologías nuevas como JavaFX, una BD embebida, SQLite y la creación de una Aplicación de Escritorio con Spring.
 </p>
 
 ## Sobre la Aplicación
@@ -8,7 +8,7 @@ Este proyecto se hizo con fines de uso reales y remunerado, a su vez sirve como 
 La aplicación nos permite guardar y editar productos con sus respectivos controles y registrar Ventas utilizando los productos almacenados, actualizando el Stock con cada nueva venta e impidiendo vender productos sin stock o una cantidad mayor al disponible.
 </p>
 
-## Tenconologias Utilizadas
+## Tecnologías Utilizadas
 - JDK 17
 - JavaFX 21
 - Spring Data JPA
@@ -38,7 +38,7 @@ Una vez clonado el proyecto deberemos hacer las siguientes configuraciones:
 		"javafx-sdk-21.0.6/lib"
 		--add-modules
 		javafx.controls,javafx.fxml 
-3. Posible solucion a errores con MapStruct y Lombok con las ultimas versiones de Intellij IDEA (Suele desconfigurarse con cambios en el POM):
+3. Posible solución a errores con MapStruct y Lombok con las últimas versiones de Intellij IDEA (Suele desconfigurarse con cambios en el POM):
 Ir a Settings > Build, Execution, Deployment > Compiler > Annotation Processors > Annotations profile for StockControlProject > Marcamos la casilla de "Enable annotation processing" y seleccionar "Obtain processors from project classpath"
 
-4. Tener instalado JDK 17 como minimo y ejecutar la aplicación.
+4. Tener instalado JDK 17 como mínimo y ejecutar la aplicación.
