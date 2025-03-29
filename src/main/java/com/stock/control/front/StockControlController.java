@@ -72,6 +72,7 @@ public class StockControlController implements Initializable {
         setUpColumns();
         getProducts();
         Platform.runLater(() -> thisWindowStage = (Stage) stockControlAnchorPane.getScene().getWindow());
+        ControllerManager.setStockControlController(this);
         setMovementToTopBar();
     }
 
@@ -95,19 +96,18 @@ public class StockControlController implements Initializable {
     @FXML
     private void openFormProduct(ActionEvent event, String status){
 
-        if(status.equals("edit") && ControllerManager.getProductToEdit() == null)
+        if(isEditAndProductNull(status))
             ControlFXManager.buildNotification(
                     "Debe seleccionar un producto a editar",
                         "Edición de Producto")
             .showWarning();
-        else if (status.equals("edit") && ControllerManager.getFormProductController().getThisWindowStage().isShowing())
+        else if (isEditAndFormIsOpen(status))
             ControlFXManager.buildNotification(
                         "Debe cerrar el Formulario de Nuevo Producto para poder Editar",
                             "Edición de Producto")
             .showWarning();
         else{
                 ControllerManager.setFormProductStatus(status);
-                ControllerManager.setStockControlController(this);
                 try {
                     WindowsManager.openNewWindowAndKeepCurrent(
                             WindowsManager.PATH_PRODUCT_FORM,
@@ -117,6 +117,14 @@ public class StockControlController implements Initializable {
                     throw new RuntimeException(e);
                 }
         }
+    }
+
+    private static boolean isEditAndFormIsOpen(String status) {
+        return status.equals("edit") && ControllerManager.getFormProductController() != null && ControllerManager.getFormProductController().getThisWindowStage().isShowing();
+    }
+
+    private static boolean isEditAndProductNull(String status) {
+        return status.equals("edit") && ControllerManager.getProductToEdit() == null;
     }
 
     private void setUpColumns(){

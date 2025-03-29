@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -12,7 +13,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchorFormSale" prefHeight="761.0" prefWidth="815.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stock.control.front.FormSaleController">
+<AnchorPane fx:id="anchorFormSale" prefHeight="761.0" prefWidth="815.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stock.control.front.FormSaleController">
    <children>
       <Pane layoutY="23.0" prefHeight="90.0" prefWidth="815.0" style="-fx-background-color: #14e066;">
          <children>
@@ -35,18 +36,13 @@
                   <Font name="Verdana" size="20.0" />
                </font>
             </Label>
-            <Label fx:id="lblFinalPrice" layoutX="141.0" layoutY="475.0" styleClass="price-label" text="-">
-               <font>
-                  <Font name="Verdana" size="20.0" />
-               </font>
-            </Label>
             <Button fx:id="btnSave" layoutX="80.0" layoutY="534.0" mnemonicParsing="false" onAction="#saveSale" prefHeight="62.0" prefWidth="203.0" styleClass="ok-button" text="Guardar Venta" textFill="WHITE">
                <font>
                   <Font name="Verdana Bold" size="21.0" />
                </font>
             </Button>
             <Separator layoutX="21.0" layoutY="455.0" prefHeight="0.0" prefWidth="324.0" style="-fx-background-color: black;" />
-            <Label layoutX="23.0" layoutY="427.0" text="+ 21% de IVA">
+            <Label layoutX="22.0" layoutY="425.0" text="+">
                <font>
                   <Font name="Verdana" size="20.0" />
                </font>
@@ -85,6 +81,19 @@
                   </Label>
                </children>
             </Pane>
+            <TextField fx:id="txtPercentage" layoutX="39.0" layoutY="428.0" prefHeight="25.0" prefWidth="39.0" style="-fx-alignment: CENTER;">
+               <font>
+                  <Font name="Verdana Bold" size="12.0" />
+               </font></TextField>
+            <Label layoutX="83.0" layoutY="426.0" text="\% de Ganancia">
+               <font>
+                  <Font name="Verdana" size="20.0" />
+               </font>
+            </Label>
+            <TextField fx:id="txtFinalPrice" layoutX="146.0" layoutY="477.0" prefHeight="25.0" prefWidth="170.0">
+               <font>
+                  <Font name="Verdana Bold" size="12.0" />
+               </font></TextField>
          </children>
       </Pane>
       <Button fx:id="btnSearchProduct" layoutX="496.0" layoutY="124.0" mnemonicParsing="false" onAction="#openProductSearch" prefHeight="35.0" prefWidth="184.0" styleClass="add-button" text="Buscar Producto" textFill="WHITE">
