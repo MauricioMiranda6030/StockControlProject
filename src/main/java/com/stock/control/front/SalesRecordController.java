@@ -58,11 +58,14 @@ public class SalesRecordController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        Platform.runLater(() -> {
+            thisWindowStage = (Stage) salesAnchorPane.getScene().getWindow();
+            getSales();
+        });
         setOnActionEvents();
         ControllerManager.setSalesRecordController(this);
         setUpColumns();
-        getSales();
-        Platform.runLater(() -> thisWindowStage = (Stage) salesAnchorPane.getScene().getWindow());
+
         setMovementToTopBar();
     }
 
