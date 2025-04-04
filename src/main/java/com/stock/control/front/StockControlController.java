@@ -56,7 +56,7 @@ public class StockControlController implements Initializable {
     private Button btnAddProduct, btnEditProduct;
 
     @FXML
-    private ImageView btnGoBack;
+    private ImageView btnGoBack, btnPdf;
 
     @FXML
     private Pane topBar;
@@ -67,11 +67,14 @@ public class StockControlController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        Platform.runLater(() -> {
+            thisWindowStage = (Stage) stockControlAnchorPane.getScene().getWindow();
+            getProducts();
+        });
         setUpTxtSearch();
         setUpButtons();
         setUpColumns();
-        getProducts();
-        Platform.runLater(() -> thisWindowStage = (Stage) stockControlAnchorPane.getScene().getWindow());
+
         ControllerManager.setStockControlController(this);
         setMovementToTopBar();
     }
@@ -86,6 +89,7 @@ public class StockControlController implements Initializable {
         btnAddProduct.setOnAction(event -> openFormProduct(event, "save"));
         btnEditProduct.setOnAction(event -> openFormProduct(event, "edit"));
         btnGoBack.setOnMouseClicked(mouseEvent -> goBackToMainMenu());
+        btnPdf.setOnMouseClicked(mouseEvent -> createPdfReport());
     }
 
     @FXML
@@ -180,6 +184,15 @@ public class StockControlController implements Initializable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @FXML
+    private void createPdfReport() {
+        productService.createPdfReport();
+        ControlFXManager.buildNotification("/images/check.png",
+                "Reporte Creado Correctamente",
+                "Reporte")
+        .show();
     }
 
     private void setMovementToTopBar() {

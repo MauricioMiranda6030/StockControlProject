@@ -27,6 +27,11 @@
                   <Font name="Verdana" size="32.0" />
                </font>
             </Label>
+            <ImageView fx:id="btnPdf" fitHeight="41.0" fitWidth="47.0" layoutX="855.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true" styleClass="button">
+               <image>
+                  <Image url="@../../../../../images/pdf-icon.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
       <AnchorPane layoutX="13.0" layoutY="147.0" prefHeight="399.0" prefWidth="784.0" stylesheets="@styles.css">
