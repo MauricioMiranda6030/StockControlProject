@@ -10,6 +10,7 @@ import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.stock.control.dto.ProductSaveDto;
+import com.stock.control.front.tools.CurrencyFormater;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -70,14 +71,13 @@ public class PdfGenerator {
     }
 
     private static Table createTable() {
-        float[] columns = {50f, 200f, 300f, 100f, 100f}; //id, nombre, desc, precio y stock
+        float[] columns = {50f, 500f, 90f, 110f}; //id, nombre, desc, precio y stock
         return new Table(columns);
     }
 
     private static void setUpColumns(Table table) {
         table.addCell(new Cell().add("id").setBold().setBackgroundColor(Color.LIGHT_GRAY));
         table.addCell(new Cell().add("Nombre").setBold().setBackgroundColor(Color.LIGHT_GRAY));
-        table.addCell(new Cell().add("Descripción").setBold().setBackgroundColor(Color.LIGHT_GRAY));
         table.addCell(new Cell().add("Stock").setBold().setBackgroundColor(Color.LIGHT_GRAY));
         table.addCell(new Cell().add("Precio").setBold().setBackgroundColor(Color.LIGHT_GRAY));
     }
@@ -87,9 +87,8 @@ public class PdfGenerator {
                 p -> {
                     table.addCell(new Cell().add(String.valueOf(p.getId())));
                     table.addCell(new Cell().add(p.getName()));
-                    table.addCell(new Cell().add(p.getDescription()));
                     table.addCell(new Cell().add(String.valueOf(p.getStock())));
-                    table.addCell(new Cell().add(String.valueOf(p.getPrice())));
+                    table.addCell(new Cell().add(CurrencyFormater.getCurrency(p.getPrice())));
                 }
         );
     }

@@ -1,6 +1,7 @@
 package com.stock.control.mapper;
 
 import com.stock.control.dto.SaleDTO;
+import com.stock.control.dto.SaleViewDTO;
 import com.stock.control.entity.Sale;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -13,4 +14,6 @@ public interface ISaleMapper {
 
     @Mapping(target = "id", ignore = true)
     Sale saleDtoToSale(SaleDTO saleDto);
+
+    Sale saleViewDtoToSale(SaleViewDTO saleDto);
 }

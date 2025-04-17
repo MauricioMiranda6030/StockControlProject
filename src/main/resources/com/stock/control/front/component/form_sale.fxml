@@ -13,23 +13,23 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchorFormSale" prefHeight="761.0" prefWidth="815.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stock.control.front.FormSaleController">
+<AnchorPane fx:id="anchorFormSale" prefHeight="735.0" prefWidth="815.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stock.control.front.FormSaleController">
    <children>
-      <Pane layoutY="23.0" prefHeight="90.0" prefWidth="815.0" style="-fx-background-color: #14e066;">
+      <Pane layoutY="23.0" prefHeight="82.0" prefWidth="815.0" style="-fx-background-color: #14e066;">
          <children>
-            <Label layoutX="97.0" layoutY="28.0" prefHeight="43.0" prefWidth="264.0" text="Nueva Venta" textFill="WHITE">
+            <Label layoutX="86.0" layoutY="24.0" prefHeight="43.0" prefWidth="264.0" text="Nueva Venta" textFill="WHITE">
                <font>
                   <Font name="Verdana" size="34.0" />
                </font>
             </Label>
-            <ImageView fitHeight="73.0" fitWidth="69.0" layoutX="13.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="69.0" fitWidth="68.0" layoutX="11.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../../../images/form%20logo.png" />
                </image>
             </ImageView>
          </children>
       </Pane>
-      <Pane layoutY="113.0" prefHeight="647.0" prefWidth="360.0" styleClass="sale-pane">
+      <Pane layoutY="105.0" prefHeight="632.0" prefWidth="355.0" styleClass="sale-pane">
          <children>
             <Label layoutX="19.0" layoutY="474.0" text="Precio Final:">
                <font>
@@ -96,12 +96,12 @@
                </font></TextField>
          </children>
       </Pane>
-      <Button fx:id="btnSearchProduct" layoutX="496.0" layoutY="124.0" mnemonicParsing="false" onAction="#openProductSearch" prefHeight="35.0" prefWidth="184.0" styleClass="add-button" text="Buscar Producto" textFill="WHITE">
+      <Button fx:id="btnSearchProduct" layoutX="496.0" layoutY="115.0" mnemonicParsing="false" onAction="#openProductSearch" prefHeight="35.0" prefWidth="184.0" styleClass="add-button" text="Buscar Producto" textFill="WHITE">
          <font>
             <Font name="Verdana Bold" size="17.0" />
          </font>
       </Button>
-      <ListView fx:id="listProducts" layoutX="373.0" layoutY="173.0" prefHeight="576.0" prefWidth="427.0" />
+      <ListView fx:id="listProducts" layoutX="373.0" layoutY="161.0" prefHeight="564.0" prefWidth="427.0" />
       <Pane fx:id="topBar" layoutY="-4.0" prefHeight="35.0" prefWidth="815.0" style="-fx-background-color: #10b652;">
          <children>
             <HBox alignment="CENTER_RIGHT" layoutX="733.0" layoutY="2.0" prefHeight="33.0" prefWidth="79.0">

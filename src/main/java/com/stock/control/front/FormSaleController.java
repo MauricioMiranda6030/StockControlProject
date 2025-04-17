@@ -96,17 +96,23 @@ public class FormSaleController implements Initializable {
 
     private EventHandler<? super KeyEvent> setCleanFinalPrice() {
         return event -> {
-            String cleanedFinalPrice = txtFinalPrice.getText()
-                    .replaceAll(" ", "")
-                    .replaceAll("\\.", "")
-                    .replace("$", "")
-                    .replace(",", ".");
+            if(letterJustInput())
+                txtFinalPrice.setText(txtFinalPrice.getText().replaceAll("[a-zA-Z]",""));
+            else {
+                String cleanedFinalPrice = txtFinalPrice.getText()
+                        .replaceAll(" ", "")
+                        .replaceAll("\\.", "")
+                        .replace("$", "")
+                        .replace(",", ".");
 
-            if(!cleanedFinalPrice.isBlank())
-                saleDto.setFinalPrice(Double.parseDouble(cleanedFinalPrice));
-            System.out.println(cleanedFinalPrice);
-            System.out.println(saleDto.getFinalPrice());
+                if(!cleanedFinalPrice.isBlank())
+                    saleDto.setFinalPrice(Double.parseDouble(cleanedFinalPrice));
+            }
         };
+    }
+
+    private boolean letterJustInput() {
+        return txtFinalPrice.getText().matches(".*[a-zA-Z].*");
     }
 
     private void setUpPercentageField() {
@@ -340,11 +346,16 @@ public class FormSaleController implements Initializable {
 
     @FXML
     private void saveSale() {
-        if(saleDto.getProducts().isEmpty())
+        if(noProductsAdded())
             ControlFXManager.buildNotification(
                     "¡No se han agregado Productos a la Venta!"
                             ,"¡Advertencia!")
                     .showWarning();
+        else if(txtFinalPrice.getText().isBlank() || txtPercentage.getText().isBlank())
+            ControlFXManager.buildNotification(
+                    "¡Campos Vacios! Porfavor Llenar todos los Campos.",
+                    "Advertencia")
+            .showWarning();
         else {
             if(confirmDialog("¿Esta Seguro de los Productos Elegidos?")){
                 saveSaleDetailsAndUpdateStock();
@@ -363,6 +374,10 @@ public class FormSaleController implements Initializable {
 
             }
         }
+    }
+
+    private boolean noProductsAdded() {
+        return saleDto.getProducts().isEmpty();
     }
 
     private void saveSaleDetailsAndUpdateStock() {
@@ -386,7 +401,7 @@ public class FormSaleController implements Initializable {
 
     @FXML
     public void closeThisForm(){
-        if(!saleDto.getProducts().isEmpty()){
+        if(!noProductsAdded()){
             if(confirmDialog("¿Esta Seguro de Cancelar la Venta?")){
                 closeProductSearchIfExists();
                 WindowsManager.closeWindow(thisWindowStage);

@@ -1,20 +1,21 @@
 package com.stock.control.front;
 
 import com.stock.control.dto.SaleViewDTO;
+import com.stock.control.front.tools.ControlFXManager;
 import com.stock.control.front.tools.ControllerManager;
 import com.stock.control.front.tools.WindowsManager;
 import com.stock.control.service.ISaleService;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,9 @@ public class SalesRecordController implements Initializable {
 
     @FXML
     private TableColumn<SaleViewDTO, String> colProducts, colFinalPrice, colDate, colAmount;
+
+    @FXML
+    private TableColumn<SaleViewDTO, SaleViewDTO> colAction;
 
     @FXML
     private DatePicker datePicker;
@@ -80,6 +84,49 @@ public class SalesRecordController implements Initializable {
         colDate.setCellValueFactory(new PropertyValueFactory<SaleViewDTO, String>("dateOfSale"));
         colFinalPrice.setCellValueFactory(new PropertyValueFactory<SaleViewDTO, String>("finalPrice"));
         colProducts.setCellValueFactory(new PropertyValueFactory<SaleViewDTO, String>("productsDetails"));
+        setUpColAction();
+    }
+
+    private void setUpColAction() {
+        colAction.setCellFactory(s -> new TableCell<>(){
+            private final Button btnDelete = new Button("ELIMINAR");
+            {
+                btnDelete.getStyleClass().add("delete-button");
+                btnDelete.setOnAction(deleteSale());
+            }
+
+            private EventHandler<ActionEvent> deleteSale() {
+                return event -> {
+                    SaleViewDTO saleToDelete = getTableView().getItems().get(getIndex());
+                    if (isDialogOk()) {
+                        try{
+                            saleService.deleteSaleById(saleToDelete.getId());
+                            getSales();
+                        }catch (IllegalStateException e){
+                            ControlFXManager.buildNotification(
+                                            "¡El Producto Tiene Ventas Relacionadas!",
+                                            "No se puede eliminar el Producto")
+                                    .showError();
+                        }
+                    }
+                };
+            }
+
+            private boolean isDialogOk() {
+                return WindowsManager.confirmDialog(salesAnchorPane, "¿Esta Seguro de Eliminar la Venta?").get() == ButtonType.OK;
+            }
+
+            @Override
+            protected void updateItem(SaleViewDTO item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    HBox hBox = new HBox(btnDelete);
+                    setGraphic(hBox);
+                }
+            }
+        });
     }
 
     public void getSales(){
