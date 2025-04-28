@@ -10,12 +10,15 @@ import com.stock.control.service.IProductService;
 import com.stock.control.service.ISaleDetailsService;
 import com.stock.control.service.ISaleService;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -35,8 +38,6 @@ import java.util.ResourceBundle;
 @Component
 public class FormSaleController implements Initializable {
 
-    private final Double IVA = 1.21;
-
     private final Logger log = LoggerFactory.getLogger(FormSaleController.class);
 
     @Autowired
@@ -52,10 +53,13 @@ public class FormSaleController implements Initializable {
     private AnchorPane anchorFormSale;
 
     @FXML
-    private Label lblAmount, lblDate, lblFinalPrice, lblPrice;
+    private Label lblAmount, lblDate, lblPrice;
 
     @FXML
     private ListView<ProductForSaleDTO> listProducts;
+
+    @FXML
+    private TextField txtFinalPrice, txtPercentage;
 
     @FXML
     private Pane topBar;
@@ -74,10 +78,62 @@ public class FormSaleController implements Initializable {
         Platform.runLater(() -> thisWindowStage = (Stage) anchorFormSale.getScene().getWindow());
         initializeNewSale();
         ControllerManager.setFormSaleController(this);
+        setUpTextFields();
         createListCell();
         setUpLabels();
         moveWindowToLeft();
         setMovementToTopBar();
+    }
+
+    private void setUpTextFields(){
+        setUpFinalPriceLabel();
+        setUpPercentageField();
+    }
+
+    private void setUpFinalPriceLabel(){
+        txtFinalPrice.setOnKeyReleased(setCleanFinalPrice());
+    }
+
+    private EventHandler<? super KeyEvent> setCleanFinalPrice() {
+        return event -> {
+            if(letterJustInput())
+                txtFinalPrice.setText(txtFinalPrice.getText().replaceAll("[a-zA-Z]",""));
+            else {
+                String cleanedFinalPrice = txtFinalPrice.getText()
+                        .replaceAll(" ", "")
+                        .replaceAll("\\.", "")
+                        .replace("$", "")
+                        .replace(",", ".");
+
+                if(!cleanedFinalPrice.isBlank())
+                    saleDto.setFinalPrice(Double.parseDouble(cleanedFinalPrice));
+            }
+        };
+    }
+
+    private boolean letterJustInput() {
+        return txtFinalPrice.getText().matches(".*[a-zA-Z].*");
+    }
+
+    private void setUpPercentageField() {
+        txtPercentage.textProperty().addListener(managePercentageField());
+    }
+
+    private ChangeListener<String> managePercentageField() {
+        return (obs, oldValue, newValue) -> {
+            if (!newValue.isBlank()) {
+                if (!isNumber(newValue))
+                    txtPercentage.setText(oldValue);
+                else {
+                    updateSale();
+                    updateLabels();
+                }
+            }
+        };
+    }
+
+    private boolean isNumber(String value){
+        return value.matches("\\d*");
     }
 
     private void moveWindowToLeft() {
@@ -177,7 +233,8 @@ public class FormSaleController implements Initializable {
     private void setUpLabels() {
         lblAmount.setText("-");
         lblPrice.setText("-");
-        lblFinalPrice.setText("-");
+        txtFinalPrice.setText("-");
+        txtPercentage.setText("30");
         lblDate.setText(LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
     }
 
@@ -212,7 +269,7 @@ public class FormSaleController implements Initializable {
     private void updateLabels() {
         lblAmount.setText(String.valueOf(saleDto.getTotalAmount()));
         lblPrice.setText(getCurrencyFormat(firstPrice));
-        lblFinalPrice.setText(getCurrencyFormat(saleDto.getFinalPrice()));
+        txtFinalPrice.setText(getCurrencyFormat(saleDto.getFinalPrice()).replace(" ", ""));
     }
 
     private String getCurrencyFormat(Double price) {
@@ -261,9 +318,13 @@ public class FormSaleController implements Initializable {
     }
 
     private Double calculateFinalPrice() {
-        return calculatePrice() * IVA;
+        return calculatePrice() * calculateCustomPercentage();
     }
-    
+
+    private Double calculateCustomPercentage() {
+        return 1 + Double.parseDouble(txtPercentage.getText()) / 100;
+    }
+
     /*
     * Adds y Saves
     */
@@ -285,11 +346,16 @@ public class FormSaleController implements Initializable {
 
     @FXML
     private void saveSale() {
-        if(saleDto.getProducts().isEmpty())
+        if(noProductsAdded())
             ControlFXManager.buildNotification(
                     "¡No se han agregado Productos a la Venta!"
                             ,"¡Advertencia!")
                     .showWarning();
+        else if(txtFinalPrice.getText().isBlank() || txtPercentage.getText().isBlank())
+            ControlFXManager.buildNotification(
+                    "¡Campos Vacios! Porfavor Llenar todos los Campos.",
+                    "Advertencia")
+            .showWarning();
         else {
             if(confirmDialog("¿Esta Seguro de los Productos Elegidos?")){
                 saveSaleDetailsAndUpdateStock();
@@ -308,6 +374,10 @@ public class FormSaleController implements Initializable {
 
             }
         }
+    }
+
+    private boolean noProductsAdded() {
+        return saleDto.getProducts().isEmpty();
     }
 
     private void saveSaleDetailsAndUpdateStock() {
@@ -331,7 +401,7 @@ public class FormSaleController implements Initializable {
 
     @FXML
     public void closeThisForm(){
-        if(!saleDto.getProducts().isEmpty()){
+        if(!noProductsAdded()){
             if(confirmDialog("¿Esta Seguro de Cancelar la Venta?")){
                 closeProductSearchIfExists();
                 WindowsManager.closeWindow(thisWindowStage);

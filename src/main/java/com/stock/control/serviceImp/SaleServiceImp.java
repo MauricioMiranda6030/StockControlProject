@@ -3,6 +3,7 @@ package com.stock.control.serviceImp;
 import com.stock.control.dto.SaleDTO;
 import com.stock.control.dto.SaleViewDTO;
 import com.stock.control.entity.Sale;
+import com.stock.control.entity.SaleDetails;
 import com.stock.control.mapper.ISaleMapper;
 import com.stock.control.repository.ISaleRepository;
 import com.stock.control.service.ISaleDetailsService;
@@ -50,6 +51,15 @@ public class SaleServiceImp implements ISaleService {
     @Override
     public List<SaleViewDTO> getSalesByDateDto(LocalDate date) {
         return toSalesViewDto(getSalesByDate(date));
+    }
+
+    @Override
+    @Transactional
+    public void deleteSaleById(Long id) {
+        Sale sale = saleRepository.findById(id).orElseThrow();
+
+        saleDetailsService.deleteAllBySale(sale);
+        saleRepository.deleteById(sale.getId());
     }
 
     private List<SaleViewDTO> toSalesViewDto(List<Sale> sales){

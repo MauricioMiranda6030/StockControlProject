@@ -21,4 +21,8 @@ public interface IProductService {
     List<ProductForSaleDTO> getProductsDtoByName(String name);
 
     void updateStock(List<ProductForSaleDTO> productsDto);
+
+    void createPdfReport();
+
+    void deleteProduct(ProductSaveDto productDto);
 }
