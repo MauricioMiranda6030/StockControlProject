@@ -1,12 +1,17 @@
+
 # Stock Control Project
-<p>
+
 Este proyecto se hizo con fines de uso reales y remunerado, a su vez sirve como ejemplo de mis conocimientos en Java y Backend con Spring. También sirvió como desafío a aprender tecnologías nuevas como JavaFX, una BD embebida, SQLite y la creación de una Aplicación de Escritorio con Spring.
-</p>
+
 
 ## Sobre la Aplicación
-<p>
-La aplicación nos permite guardar y editar productos con sus respectivos controles y registrar Ventas utilizando los productos almacenados, actualizando el Stock con cada nueva venta e impidiendo vender productos sin stock o una cantidad mayor al disponible.
-</p>
+
+La aplicación nos permite guardar editar y eliminar productos con sus respectivos controles y registrar Ventas utilizando los productos almacenados, actualizando el Stock con cada nueva venta e impidiendo vender productos sin stock o una cantidad mayor al disponible. También nos permite hacer un reporte en PDF del Stock.
+ 
+**Tiempo de desarrollo aproximado**
+
+1-2 Meses
+
 
 ## Tecnologías Utilizadas
 - JDK 17
@@ -45,12 +50,19 @@ Ir a Settings > Build, Execution, Deployment > Compiler > Annotation Processors 
 4. Tener instalado JDK 17 como mínimo y ejecutar la aplicación.
 
 ## Créditos a Imágenes Gratis Utilizadas
-<p>
-arrow.png made by chehuna from flaticon.com/free-icons/back-arrow
-check.png made by hqrloveq from flaticon.com/free-icons/foursquare-check-in
-folder.png is made by Freepik www.flaticon.com/free-icons/folder
-form logo.png made by Flat icons from www.flaticon.com/free-icons/consent
-logo.png made by Freepik from flaticon.com/free-icons/product
-reset.png made by Maxim Basinski Premium from flaticon.com/free-icons/refresh
-search.png made by freepik from https://cdn-icons-png.freepik.com/512/5358/5358562.png
-</p>
+
+* arrow.png made by chehuna from flaticon.com/free-icons/back-arrow
+* check.png made by hqrloveq from flaticon.com/free-icons/foursquare-check-in
+* folder.png made by Freepik flaticon.com/free-icons/folder
+* form logo.png made by Flat icons from flaticon.com/free-icons/consent
+* logo.png made by Freepik from flaticon.com/free-icons/product
+* reset.png made by Maxim Basinski Premium from flaticon.com/free-icons/refresh
+* search.png made by freepik from cdn-icons-png.freepik.com/512/5358/5358562.png
+
+## Mejoras/Refactorizaciones
+
+* Consulta de ventas SQL más ligera, actualmente utiliza EAGER, lo cual trae datos de más.
+* Opciones de edición en ventas.
+* Responsive, actualmente las ventanas tienen un tamaño fijo.
+* Optimizar el código con respuestas más rápidas.
+* Customizar más los mensajes para estar en sintonía con el estilo de la app.
