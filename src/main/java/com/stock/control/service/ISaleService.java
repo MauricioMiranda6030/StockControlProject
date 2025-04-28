@@ -18,4 +18,6 @@ public interface ISaleService {
     List<SaleViewDTO> getAllSalesViewDto();
 
     List<SaleViewDTO> getSalesByDateDto(LocalDate value);
+
+    void deleteSaleById(Long id);
 }

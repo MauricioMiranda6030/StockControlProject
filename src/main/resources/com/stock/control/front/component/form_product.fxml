@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="productAnchorPane" prefHeight="680.0" prefWidth="600.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stock.control.front.FormProductController">
+<AnchorPane fx:id="productAnchorPane" prefHeight="680.0" prefWidth="600.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stock.control.front.FormProductController">
    <children>
       <AnchorPane layoutY="17.0" prefHeight="105.0" prefWidth="600.0" style="-fx-background-color: #14e066;">
          <children>
@@ -125,7 +125,7 @@
             <Font name="Verdana Bold" size="12.0" />
          </font>
       </Label>
-      <Button fx:id="btnEdit" layoutX="419.0" layoutY="575.0" mnemonicParsing="false" onAction="#editProduct" prefHeight="44.0" prefWidth="118.0" style="-fx-background-color: #14e066;" text="Editar" textFill="WHITE" visible="false">
+      <Button fx:id="btnEdit" layoutX="419.0" layoutY="589.0" mnemonicParsing="false" onAction="#editProduct" prefHeight="44.0" prefWidth="118.0" style="-fx-background-color: #14e066;" text="Editar" textFill="WHITE" visible="false">
          <font>
             <Font name="Verdana Bold" size="19.0" />
          </font>

@@ -1,6 +1,7 @@
 package com.stock.control.service;
 
 import com.stock.control.dto.SaleDTO;
+import com.stock.control.entity.Product;
 import com.stock.control.entity.Sale;
 import com.stock.control.entity.SaleDetails;
 
@@ -11,4 +12,12 @@ public interface ISaleDetailsService {
     void saveSaleDetails(SaleDTO saleDto, Long id);
 
     List<SaleDetails> getSaleDetailsBySaleId(Long id);
+
+    void deleteSaleDetailsById(Long id);
+
+    boolean productExists(Product product);
+
+    SaleDetails findBySale(Sale sale);
+
+    void deleteAllBySale(Sale sale);
 }

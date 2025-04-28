@@ -10,12 +10,14 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +50,9 @@ public class StockControlController implements Initializable {
 
     @FXML
     private TableColumn<ProductSaveDto, Long> id;
+
+    @FXML
+    private TableColumn<ProductSaveDto, ProductSaveDto> colAction;
 
     @FXML
     private TextField txtSearch;
@@ -138,6 +143,7 @@ public class StockControlController implements Initializable {
         stock.setCellValueFactory(new PropertyValueFactory<>("stock"));
         description.setCellValueFactory(new PropertyValueFactory<>("description"));
         formatPriceColumn();
+        setUpColAction();
     }
 
     private void formatPriceColumn() {
@@ -146,6 +152,53 @@ public class StockControlController implements Initializable {
             protected void updateItem(Double price, boolean empty){
                 super.updateItem(price, empty);
                 setText(empty || price == null ? null : CurrencyFormater.getCurrency(price));
+            }
+        });
+    }
+
+    private void setUpColAction() {
+        colAction.setCellFactory(p -> new TableCell<>(){
+            private final Button btnDelete = new Button("ELIMINAR");
+            {
+                btnDelete.getStyleClass().add("delete-button");
+                btnDelete.setOnAction(deleteProduct());
+            }
+
+            private EventHandler<ActionEvent> deleteProduct() {
+                return event -> {
+                    ProductSaveDto productToDelete = getTableView().getItems().get(getIndex());
+                    if (isDialogOk(productToDelete)) {
+                        try{
+                            productService.deleteProduct(productToDelete);
+                            getProducts();
+                            ControlFXManager.buildNotification(
+                                    "/images/check.png"
+                            , "Producto Eliminado Correctamente",
+                                            "Producto Eliminado")
+                            .show();
+                        }catch (IllegalStateException e){
+                            ControlFXManager.buildNotification(
+                                    "¡El Producto Tiene Ventas Relacionadas!",
+                                        "No se puede eliminar el Producto")
+                            .showError();
+                        }
+                    }
+                };
+            }
+
+            private boolean isDialogOk(ProductSaveDto productToDelete) {
+                return WindowsManager.confirmDialog(stockControlAnchorPane, "¿Esta Seguro de Eliminar el Producto " + productToDelete.getName() + "?").get() == ButtonType.OK;
+            }
+
+            @Override
+            protected void updateItem(ProductSaveDto item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    HBox hBox = new HBox(btnDelete);
+                    setGraphic(hBox);
+                }
             }
         });
     }
