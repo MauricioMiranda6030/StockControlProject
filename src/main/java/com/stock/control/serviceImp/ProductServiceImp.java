@@ -39,6 +39,12 @@ public class ProductServiceImp implements IProductService {
     }
 
     @Override
+    @Transactional
+    public void addStock(ProductForSaleDTO productDto) {
+        productRepository.updateStock(productDto.getId(), productDto.getStock());
+    }
+
+    @Override
     public void createPdfReport() {
         PdfGenerator.createPdf(this.getAllProductsDto());
     }
