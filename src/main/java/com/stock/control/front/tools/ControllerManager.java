@@ -36,4 +36,7 @@ public class ControllerManager {
 
     @Getter @Setter
     private static ProductSaveDto productToEdit;
+
+    @Getter @Setter
+    private static Product productToAddStock = new Product();
 }
