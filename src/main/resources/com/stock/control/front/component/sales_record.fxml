@@ -43,8 +43,8 @@
             <TableColumn fx:id="colAction" prefWidth="115.0" text="Acción" />
         </columns>
       </TableView>
-      <DatePicker fx:id="datePicker" layoutX="166.0" layoutY="171.0" prefHeight="25.0" prefWidth="121.0" />
-      <Label layoutX="113.0" layoutY="175.0" prefHeight="18.0" prefWidth="48.0" text="Desde">
+      <DatePicker fx:id="dateFrom" layoutX="113.0" layoutY="172.0" prefHeight="25.0" prefWidth="111.0" />
+      <Label layoutX="65.0" layoutY="177.0" prefHeight="18.0" prefWidth="48.0" text="Desde">
          <font>
             <Font name="Verdana Bold" size="12.0" />
          </font>
@@ -75,7 +75,7 @@
             </HBox>
          </children>
       </Pane>
-      <Button layoutX="302.0" layoutY="171.0" mnemonicParsing="false" onAction="#resetDatePicker" style="-fx-background-color: lightgrey;" text="Limpiar" textFill="WHITE">
+      <Button layoutX="398.0" layoutY="172.0" mnemonicParsing="false" onAction="#resetDatePicker" style="-fx-background-color: lightgrey;" text="Limpiar" textFill="WHITE">
          <font>
             <Font name="Verdana Bold" size="12.0" />
          </font>
@@ -100,5 +100,11 @@
             <Font name="Verdana Bold" size="14.0" />
          </font>
       </Label>
+      <Label layoutX="230.0" layoutY="176.0" prefHeight="18.0" prefWidth="41.0" text="Hasta">
+         <font>
+            <Font name="Verdana Bold" size="12.0" />
+         </font>
+      </Label>
+      <DatePicker fx:id="dateTo" layoutX="277.0" layoutY="173.0" prefHeight="25.0" prefWidth="111.0" />
    </children>
 </AnchorPane>

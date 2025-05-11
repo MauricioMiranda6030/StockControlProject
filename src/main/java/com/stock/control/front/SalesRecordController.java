@@ -50,7 +50,7 @@ public class SalesRecordController implements Initializable {
     private TableColumn<SaleViewDTO, SaleViewDTO> colAction;
 
     @FXML
-    private DatePicker datePicker;
+    private DatePicker dateFrom, dateTo;
 
     @FXML
     private Button btnSaveSale;
@@ -79,7 +79,8 @@ public class SalesRecordController implements Initializable {
 
     private void setOnActionEvents() {
         btnSaveSale.setOnAction(event -> openSaleForm());
-        datePicker.setOnAction(event -> filterSaleByDate());
+        dateFrom.setOnAction(event -> filterSaleByDate());
+        dateTo.setOnAction(event -> filterSaleByDate());
     }
 
     private void setUpColumns(){
@@ -142,8 +143,8 @@ public class SalesRecordController implements Initializable {
 
     private void filterSaleByDate() {
         resetTable();
-        if(datePicker.getValue() != null){
-            List<SaleViewDTO> salesDto = saleService.getSalesByDateDto(datePicker.getValue());
+        if(dateFrom.getValue() != null){
+            List<SaleViewDTO> salesDto = saleService.getSalesByDateDto(dateFrom.getValue(), dateTo.getValue());
             setSalesViewInTable(salesDto);
             tableSales.getSortOrder().add(colDate);
             updateLabels();
@@ -211,7 +212,8 @@ public class SalesRecordController implements Initializable {
 
     @FXML
     private void resetDatePicker(){
-        datePicker.setValue(null);
+        dateFrom.setValue(null);
+        dateTo.setValue(null);
     }
 
     private void setMovementToTopBar() {

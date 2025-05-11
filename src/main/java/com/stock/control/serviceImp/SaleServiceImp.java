@@ -39,8 +39,10 @@ public class SaleServiceImp implements ISaleService {
     }
 
     @Override
-    public List<Sale> getSalesByDate(LocalDate date) {
-        return saleRepository.findAllByDateOfSaleBetween(date, LocalDate.now());
+    public List<Sale> getSalesByDate(LocalDate dateFrom, LocalDate dateTo) {
+        if(dateTo == null)
+            dateTo = LocalDate.now();
+        return saleRepository.findAllByDateOfSaleBetween(dateFrom, dateTo);
     }
 
     @Override
@@ -49,8 +51,8 @@ public class SaleServiceImp implements ISaleService {
     }
 
     @Override
-    public List<SaleViewDTO> getSalesByDateDto(LocalDate date) {
-        return toSalesViewDto(getSalesByDate(date));
+    public List<SaleViewDTO> getSalesByDateDto(LocalDate dateFrom, LocalDate dateTo) {
+        return toSalesViewDto(getSalesByDate(dateFrom, dateTo));
     }
 
     @Override
