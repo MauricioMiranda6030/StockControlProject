@@ -3,8 +3,10 @@ package com.stock.control.front;
 import com.stock.control.dto.SaleViewDTO;
 import com.stock.control.front.tools.ControlFXManager;
 import com.stock.control.front.tools.ControllerManager;
+import com.stock.control.front.tools.CurrencyFormater;
 import com.stock.control.front.tools.WindowsManager;
 import com.stock.control.service.ISaleService;
+import com.stock.control.front.tools.CleanFormat;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -56,6 +58,9 @@ public class SalesRecordController implements Initializable {
     @FXML
     private Pane topBar;
 
+    @FXML
+    private Label lblSummation, lblAmountOfSales;
+
     private Stage thisWindowStage;
 
     private Double x = 0d, y = 0d;
@@ -69,7 +74,6 @@ public class SalesRecordController implements Initializable {
         setOnActionEvents();
         ControllerManager.setSalesRecordController(this);
         setUpColumns();
-
         setMovementToTopBar();
     }
 
@@ -133,6 +137,7 @@ public class SalesRecordController implements Initializable {
         resetTable();
         List<SaleViewDTO> salesDto = saleService.getAllSalesViewDto();
         setSalesViewInTable(salesDto);
+        updateLabels();
     }
 
     private void filterSaleByDate() {
@@ -141,6 +146,7 @@ public class SalesRecordController implements Initializable {
             List<SaleViewDTO> salesDto = saleService.getSalesByDateDto(datePicker.getValue());
             setSalesViewInTable(salesDto);
             tableSales.getSortOrder().add(colDate);
+            updateLabels();
         }else
             getSales();
     }
@@ -159,6 +165,29 @@ public class SalesRecordController implements Initializable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void updateLabels(){
+        updateAmountLabel();
+        updateSummation();
+    }
+
+    private void updateAmountLabel(){
+        lblAmountOfSales.setText(getAmountOfSales().toString());
+    }
+
+    private Integer getAmountOfSales(){
+        return tableSales.getItems().size();
+    }
+
+    private void updateSummation(){
+        lblSummation.setText(CurrencyFormater.getCurrency(calculateSummation()));
+    }
+
+    private Double calculateSummation(){
+        return tableSales.getItems().stream().mapToDouble(
+                s -> Double.parseDouble(CleanFormat.cleanPrice(s.getFinalPrice())))
+                .sum();
     }
 
     private void resetTable(){
