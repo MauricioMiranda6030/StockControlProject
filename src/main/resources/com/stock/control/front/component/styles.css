@@ -35,7 +35,7 @@
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-scale-x: 0.75;
-    -fx-scale-y: 0.75;
+    -fx-scale-y: 0.70;
     -fx-font-size: 18;
     -fx-background-radius: 20;
 }
@@ -43,7 +43,7 @@
 .add-stock:hover{
     -fx-background-color: #fcba03;
     -fx-scale-x: 0.85;
-    -fx-scale-y: 0.85;
+    -fx-scale-y: 0.80;
 }
 
 .ok-button{

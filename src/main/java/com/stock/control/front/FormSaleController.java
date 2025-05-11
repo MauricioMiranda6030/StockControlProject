@@ -9,6 +9,7 @@ import com.stock.control.front.tools.WindowsManager;
 import com.stock.control.service.IProductService;
 import com.stock.control.service.ISaleDetailsService;
 import com.stock.control.service.ISaleService;
+import com.stock.control.front.tools.CleanFormat;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
@@ -99,12 +100,7 @@ public class FormSaleController implements Initializable {
             if(letterJustInput())
                 txtFinalPrice.setText(txtFinalPrice.getText().replaceAll("[a-zA-Z]",""));
             else {
-                String cleanedFinalPrice = txtFinalPrice.getText()
-                        .replaceAll(" ", "")
-                        .replaceAll("\\.", "")
-                        .replace("$", "")
-                        .replace(",", ".");
-
+                String cleanedFinalPrice = CleanFormat.cleanPrice(txtFinalPrice.getText());
                 if(!cleanedFinalPrice.isBlank())
                     saleDto.setFinalPrice(Double.parseDouble(cleanedFinalPrice));
             }
