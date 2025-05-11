@@ -13,11 +13,11 @@ public interface ISaleService {
 
     List<Sale> getAllSales();
 
-    List<Sale> getSalesByDate(LocalDate date);
+    List<Sale> getSalesByDate(LocalDate dateFrom, LocalDate dateTo);
 
     List<SaleViewDTO> getAllSalesViewDto();
 
-    List<SaleViewDTO> getSalesByDateDto(LocalDate value);
+    List<SaleViewDTO> getSalesByDateDto(LocalDate dateFrom, LocalDate dateTo);
 
     void deleteSaleById(Long id);
 }
