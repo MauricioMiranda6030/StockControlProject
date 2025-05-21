@@ -100,12 +100,12 @@
             <Font name="Verdana Bold" size="18.0" />
          </font>
       </Button>
-      <Label layoutX="123.0" layoutY="157.0" text="*" textFill="RED">
+      <Label layoutX="119.0" layoutY="157.0" text="*" textFill="RED">
          <font>
             <Font name="Verdana" size="16.0" />
          </font>
       </Label>
-      <Label layoutX="104.0" layoutY="216.0" text="*" textFill="RED">
+      <Label layoutX="103.0" layoutY="216.0" text="*" textFill="RED">
          <font>
             <Font name="Verdana" size="16.0" />
          </font>

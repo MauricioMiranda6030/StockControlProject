@@ -9,4 +9,5 @@ public class SaleDTO {
     private Double finalPrice;
     private int totalAmount;
     private List<ProductForSaleDTO> products;
+    private String docId, client;
 }

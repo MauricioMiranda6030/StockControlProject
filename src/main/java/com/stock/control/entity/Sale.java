@@ -25,6 +25,12 @@ public class Sale {
     @Column(nullable = false)
     private Double finalPrice;
 
+    @Column(length = 8)
+    private String docId;
+
+    @Column(name = "client", length = 120, nullable = false)
+    private String clientFullName;
+
     @Column(nullable = false)
     private LocalDate dateOfSale;
 }

@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class SaleViewDTO {
 
     private Long id;
-    private String productsDetails, totalAmount, finalPrice, dateOfSale;
+    private String productsDetails, totalAmount, finalPrice, dateOfSale, client, code;
 
 
     public SaleViewDTO(Sale sale, List<SaleDetails> saleDetails){
@@ -25,9 +25,11 @@ public class SaleViewDTO {
         this.dateOfSale = sale.getDateOfSale().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         this.finalPrice = CurrencyFormater.getCurrency(sale.getFinalPrice());
         this.totalAmount = sale.getTotalAmount() + " Unidades";
+        this.client = sale.getClientFullName();
+        this.code = sale.getDocId();
 
         productsDetails = saleDetails.stream()
-                .map(sd -> "(" + sd.getQuantity() + ") " + sd.getProduct().getName())
+                .map(sd -> "(" + sd.getQuantity() + ") " + sd.getProduct().getName() + " vendido a " + CurrencyFormater.getCurrency(sd.getSoldPrice()))
                 .collect(Collectors.joining(",\n"));
     }
 }
