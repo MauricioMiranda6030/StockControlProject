@@ -10,6 +10,7 @@ import com.stock.control.service.ISaleDetailsService;
 import com.stock.control.service.ISaleService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -39,20 +40,17 @@ public class SaleServiceImp implements ISaleService {
     }
 
     @Override
-    public List<Sale> getSalesByDate(LocalDate dateFrom, LocalDate dateTo) {
-        if(dateTo == null)
-            dateTo = LocalDate.now();
-        return saleRepository.findAllByDateOfSaleBetween(dateFrom, dateTo);
-    }
-
-    @Override
     public List<SaleViewDTO> getAllSalesViewDto() {
         return toSalesViewDto(getAllSales());
     }
 
     @Override
-    public List<SaleViewDTO> getSalesByDateDto(LocalDate dateFrom, LocalDate dateTo) {
-        return toSalesViewDto(getSalesByDate(dateFrom, dateTo));
+    public List<SaleViewDTO> findSalesByDatesAndCode(LocalDate dateFrom, LocalDate dateTo, String code) {
+
+        code = code.isBlank() ? null : "%" + code + "%";
+        dateTo = dateTo == null ? LocalDate.now() : dateTo;
+
+        return toSalesViewDto(saleRepository.findAllByDateAndCode(dateFrom, dateTo, code));
     }
 
     @Override

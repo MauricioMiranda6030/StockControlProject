@@ -13,6 +13,7 @@ public interface ISaleMapper {
     ISaleMapper INSTANCE = Mappers.getMapper(ISaleMapper.class);
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "clientFullName", source = "client")
     Sale saleDtoToSale(SaleDTO saleDto);
 
     Sale saleViewDtoToSale(SaleViewDTO saleDto);

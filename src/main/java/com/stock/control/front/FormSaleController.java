@@ -60,7 +60,7 @@ public class FormSaleController implements Initializable {
     private ListView<ProductForSaleDTO> listProducts;
 
     @FXML
-    private TextField txtFinalPrice, txtPercentage;
+    private TextField txtFinalPrice, txtPercentage, txtCode, txtClient;
 
     @FXML
     private Pane topBar;
@@ -73,6 +73,8 @@ public class FormSaleController implements Initializable {
     private Stage thisWindowStage;
 
     private Double x = 0d, y = 0d;
+
+    private static final String defaultPercentage = "30";
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -89,6 +91,31 @@ public class FormSaleController implements Initializable {
     private void setUpTextFields(){
         setUpFinalPriceLabel();
         setUpPercentageField();
+        setUpCodeField();
+        setUpClientField();
+    }
+
+    private void setUpClientField() {
+        txtClient.textProperty().addListener(
+                (obs, oldValue, newValue) -> {
+                    saleDto.setClient(txtClient.getText());
+                }
+        );
+    }
+
+    private void setUpCodeField() {
+        txtCode.textProperty().addListener(
+                (obs, oldValue, newValue) -> {
+                    if(!txtCode.getText().isBlank()){
+                        try{
+                            Integer.parseInt(txtCode.getText());
+                            saleDto.setDocId(txtCode.getText());
+                        }catch (Exception e){
+                            txtCode.setText(oldValue);
+                        }
+                    }
+                }
+        );
     }
 
     private void setUpFinalPriceLabel(){
@@ -230,7 +257,7 @@ public class FormSaleController implements Initializable {
         lblAmount.setText("-");
         lblPrice.setText("-");
         txtFinalPrice.setText("-");
-        txtPercentage.setText("30");
+        txtPercentage.setText(defaultPercentage);
         lblDate.setText(LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
     }
 
@@ -347,13 +374,15 @@ public class FormSaleController implements Initializable {
                     "¡No se han agregado Productos a la Venta!"
                             ,"¡Advertencia!")
                     .showWarning();
-        else if(txtFinalPrice.getText().isBlank() || txtPercentage.getText().isBlank())
+        else if(isAnyFieldEmpty())
             ControlFXManager.buildNotification(
                     "¡Campos Vacios! Porfavor Llenar todos los Campos.",
                     "Advertencia")
             .showWarning();
         else {
             if(confirmDialog("¿Esta Seguro de los Productos Elegidos?")){
+                if(saleDto.getDocId() == null)
+                    saleDto.setDocId("0000");
                 saveSaleDetailsAndUpdateStock();
                 log.info("Sale just saved with a total amount of ({}) products and a final price of {}",
                         saleDto.getProducts().size(),
@@ -367,9 +396,14 @@ public class FormSaleController implements Initializable {
                                 "Venta Guardada Correctamente",
                                 "Venta")
                         .show();
-
             }
         }
+    }
+
+    private boolean isAnyFieldEmpty() {
+        return txtFinalPrice.getText().isBlank() ||
+                txtPercentage.getText().isBlank() ||
+                txtClient.getText().isBlank();
     }
 
     private boolean noProductsAdded() {

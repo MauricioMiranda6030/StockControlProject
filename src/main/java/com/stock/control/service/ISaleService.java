@@ -13,11 +13,9 @@ public interface ISaleService {
 
     List<Sale> getAllSales();
 
-    List<Sale> getSalesByDate(LocalDate dateFrom, LocalDate dateTo);
-
     List<SaleViewDTO> getAllSalesViewDto();
 
-    List<SaleViewDTO> getSalesByDateDto(LocalDate dateFrom, LocalDate dateTo);
+    List<SaleViewDTO> findSalesByDatesAndCode(LocalDate dateFrom, LocalDate dateTo, String code);
 
     void deleteSaleById(Long id);
 }

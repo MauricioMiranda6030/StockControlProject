@@ -30,6 +30,9 @@ public class SaleDetails {
     private Sale sale;
 
     @Column(nullable = false)
+    private Double soldPrice;
+
+    @Column(nullable = false)
     private int quantity;
 
 }

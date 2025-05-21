@@ -1,12 +1,8 @@
 package com.stock.control.front;
 
 import com.stock.control.dto.SaleViewDTO;
-import com.stock.control.front.tools.ControlFXManager;
-import com.stock.control.front.tools.ControllerManager;
-import com.stock.control.front.tools.CurrencyFormater;
-import com.stock.control.front.tools.WindowsManager;
+import com.stock.control.front.tools.*;
 import com.stock.control.service.ISaleService;
-import com.stock.control.front.tools.CleanFormat;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,6 +21,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -44,7 +41,7 @@ public class SalesRecordController implements Initializable {
     private TableColumn<SaleViewDTO, Long> colId;
 
     @FXML
-    private TableColumn<SaleViewDTO, String> colProducts, colFinalPrice, colDate, colAmount;
+    private TableColumn<SaleViewDTO, String> colProducts, colFinalPrice, colDate, colAmount, colClient, colCode;
 
     @FXML
     private TableColumn<SaleViewDTO, SaleViewDTO> colAction;
@@ -61,6 +58,9 @@ public class SalesRecordController implements Initializable {
     @FXML
     private Label lblSummation, lblAmountOfSales;
 
+    @FXML
+    private TextField txtCodeFilter;
+
     private Stage thisWindowStage;
 
     private Double x = 0d, y = 0d;
@@ -71,16 +71,25 @@ public class SalesRecordController implements Initializable {
             thisWindowStage = (Stage) salesAnchorPane.getScene().getWindow();
             getSales();
         });
-        setOnActionEvents();
+        setOnActionEventsAndFilter();
         ControllerManager.setSalesRecordController(this);
         setUpColumns();
         setMovementToTopBar();
     }
 
-    private void setOnActionEvents() {
+    private void setOnActionEventsAndFilter() {
         btnSaveSale.setOnAction(event -> openSaleForm());
-        dateFrom.setOnAction(event -> filterSaleByDate());
-        dateTo.setOnAction(event -> filterSaleByDate());
+        dateFrom.setOnAction(event -> filterSalesByDatesAndCode());
+        dateTo.setOnAction(event -> filterSalesByDatesAndCode());
+        txtCodeFilter.textProperty().addListener( (obs, oldValue, newValue) -> filterSalesByDatesAndCode());
+    }
+
+    private void filterSalesByDatesAndCode() {
+        resetTable();
+        LocalDate df = dateFrom.getValue(), dt = dateTo.getValue();
+        String code = txtCodeFilter.getText();
+        setSalesViewInTable(saleService.findSalesByDatesAndCode(df, dt, code));
+        updateLabels();
     }
 
     private void setUpColumns(){
@@ -89,6 +98,8 @@ public class SalesRecordController implements Initializable {
         colDate.setCellValueFactory(new PropertyValueFactory<SaleViewDTO, String>("dateOfSale"));
         colFinalPrice.setCellValueFactory(new PropertyValueFactory<SaleViewDTO, String>("finalPrice"));
         colProducts.setCellValueFactory(new PropertyValueFactory<SaleViewDTO, String>("productsDetails"));
+        colClient.setCellValueFactory(new PropertyValueFactory<SaleViewDTO, String>("client"));
+        colCode.setCellValueFactory(new PropertyValueFactory<SaleViewDTO, String>("code"));
         setUpColAction();
     }
 
@@ -139,17 +150,6 @@ public class SalesRecordController implements Initializable {
         List<SaleViewDTO> salesDto = saleService.getAllSalesViewDto();
         setSalesViewInTable(salesDto);
         updateLabels();
-    }
-
-    private void filterSaleByDate() {
-        resetTable();
-        if(dateFrom.getValue() != null){
-            List<SaleViewDTO> salesDto = saleService.getSalesByDateDto(dateFrom.getValue(), dateTo.getValue());
-            setSalesViewInTable(salesDto);
-            tableSales.getSortOrder().add(colDate);
-            updateLabels();
-        }else
-            getSales();
     }
 
     private void setSalesViewInTable(List<SaleViewDTO> sales){
