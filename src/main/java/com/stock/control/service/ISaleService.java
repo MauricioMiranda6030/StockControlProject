@@ -18,4 +18,6 @@ public interface ISaleService {
     List<SaleViewDTO> findSalesByDatesAndCode(LocalDate dateFrom, LocalDate dateTo, String code);
 
     void deleteSaleById(Long id);
+
+    void createPdfReport(List<SaleViewDTO> sales);
 }

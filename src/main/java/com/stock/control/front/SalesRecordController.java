@@ -216,6 +216,11 @@ public class SalesRecordController implements Initializable {
         dateTo.setValue(null);
     }
 
+    @FXML
+    private void tableToPdf(){
+        saleService.createPdfReport(tableSales.getItems());
+    }
+
     private void setMovementToTopBar() {
         topBar.setOnMousePressed(event -> {
             x = event.getScreenX() - thisWindowStage.getX();

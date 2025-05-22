@@ -28,12 +28,14 @@
                   <Image url="@../../../../../images/folder.png" />
                </image>
             </ImageView>
+            <Button fx:id="btnReport" layoutX="1071.0" layoutY="40.0" mnemonicParsing="false" onAction="#tableToPdf" text="Registro a PDF" />
          </children>
       </Pane>
       <Button fx:id="btnSaveSale" layoutX="1044.0" layoutY="164.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="121.0" styleClass="add-button" text="Nueva venta" textFill="WHITE">
          <font>
             <Font name="Verdana Bold" size="13.0" />
-         </font></Button>
+         </font>
+      </Button>
       <TableView fx:id="tableSales" layoutX="14.0" layoutY="204.0" prefHeight="398.0" prefWidth="1155.0" styleClass="table-sales">
         <columns>
           <TableColumn fx:id="colId" prefWidth="26.0" text="id" />
