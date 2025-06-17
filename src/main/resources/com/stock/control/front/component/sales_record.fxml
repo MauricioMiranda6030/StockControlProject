@@ -28,12 +28,22 @@
                   <Image url="@../../../../../images/folder.png" />
                </image>
             </ImageView>
+            <Button fx:id="btnReport" layoutX="1049.0" layoutY="41.0" mnemonicParsing="false" onAction="#tableToPdf" styleClass="cancel-button" text="Registro a PDF" textFill="WHITE">
+               <font>
+                  <Font name="Verdana Bold" size="12.0" />
+               </font></Button>
+            <Button fx:id="btnClientReport" layoutX="888.0" layoutY="41.0" mnemonicParsing="false" onAction="#openDatePickerWindow" prefHeight="23.0" prefWidth="151.0" styleClass="cancel-button" text="Reporte de Clientes" textFill="WHITE">
+               <font>
+                  <Font name="Verdana Bold" size="12.0" />
+               </font>
+            </Button>
          </children>
       </Pane>
       <Button fx:id="btnSaveSale" layoutX="1044.0" layoutY="164.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="121.0" styleClass="add-button" text="Nueva venta" textFill="WHITE">
          <font>
             <Font name="Verdana Bold" size="13.0" />
-         </font></Button>
+         </font>
+      </Button>
       <TableView fx:id="tableSales" layoutX="14.0" layoutY="204.0" prefHeight="398.0" prefWidth="1155.0" styleClass="table-sales">
         <columns>
           <TableColumn fx:id="colId" prefWidth="26.0" text="id" />
@@ -109,11 +119,11 @@
          </font>
       </Label>
       <DatePicker fx:id="dateTo" layoutX="277.0" layoutY="173.0" prefHeight="25.0" prefWidth="111.0" />
-      <Label layoutX="614.0" layoutY="175.0" prefHeight="18.0" prefWidth="59.0" text="Código:">
+      <Label layoutX="603.0" layoutY="175.0" prefHeight="18.0" prefWidth="59.0" text="Código:">
          <font>
             <Font name="Verdana Bold" size="12.0" />
          </font>
       </Label>
-      <TextField fx:id="txtCodeFilter" layoutX="667.0" layoutY="172.0" prefHeight="25.0" prefWidth="80.0" />
+      <TextField fx:id="txtCodeFilter" layoutX="661.0" layoutY="173.0" prefHeight="25.0" prefWidth="80.0" />
    </children>
 </AnchorPane>

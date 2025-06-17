@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="datePickerAnchorPane" prefHeight="201.0" prefWidth="478.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stock.control.front.DateSelectController">
+   <children>
+      <Pane fx:id="topBar" prefHeight="37.0" prefWidth="479.0" style="-fx-background-color: #1bb4e0;">
+         <children>
+            <Label layoutX="14.0" layoutY="6.0" text="Selección de Fecha" textFill="WHITE">
+               <font>
+                  <Font name="Verdana Bold" size="20.0" />
+               </font>
+            </Label>
+            <HBox alignment="CENTER_RIGHT" layoutX="432.0" layoutY="1.0" prefHeight="33.0" prefWidth="37.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#closeThisForm" prefHeight="23.0" prefWidth="33.0" styleClass="close-button" text="X" textFill="WHITE">
+                     <font>
+                        <Font name="Verdana Bold" size="12.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </Pane>
+      <Label layoutX="14.0" layoutY="69.0" text="Fecha Desde: ">
+         <font>
+            <Font name="Verdana Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="14.0" layoutY="131.0" text="Fecha Hasta: ">
+         <font>
+            <Font name="Verdana Bold" size="18.0" />
+         </font>
+      </Label>
+      <DatePicker fx:id="datePickerFrom" layoutX="169.0" layoutY="64.0" prefHeight="33.0" prefWidth="202.0" />
+      <DatePicker fx:id="datePickerTo" layoutX="169.0" layoutY="126.0" prefHeight="33.0" prefWidth="202.0" />
+      <Button fx:id="clientReport" layoutX="410.0" layoutY="166.0" mnemonicParsing="false" onAction="#clientReport" prefHeight="25.0" prefWidth="59.0" styleClass="add-button" text="OK" textFill="WHITE">
+         <font>
+            <Font name="Verdana Bold" size="12.0" />
+         </font></Button>
+   </children>
+</AnchorPane>

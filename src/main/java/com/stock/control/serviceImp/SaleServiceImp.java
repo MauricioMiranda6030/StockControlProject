@@ -1,6 +1,7 @@
 package com.stock.control.serviceImp;
 
 import com.stock.control.dto.SaleDTO;
+import com.stock.control.dto.SaleReportDTO;
 import com.stock.control.dto.SaleViewDTO;
 import com.stock.control.entity.Sale;
 import com.stock.control.entity.SaleDetails;
@@ -8,6 +9,7 @@ import com.stock.control.mapper.ISaleMapper;
 import com.stock.control.repository.ISaleRepository;
 import com.stock.control.service.ISaleDetailsService;
 import com.stock.control.service.ISaleService;
+import com.stock.control.util.PdfGenerator;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
@@ -60,6 +62,21 @@ public class SaleServiceImp implements ISaleService {
 
         saleDetailsService.deleteAllBySale(sale);
         saleRepository.deleteById(sale.getId());
+    }
+
+    @Override
+    public void createPdfReport(List<SaleViewDTO> sales, String totalAmount, String totalCurrency) {
+        PdfGenerator.createSalesReportPdf(sales, totalAmount, totalCurrency);
+    }
+
+    @Override
+    public void createClientReport(LocalDate dateFrom, LocalDate dateTo) {
+        List<SaleReportDTO> sales = getClientReport(dateFrom, dateTo);
+        PdfGenerator.createClientReportPdf(sales, dateFrom, dateTo);
+    }
+
+    private List<SaleReportDTO> getClientReport(LocalDate dateFrom, LocalDate dateTo){
+        return saleRepository.getClientReport(dateFrom, dateTo);
     }
 
     private List<SaleViewDTO> toSalesViewDto(List<Sale> sales){
