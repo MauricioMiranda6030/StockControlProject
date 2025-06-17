@@ -16,6 +16,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -218,7 +220,26 @@ public class SalesRecordController implements Initializable {
 
     @FXML
     private void tableToPdf(){
-        saleService.createPdfReport(tableSales.getItems());
+        saleService.createPdfReport(
+                tableSales.getItems(),
+                lblAmountOfSales.getText(),
+                lblSummation.getText()
+        );
+
+        ControlFXManager.buildNotification(
+                "/images/check.png",
+                "Tabla a PDF Creado",
+                "Reporte Creado"
+                ).show();
+    }
+
+    @FXML
+    private void openDatePickerWindow(){
+        try {
+            WindowsManager.openNewWindowAndKeepCurrent(WindowsManager.PATH_DATE_PICKER, "Selección de Fecha");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void setMovementToTopBar() {

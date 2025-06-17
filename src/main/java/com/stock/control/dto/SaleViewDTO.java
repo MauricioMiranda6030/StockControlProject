@@ -29,7 +29,7 @@ public class SaleViewDTO {
         this.code = sale.getDocId();
 
         productsDetails = saleDetails.stream()
-                .map(sd -> "(" + sd.getQuantity() + ") " + sd.getProduct().getName() + " vendido a " + CurrencyFormater.getCurrency(sd.getSoldPrice()))
+                .map(sd -> "(" + sd.getQuantity() + ") " + sd.getProduct().getName() + " vendido/s a " + CurrencyFormater.getCurrency(sd.getSoldPrice()))
                 .collect(Collectors.joining(",\n"));
     }
 }

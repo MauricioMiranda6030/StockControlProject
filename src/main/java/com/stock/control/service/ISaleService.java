@@ -19,5 +19,7 @@ public interface ISaleService {
 
     void deleteSaleById(Long id);
 
-    void createPdfReport(List<SaleViewDTO> sales);
+    void createPdfReport(List<SaleViewDTO> sales, String totalAmount, String totalCurrency);
+
+    void createClientReport(LocalDate dateFrom, LocalDate dateTo);
 }

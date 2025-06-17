@@ -1,6 +1,7 @@
 package com.stock.control.serviceImp;
 
 import com.stock.control.dto.SaleDTO;
+import com.stock.control.dto.SaleReportDTO;
 import com.stock.control.dto.SaleViewDTO;
 import com.stock.control.entity.Sale;
 import com.stock.control.entity.SaleDetails;
@@ -64,8 +65,18 @@ public class SaleServiceImp implements ISaleService {
     }
 
     @Override
-    public void createPdfReport(List<SaleViewDTO> sales) {
-        PdfGenerator.createSalesReportPdf(sales);
+    public void createPdfReport(List<SaleViewDTO> sales, String totalAmount, String totalCurrency) {
+        PdfGenerator.createSalesReportPdf(sales, totalAmount, totalCurrency);
+    }
+
+    @Override
+    public void createClientReport(LocalDate dateFrom, LocalDate dateTo) {
+        List<SaleReportDTO> sales = getClientReport(dateFrom, dateTo);
+        PdfGenerator.createClientReportPdf(sales, dateFrom, dateTo);
+    }
+
+    private List<SaleReportDTO> getClientReport(LocalDate dateFrom, LocalDate dateTo){
+        return saleRepository.getClientReport(dateFrom, dateTo);
     }
 
     private List<SaleViewDTO> toSalesViewDto(List<Sale> sales){
