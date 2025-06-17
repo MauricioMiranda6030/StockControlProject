@@ -258,6 +258,8 @@ public class FormSaleController implements Initializable {
         lblPrice.setText("-");
         txtFinalPrice.setText("-");
         txtPercentage.setText(defaultPercentage);
+        txtCode.clear();
+        txtClient.clear();
         lblDate.setText(LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
     }
 

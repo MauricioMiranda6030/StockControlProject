@@ -12,7 +12,7 @@
    <children>
       <Pane fx:id="topBar" prefHeight="37.0" prefWidth="479.0" style="-fx-background-color: #1bb4e0;">
          <children>
-            <Label layoutX="14.0" layoutY="6.0" text="Selección de Fecha" textFill="WHITE">
+            <Label layoutX="14.0" layoutY="6.0" text="Selección de Fechas" textFill="WHITE">
                <font>
                   <Font name="Verdana Bold" size="20.0" />
                </font>
