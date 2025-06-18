@@ -47,12 +47,12 @@ public class SaleServiceImp implements ISaleService {
     }
 
     @Override
-    public List<SaleViewDTO> findSalesByDatesAndCode(LocalDate dateFrom, LocalDate dateTo, String code) {
+    public List<SaleViewDTO> findSalesByDatesCodeAndExclude(LocalDate dateFrom, LocalDate dateTo, String code, boolean exclude) {
 
         code = code.isBlank() ? null : "%" + code + "%";
         dateTo = dateTo == null ? LocalDate.now() : dateTo;
 
-        return toSalesViewDto(saleRepository.findAllByDateAndCode(dateFrom, dateTo, code));
+        return toSalesViewDto(saleRepository.findAllByDateCodeAndExclude(dateFrom, dateTo, code, exclude));
     }
 
     @Override
@@ -70,13 +70,13 @@ public class SaleServiceImp implements ISaleService {
     }
 
     @Override
-    public void createClientReport(LocalDate dateFrom, LocalDate dateTo) {
-        List<SaleReportDTO> sales = getClientReport(dateFrom, dateTo);
+    public void createClientReport(LocalDate dateFrom, LocalDate dateTo, boolean exclude) {
+        List<SaleReportDTO> sales = getClientReport(dateFrom, dateTo, exclude);
         PdfGenerator.createClientReportPdf(sales, dateFrom, dateTo);
     }
 
-    private List<SaleReportDTO> getClientReport(LocalDate dateFrom, LocalDate dateTo){
-        return saleRepository.getClientReport(dateFrom, dateTo);
+    private List<SaleReportDTO> getClientReport(LocalDate dateFrom, LocalDate dateTo, boolean exclude){
+        return saleRepository.getClientReport(dateFrom, dateTo, exclude);
     }
 
     private List<SaleViewDTO> toSalesViewDto(List<Sale> sales){

@@ -7,6 +7,7 @@ import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -26,6 +27,9 @@ public class DateSelectController implements Initializable {
 
     @FXML
     private AnchorPane datePickerAnchorPane;
+
+    @FXML
+    private CheckBox chkExclude;
 
     @Getter
     private Stage thisWindowStage;
@@ -53,7 +57,7 @@ public class DateSelectController implements Initializable {
                     ).showWarning();
         }
         else{
-            saleService.createClientReport(datePickerFrom.getValue(), datePickerTo.getValue());
+            saleService.createClientReport(datePickerFrom.getValue(), datePickerTo.getValue(), chkExclude.isSelected());
             ControlFXManager.buildNotification(
                     "/images/check.png",
                     "Reporte creado Exitosamente",

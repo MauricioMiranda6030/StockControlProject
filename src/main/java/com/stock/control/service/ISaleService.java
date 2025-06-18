@@ -15,11 +15,11 @@ public interface ISaleService {
 
     List<SaleViewDTO> getAllSalesViewDto();
 
-    List<SaleViewDTO> findSalesByDatesAndCode(LocalDate dateFrom, LocalDate dateTo, String code);
+    List<SaleViewDTO> findSalesByDatesCodeAndExclude(LocalDate dateFrom, LocalDate dateTo, String code, boolean exclude);
 
     void deleteSaleById(Long id);
 
     void createPdfReport(List<SaleViewDTO> sales, String totalAmount, String totalCurrency);
 
-    void createClientReport(LocalDate dateFrom, LocalDate dateTo);
+    void createClientReport(LocalDate dateFrom, LocalDate dateTo, boolean exclude);
 }
