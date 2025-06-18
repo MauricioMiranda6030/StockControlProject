@@ -16,8 +16,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -63,6 +61,9 @@ public class SalesRecordController implements Initializable {
     @FXML
     private TextField txtCodeFilter;
 
+    @FXML
+    private CheckBox chkExclude;
+
     private Stage thisWindowStage;
 
     private Double x = 0d, y = 0d;
@@ -81,16 +82,18 @@ public class SalesRecordController implements Initializable {
 
     private void setOnActionEventsAndFilter() {
         btnSaveSale.setOnAction(event -> openSaleForm());
-        dateFrom.setOnAction(event -> filterSalesByDatesAndCode());
-        dateTo.setOnAction(event -> filterSalesByDatesAndCode());
-        txtCodeFilter.textProperty().addListener( (obs, oldValue, newValue) -> filterSalesByDatesAndCode());
+        dateFrom.setOnAction(event -> filterSalesByDatesCodeAndExclude());
+        dateTo.setOnAction(event -> filterSalesByDatesCodeAndExclude());
+        txtCodeFilter.textProperty().addListener( (obs, oldValue, newValue) -> filterSalesByDatesCodeAndExclude());
+        chkExclude.setOnAction(event -> filterSalesByDatesCodeAndExclude());
     }
 
-    private void filterSalesByDatesAndCode() {
+    private void filterSalesByDatesCodeAndExclude() {
         resetTable();
         LocalDate df = dateFrom.getValue(), dt = dateTo.getValue();
         String code = txtCodeFilter.getText();
-        setSalesViewInTable(saleService.findSalesByDatesAndCode(df, dt, code));
+        Boolean exclude = chkExclude.isSelected();
+        setSalesViewInTable(saleService.findSalesByDatesCodeAndExclude(df, dt, code, exclude));
         updateLabels();
     }
 
