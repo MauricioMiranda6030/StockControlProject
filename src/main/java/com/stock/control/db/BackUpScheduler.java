@@ -47,7 +47,7 @@ public class BackUpScheduler {
         Long deadLine = System.currentTimeMillis() - (days * 24 * 60 * 60 * 1000L); //Dias a milisegundos
 
         for(File file : folder.listFiles()){
-            if (file.lastModified() < deadLine){
+            if (file.lastModified() < deadLine){ // elimina los backups que tengan 5 dias de antiguedad
                 file.delete();
                 log.info("Old back up deleted");
             }
