@@ -1,5 +1,6 @@
 package com.stock.control.front;
 
+import com.stock.control.dto.ProductForSaleDTO;
 import com.stock.control.dto.ProductSaveDto;
 import com.stock.control.front.tools.ControlFXManager;
 import com.stock.control.front.tools.ControllerManager;
@@ -7,6 +8,7 @@ import com.stock.control.front.tools.CurrencyFormater;
 import com.stock.control.front.tools.WindowsManager;
 import com.stock.control.service.IProductService;
 import javafx.application.Platform;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,9 +18,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -43,7 +43,7 @@ public class StockControlController implements Initializable {
     private TableColumn<ProductSaveDto, String> description, name;
 
     @FXML
-    private TableColumn<ProductSaveDto, Integer> stock;
+    private TableColumn<ProductSaveDto, ProductSaveDto> stock;
 
     @FXML
     private TableColumn<ProductSaveDto, Double> price;
@@ -140,10 +140,57 @@ public class StockControlController implements Initializable {
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
         id.setCellValueFactory(new PropertyValueFactory<>("id"));
         price.setCellValueFactory(new PropertyValueFactory<>("price"));
-        stock.setCellValueFactory(new PropertyValueFactory<>("stock"));
         description.setCellValueFactory(new PropertyValueFactory<>("description"));
         formatPriceColumn();
+        setUpColStock();
         setUpColAction();
+    }
+
+    private void setUpColStock() {
+        stock.setCellValueFactory(p -> new ReadOnlyObjectWrapper<ProductSaveDto>(p.getValue()));
+
+        stock.setCellFactory(col -> new TableCell<ProductSaveDto, ProductSaveDto>() {
+            private final HBox hbox = new HBox(20);
+            private final Label label = new Label();
+            private final Button addButton = new Button("+");
+
+            {
+                addButton.getStyleClass().add("add-stock");
+                setUpAddButton();
+                buildHBox();
+            }
+
+            private void buildHBox() {
+                Region spacer = new Region();
+                HBox.setHgrow(spacer, Priority.ALWAYS);
+                hbox.getChildren().addAll(label, spacer, addButton);
+            }
+
+            private void setUpAddButton() {
+                addButton.setOnAction(e -> {
+                    ProductSaveDto productSelected = getTableView().getItems().get(getIndex());
+                    ControllerManager.getProductToAddStock().setStock(productSelected.getStock());
+                    ControllerManager.getProductToAddStock().setId(productSelected.getId());
+
+                    try {
+                        WindowsManager.openNewWindowAndKeepCurrent(WindowsManager.PATH_ADD_STOCK, "Agregar Stock");
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                });
+            }
+
+            @Override
+            protected void updateItem(ProductSaveDto product, boolean empty) {
+                super.updateItem(product, empty);
+                if (empty || product == null) {
+                    setGraphic(null);
+                } else {
+                    label.setText(String.valueOf(product.getStock()));
+                    setGraphic(hbox);
+                }
+            }
+        });
     }
 
     private void formatPriceColumn() {
@@ -267,6 +314,5 @@ public class StockControlController implements Initializable {
             WindowsManager.closeWindow(ControllerManager.getFormProductController().getThisWindowStage());
         WindowsManager.closeWindow(thisWindowStage);
         goBackToMainMenu();
-
     }
 }

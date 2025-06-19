@@ -13,11 +13,7 @@ public interface ISaleDetailsService {
 
     List<SaleDetails> getSaleDetailsBySaleId(Long id);
 
-    void deleteSaleDetailsById(Long id);
-
     boolean productExists(Product product);
-
-    SaleDetails findBySale(Sale sale);
 
     void deleteAllBySale(Sale sale);
 }

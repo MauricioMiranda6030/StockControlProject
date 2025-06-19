@@ -13,9 +13,9 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="stockControlAnchorPane" prefHeight="713.0" prefWidth="1037.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stock.control.front.StockControlController">
+<AnchorPane fx:id="stockControlAnchorPane" prefHeight="713.0" prefWidth="1088.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stock.control.front.StockControlController">
    <children>
-      <AnchorPane id="panelTitulo" layoutY="36.0" prefHeight="105.0" prefWidth="1037.0" style="-fx-background-color: orange;">
+      <AnchorPane id="panelTitulo" layoutY="36.0" prefHeight="105.0" prefWidth="1088.0" style="-fx-background-color: orange;">
          <children>
             <ImageView fitHeight="85.0" fitWidth="87.0" layoutX="14.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -27,7 +27,7 @@
                   <Font name="Verdana" size="32.0" />
                </font>
             </Label>
-            <ImageView fx:id="btnPdf" fitHeight="41.0" fitWidth="47.0" layoutX="979.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true" styleClass="button">
+            <ImageView fx:id="btnPdf" fitHeight="41.0" fitWidth="47.0" layoutX="1037.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true" styleClass="button">
                <image>
                   <Image url="@../../../../../images/pdf-icon.png" />
                </image>
@@ -40,22 +40,22 @@
                <font>
                   <Font name="Verdana" size="12.0" />
                </font></TextField>
-            <TableView fx:id="tableProducts" layoutY="55.0" onMouseClicked="#setPerson" prefHeight="500.0" prefWidth="1009.0">
+            <TableView fx:id="tableProducts" layoutY="55.0" onMouseClicked="#setPerson" prefHeight="500.0" prefWidth="1060.0">
               <columns>
                 <TableColumn fx:id="id" editable="false" prefWidth="27.0" text="id" />
                 <TableColumn fx:id="name" editable="false" prefWidth="188.0" text="Nombre" />
                   <TableColumn fx:id="description" editable="false" prefWidth="506.0" text="Descripción" />
                   <TableColumn fx:id="price" editable="false" minWidth="0.0" prefWidth="107.0" text="Precio" />
-                  <TableColumn fx:id="stock" prefWidth="73.0" text="Stock" />
-                  <TableColumn fx:id="colAction" prefWidth="114.0" text="Acción" />
+                  <TableColumn fx:id="stock" prefWidth="115.0" text="Stock" />
+                  <TableColumn fx:id="colAction" prefWidth="116.0" text="Acción" />
               </columns>
             </TableView>
-            <Button fx:id="btnAddProduct" layoutX="921.0" layoutY="15.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="85.0" styleClass="add-button" text="AGREGAR" textFill="WHITE">
+            <Button fx:id="btnAddProduct" layoutX="972.0" layoutY="15.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="85.0" styleClass="add-button" text="AGREGAR" textFill="WHITE">
                <font>
                   <Font name="Verdana Bold" size="12.0" />
                </font>
             </Button>
-            <Button fx:id="btnEditProduct" layoutX="829.0" layoutY="15.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="85.0" styleClass="edit-button" text="EDITAR" textFill="WHITE">
+            <Button fx:id="btnEditProduct" layoutX="877.0" layoutY="15.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="85.0" styleClass="edit-button" text="EDITAR" textFill="WHITE">
                <font>
                   <Font name="Verdana Bold" size="12.0" />
                </font>
@@ -67,9 +67,9 @@
             </ImageView>
          </children>
       </AnchorPane>
-      <Pane fx:id="topBar" prefHeight="37.0" prefWidth="1037.0" style="-fx-background-color: #f49f00;">
+      <Pane fx:id="topBar" prefHeight="37.0" prefWidth="1088.0" style="-fx-background-color: #f49f00;">
          <children>
-            <HBox alignment="CENTER_RIGHT" layoutX="949.0" layoutY="2.0" prefHeight="33.0" prefWidth="80.0">
+            <HBox alignment="CENTER_RIGHT" layoutX="1000.0" layoutY="2.0" prefHeight="33.0" prefWidth="80.0">
                <children>
                   <Button mnemonicParsing="false" onAction="#minWindow" prefHeight="23.0" prefWidth="33.0" styleClass="min-button" text="_" textFill="WHITE">
                      <font>

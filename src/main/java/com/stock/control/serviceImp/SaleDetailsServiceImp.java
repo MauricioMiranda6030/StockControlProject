@@ -31,6 +31,7 @@ public class SaleDetailsServiceImp implements ISaleDetailsService{
                             SaleDetails saleDetails = new SaleDetails();
                             saleDetails.setSale(sale);
                             saleDetails.setProduct(IProductMapper.INSTANCE.productDtoToProduct(product));
+                            saleDetails.setSoldPrice(product.getPrice());
                             saleDetails.setQuantity(product.getAmountToSell());
 
                             saleDetailsRepository.save(saleDetails);
@@ -44,18 +45,8 @@ public class SaleDetailsServiceImp implements ISaleDetailsService{
     }
 
     @Override
-    public void deleteSaleDetailsById(Long id) {
-        saleDetailsRepository.deleteById(id);
-    }
-
-    @Override
     public boolean productExists(Product product) {
         return saleDetailsRepository.existsByProduct(product);
-    }
-
-    @Override
-    public SaleDetails findBySale(Sale sale) {
-        return saleDetailsRepository.findBySale(sale);
     }
 
     @Override

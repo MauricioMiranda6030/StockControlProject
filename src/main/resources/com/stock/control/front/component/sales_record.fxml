@@ -2,10 +2,12 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -13,9 +15,9 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="salesAnchorPane" prefHeight="615.0" prefWidth="1075.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stock.control.front.SalesRecordController">
+<AnchorPane fx:id="salesAnchorPane" prefHeight="654.0" prefWidth="1179.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stock.control.front.SalesRecordController">
    <children>
-      <Pane layoutY="36.0" prefHeight="105.0" prefWidth="1075.0" style="-fx-background-color: orange;">
+      <Pane layoutY="36.0" prefHeight="105.0" prefWidth="1179.0" style="-fx-background-color: orange;">
          <children>
             <Label layoutX="94.0" layoutY="35.0" prefHeight="40.0" prefWidth="346.0" text="Registro de Ventas" textFill="WHITE">
                <font>
@@ -27,36 +29,48 @@
                   <Image url="@../../../../../images/folder.png" />
                </image>
             </ImageView>
+            <Button fx:id="btnReport" layoutX="1049.0" layoutY="41.0" mnemonicParsing="false" onAction="#tableToPdf" styleClass="cancel-button" text="Registro a PDF" textFill="WHITE">
+               <font>
+                  <Font name="Verdana Bold" size="12.0" />
+               </font></Button>
+            <Button fx:id="btnClientReport" layoutX="888.0" layoutY="41.0" mnemonicParsing="false" onAction="#openDatePickerWindow" prefHeight="23.0" prefWidth="151.0" styleClass="cancel-button" text="Reporte de Clientes" textFill="WHITE">
+               <font>
+                  <Font name="Verdana Bold" size="12.0" />
+               </font>
+            </Button>
          </children>
       </Pane>
-      <Button fx:id="btnSaveSale" layoutX="939.0" layoutY="167.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="121.0" styleClass="add-button" text="Nueva venta" textFill="WHITE">
+      <Button fx:id="btnSaveSale" layoutX="1044.0" layoutY="164.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="121.0" styleClass="add-button" text="Nueva venta" textFill="WHITE">
          <font>
             <Font name="Verdana Bold" size="13.0" />
-         </font></Button>
-      <TableView fx:id="tableSales" layoutX="14.0" layoutY="204.0" prefHeight="398.0" prefWidth="1048.0" styleClass="table-sales">
+         </font>
+      </Button>
+      <TableView fx:id="tableSales" layoutX="14.0" layoutY="204.0" prefHeight="398.0" prefWidth="1155.0" styleClass="table-sales">
         <columns>
           <TableColumn fx:id="colId" prefWidth="26.0" text="id" />
           <TableColumn fx:id="colDate" prefWidth="99.0" styleClass="col-date" text="Fecha" />
-            <TableColumn fx:id="colProducts" prefWidth="514.0" text="Productos" />
-            <TableColumn fx:id="colAmount" minWidth="0.0" prefWidth="159.0" styleClass="col-total" text="Cantidad Total" />
-            <TableColumn fx:id="colFinalPrice" prefWidth="134.0" styleClass="col-price" text="Precio Final" />
-            <TableColumn fx:id="colAction" prefWidth="115.0" text="Acción" />
+            <TableColumn fx:id="colProducts" prefWidth="368.0" text="Productos" />
+            <TableColumn fx:id="colClient" prefWidth="156.0" text="Vendido A" />
+            <TableColumn fx:id="colCode" prefWidth="121.0" text="Código" />
+            <TableColumn fx:id="colAmount" minWidth="0.0" prefWidth="121.0" styleClass="col-total" text="Cantidad Total" />
+            <TableColumn fx:id="colFinalPrice" prefWidth="130.0" styleClass="col-price" text="Precio Final" />
+            <TableColumn fx:id="colAction" prefWidth="283.0" text="Acción" />
         </columns>
       </TableView>
-      <DatePicker fx:id="datePicker" layoutX="190.0" layoutY="172.0" prefHeight="25.0" prefWidth="121.0" />
-      <Label layoutX="58.0" layoutY="177.0" prefHeight="17.0" prefWidth="130.0" text="Seleccione una fecha">
+      <DatePicker fx:id="dateFrom" layoutX="113.0" layoutY="172.0" prefHeight="25.0" prefWidth="111.0" />
+      <Label layoutX="69.0" layoutY="176.0" prefHeight="18.0" prefWidth="48.0" text="Desde">
          <font>
-            <Font name="Verdana" size="12.0" />
+            <Font name="Verdana Bold" size="12.0" />
          </font>
       </Label>
-      <ImageView fx:id="btnGoBack" fitHeight="32.0" fitWidth="27.0" layoutX="18.0" layoutY="169.0" onMouseClicked="#goBackToMainMenu" onMouseReleased="#closeThisForm" pickOnBounds="true" preserveRatio="true" styleClass="button">
+      <ImageView fx:id="btnGoBack" fitHeight="32.0" fitWidth="27.0" layoutX="18.0" layoutY="171.0" onMouseClicked="#goBackToMainMenu" onMouseReleased="#closeThisForm" pickOnBounds="true" preserveRatio="true" styleClass="button">
          <image>
             <Image url="@../../../../../images/arrow.png" />
          </image>
       </ImageView>
-      <Pane fx:id="topBar" prefHeight="37.0" prefWidth="1075.0" style="-fx-background-color: #f49f00;">
+      <Pane fx:id="topBar" prefHeight="37.0" prefWidth="1179.0" style="-fx-background-color: #f49f00;">
          <children>
-            <HBox alignment="CENTER_RIGHT" layoutX="990.0" layoutY="5.0" prefHeight="33.0" prefWidth="80.0">
+            <HBox alignment="CENTER_RIGHT" layoutX="1098.0" layoutY="2.0" prefHeight="33.0" prefWidth="80.0">
                <children>
                   <Button mnemonicParsing="false" onAction="#minWindow" prefHeight="23.0" prefWidth="33.0" styleClass="min-button" text="_" textFill="WHITE">
                      <font>
@@ -75,10 +89,48 @@
             </HBox>
          </children>
       </Pane>
-      <Button layoutX="323.0" layoutY="171.0" mnemonicParsing="false" onAction="#resetDatePicker" style="-fx-background-color: lightgrey;" text="Limpiar" textFill="WHITE">
+      <Button layoutX="398.0" layoutY="172.0" mnemonicParsing="false" onAction="#resetDatePicker" style="-fx-background-color: lightgrey;" text="Limpiar" textFill="WHITE">
          <font>
             <Font name="Verdana Bold" size="12.0" />
          </font>
       </Button>
+      <Label layoutX="241.0" layoutY="618.0" text="Total Recaudado: " textFill="#656565">
+         <font>
+            <Font name="Verdana Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblSummation" layoutX="383.0" layoutY="618.0" text="\$" textFill="#656565">
+         <font>
+            <Font name="Verdana Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="18.0" layoutY="618.0" text="Cantidad de Ventas: " textFill="#656565">
+         <font>
+            <Font name="Verdana Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblAmountOfSales" layoutX="181.0" layoutY="618.0" text="U" textFill="#656565">
+         <font>
+            <Font name="Verdana Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="235.0" layoutY="176.0" prefHeight="18.0" prefWidth="41.0" text="Hasta">
+         <font>
+            <Font name="Verdana Bold" size="12.0" />
+         </font>
+      </Label>
+      <DatePicker fx:id="dateTo" layoutX="277.0" layoutY="173.0" prefHeight="25.0" prefWidth="111.0" />
+      <Label layoutX="603.0" layoutY="175.0" prefHeight="18.0" prefWidth="59.0" text="Código:">
+         <font>
+            <Font name="Verdana Bold" size="12.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtCodeFilter" layoutX="661.0" layoutY="173.0" prefHeight="25.0" prefWidth="80.0" />
+      <Label layoutX="755.0" layoutY="175.0" prefHeight="18.0" prefWidth="111.0" text="Excluir Sin MT:">
+         <font>
+            <Font name="Verdana Bold" size="12.0" />
+         </font>
+      </Label>
+      <CheckBox fx:id="chkExclude" layoutX="861.0" layoutY="175.0" mnemonicParsing="false" />
    </children>
 </AnchorPane>

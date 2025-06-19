@@ -35,6 +35,8 @@ public class WindowsManager {
     public static final String PATH_SALE = BASE + "sales_record.fxml";
     public static final String PATH_SALE_FORM = BASE + "form_sale.fxml";
     public static final String PATH_PRODUCT_SEARCH = BASE + "product_search.fxml";
+    public static final String PATH_ADD_STOCK = BASE + "add_stock.fxml";
+    public static final String PATH_DATE_PICKER = BASE + "date_select.fxml";
 
     private static final Map<String, Stage> windowsOpened = new HashMap<>();
 

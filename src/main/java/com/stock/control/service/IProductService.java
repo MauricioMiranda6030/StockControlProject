@@ -22,6 +22,8 @@ public interface IProductService {
 
     void updateStock(List<ProductForSaleDTO> productsDto);
 
+    void addStock(ProductForSaleDTO productDto);
+
     void createPdfReport();
 
     void deleteProduct(ProductSaveDto productDto);

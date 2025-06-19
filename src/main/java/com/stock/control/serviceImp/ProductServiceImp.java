@@ -5,7 +5,6 @@ import com.stock.control.dto.ProductSaveDto;
 import com.stock.control.entity.Product;
 import com.stock.control.mapper.IProductMapper;
 import com.stock.control.repository.IProductRepository;
-import com.stock.control.repository.ISaleDetailsRepository;
 import com.stock.control.service.IProductService;
 import com.stock.control.service.ISaleDetailsService;
 import com.stock.control.util.PdfGenerator;
@@ -39,8 +38,14 @@ public class ProductServiceImp implements IProductService {
     }
 
     @Override
+    @Transactional
+    public void addStock(ProductForSaleDTO productDto) {
+        productRepository.updateStock(productDto.getId(), productDto.getStock());
+    }
+
+    @Override
     public void createPdfReport() {
-        PdfGenerator.createPdf(this.getAllProductsDto());
+        PdfGenerator.createProductsReportPdf(this.getAllProductsDto());
     }
 
     @Override

@@ -1,9 +1,7 @@
 package com.stock.control.front;
 
 import com.stock.control.dto.SaleViewDTO;
-import com.stock.control.front.tools.ControlFXManager;
-import com.stock.control.front.tools.ControllerManager;
-import com.stock.control.front.tools.WindowsManager;
+import com.stock.control.front.tools.*;
 import com.stock.control.service.ISaleService;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -23,6 +21,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -42,19 +41,28 @@ public class SalesRecordController implements Initializable {
     private TableColumn<SaleViewDTO, Long> colId;
 
     @FXML
-    private TableColumn<SaleViewDTO, String> colProducts, colFinalPrice, colDate, colAmount;
+    private TableColumn<SaleViewDTO, String> colProducts, colFinalPrice, colDate, colAmount, colClient, colCode;
 
     @FXML
     private TableColumn<SaleViewDTO, SaleViewDTO> colAction;
 
     @FXML
-    private DatePicker datePicker;
+    private DatePicker dateFrom, dateTo;
 
     @FXML
     private Button btnSaveSale;
 
     @FXML
     private Pane topBar;
+
+    @FXML
+    private Label lblSummation, lblAmountOfSales;
+
+    @FXML
+    private TextField txtCodeFilter;
+
+    @FXML
+    private CheckBox chkExclude;
 
     private Stage thisWindowStage;
 
@@ -66,16 +74,27 @@ public class SalesRecordController implements Initializable {
             thisWindowStage = (Stage) salesAnchorPane.getScene().getWindow();
             getSales();
         });
-        setOnActionEvents();
+        setOnActionEventsAndFilter();
         ControllerManager.setSalesRecordController(this);
         setUpColumns();
-
         setMovementToTopBar();
     }
 
-    private void setOnActionEvents() {
+    private void setOnActionEventsAndFilter() {
         btnSaveSale.setOnAction(event -> openSaleForm());
-        datePicker.setOnAction(event -> filterSaleByDate());
+        dateFrom.setOnAction(event -> filterSalesByDatesCodeAndExclude());
+        dateTo.setOnAction(event -> filterSalesByDatesCodeAndExclude());
+        txtCodeFilter.textProperty().addListener( (obs, oldValue, newValue) -> filterSalesByDatesCodeAndExclude());
+        chkExclude.setOnAction(event -> filterSalesByDatesCodeAndExclude());
+    }
+
+    private void filterSalesByDatesCodeAndExclude() {
+        resetTable();
+        LocalDate df = dateFrom.getValue(), dt = dateTo.getValue();
+        String code = txtCodeFilter.getText();
+        Boolean exclude = chkExclude.isSelected();
+        setSalesViewInTable(saleService.findSalesByDatesCodeAndExclude(df, dt, code, exclude));
+        updateLabels();
     }
 
     private void setUpColumns(){
@@ -84,6 +103,8 @@ public class SalesRecordController implements Initializable {
         colDate.setCellValueFactory(new PropertyValueFactory<SaleViewDTO, String>("dateOfSale"));
         colFinalPrice.setCellValueFactory(new PropertyValueFactory<SaleViewDTO, String>("finalPrice"));
         colProducts.setCellValueFactory(new PropertyValueFactory<SaleViewDTO, String>("productsDetails"));
+        colClient.setCellValueFactory(new PropertyValueFactory<SaleViewDTO, String>("client"));
+        colCode.setCellValueFactory(new PropertyValueFactory<SaleViewDTO, String>("code"));
         setUpColAction();
     }
 
@@ -133,16 +154,7 @@ public class SalesRecordController implements Initializable {
         resetTable();
         List<SaleViewDTO> salesDto = saleService.getAllSalesViewDto();
         setSalesViewInTable(salesDto);
-    }
-
-    private void filterSaleByDate() {
-        resetTable();
-        if(datePicker.getValue() != null){
-            List<SaleViewDTO> salesDto = saleService.getSalesByDateDto(datePicker.getValue());
-            setSalesViewInTable(salesDto);
-            tableSales.getSortOrder().add(colDate);
-        }else
-            getSales();
+        updateLabels();
     }
 
     private void setSalesViewInTable(List<SaleViewDTO> sales){
@@ -159,6 +171,29 @@ public class SalesRecordController implements Initializable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void updateLabels(){
+        updateAmountLabel();
+        updateSummation();
+    }
+
+    private void updateAmountLabel(){
+        lblAmountOfSales.setText(getAmountOfSales().toString());
+    }
+
+    private Integer getAmountOfSales(){
+        return tableSales.getItems().size();
+    }
+
+    private void updateSummation(){
+        lblSummation.setText(CurrencyFormater.getCurrency(calculateSummation()));
+    }
+
+    private Double calculateSummation(){
+        return tableSales.getItems().stream().mapToDouble(
+                s -> Double.parseDouble(CleanFormat.cleanPrice(s.getFinalPrice())))
+                .sum();
     }
 
     private void resetTable(){
@@ -182,7 +217,32 @@ public class SalesRecordController implements Initializable {
 
     @FXML
     private void resetDatePicker(){
-        datePicker.setValue(null);
+        dateFrom.setValue(null);
+        dateTo.setValue(null);
+    }
+
+    @FXML
+    private void tableToPdf(){
+        saleService.createPdfReport(
+                tableSales.getItems(),
+                lblAmountOfSales.getText(),
+                lblSummation.getText()
+        );
+
+        ControlFXManager.buildNotification(
+                "/images/check.png",
+                "Tabla a PDF Creado",
+                "Reporte Creado"
+                ).show();
+    }
+
+    @FXML
+    private void openDatePickerWindow(){
+        try {
+            WindowsManager.openNewWindowAndKeepCurrent(WindowsManager.PATH_DATE_PICKER, "Selección de Fecha");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void setMovementToTopBar() {
