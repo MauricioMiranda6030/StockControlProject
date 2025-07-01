@@ -6,12 +6,14 @@ Este proyecto se hizo con fines de uso reales y remunerado, a su vez sirve como 
 
 ## Sobre la Aplicación
 
-La aplicación nos permite guardar editar y eliminar productos con sus respectivos controles y registrar Ventas utilizando los productos almacenados, actualizando el Stock con cada nueva venta e impidiendo vender productos sin stock o una cantidad mayor al disponible. También nos permite hacer un reporte en PDF del Stock.
+La aplicación nos permite guardar editar y eliminar productos con sus respectivos controles y registrar Ventas utilizando los productos almacenados, ingresando código de medicos y nombre, actualizando el Stock con cada nueva venta e impidiendo vender productos sin stock o una cantidad mayor al disponible. Estos registros nos permiten hacer reportes en PDF del stock, Reporte de Ventas y Reporte de Clientes.
  
 **Tiempo de desarrollo aproximado**
 
 1-2 Meses
 
+**Tiempo de Manteniemiento Post-Entrega**
+1 Mes
 
 ## Tecnologías Utilizadas
 - JDK 17
@@ -31,7 +33,7 @@ La aplicación nos permite guardar editar y eliminar productos con sus respectiv
 - DAO y DTO
 
 ## Modelado BD
-![DB Model](https://github.com/MauricioMiranda6030/StockControlProject/blob/main/Stock%20Control%20UML.jpg?raw=true "DB Model")
+![DB Model](https://github.com/MauricioMiranda6030/StockControlProject/blob/main/class%20diagram.png?raw=true "DB Model")
 
 ## Como probar la Aplicación en Intellij IDEA
 
@@ -66,3 +68,4 @@ Ir a Settings > Build, Execution, Deployment > Compiler > Annotation Processors 
 * Responsive, actualmente las ventanas tienen un tamaño fijo.
 * Optimizar el código con respuestas más rápidas.
 * Customizar más los mensajes para estar en sintonía con el estilo de la app.
+* Backups con herramientas de la propia base de datos, actualmente copia el archivo BD a otra carpeta.
