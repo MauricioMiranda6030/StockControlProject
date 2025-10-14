@@ -33,7 +33,7 @@ La aplicación nos permite guardar editar y eliminar productos con sus respectiv
 - DAO y DTO
 
 ## Modelado BD
-![DB Model](https://github.com/MauricioMiranda6030/StockControlProject/blob/6dc55faef6244d6c0d37c61256e1c93ed3f2e14f/Guia%20de%20Usuario%20CDS.pdf)
+![DB Model](https://github.com/MauricioMiranda6030/StockControlProject/blob/main/class%20diagram.png?raw=true)
 
 ## Guia de Usuario
 [<img src="https://cdn-icons-png.flaticon.com/128/4726/4726010.png">](https://github.com/MauricioMiranda6030/StockControlProject/blob/6dc55faef6244d6c0d37c61256e1c93ed3f2e14f/Guia%20de%20Usuario%20CDS.pdf)
