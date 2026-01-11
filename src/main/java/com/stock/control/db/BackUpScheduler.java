@@ -36,6 +36,7 @@ public class BackUpScheduler {
 
                     SQLiteBackUp.backUpDataBase(DB_PATH, dbName);
                 } catch (IOException e) {
+                    log.error("Back up DID NOT created");
                     throw new RuntimeException(e);
                 }
             }
@@ -44,12 +45,14 @@ public class BackUpScheduler {
 
     private static void deleteOldBackUps(int days){
         File folder = new File(DB_BACKUP_PATH);
-        Long deadLine = System.currentTimeMillis() - (days * 24 * 60 * 60 * 1000L); //Dias a milisegundos
+        long deadLine = System.currentTimeMillis() - (days * 24 * 60 * 60 * 1000L); //Dias a milisegundos
 
-        for(File file : folder.listFiles()){
-            if (file.lastModified() < deadLine){ // elimina los backups que tengan 5 dias de antiguedad
-                file.delete();
-                log.info("Old back up deleted");
+        if(folder.exists()){
+            for(File file : folder.listFiles()){
+                if (file.lastModified() < deadLine){ // elimina los backups que tengan 5 dias de antiguedad
+                    file.delete();
+                    log.info("Old back up deleted");
+                }
             }
         }
     }

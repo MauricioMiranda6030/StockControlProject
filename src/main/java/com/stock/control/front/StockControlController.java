@@ -16,17 +16,24 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+@Slf4j
 @Component
 public class StockControlController implements Initializable {
 
@@ -58,7 +65,7 @@ public class StockControlController implements Initializable {
     private TextField txtSearch;
 
     @FXML
-    private Button btnAddProduct, btnEditProduct;
+    private Button btnAddProduct, btnEditProduct, btnGoToReportsFolder;
 
     @FXML
     private ImageView btnGoBack, btnPdf;
@@ -69,6 +76,8 @@ public class StockControlController implements Initializable {
     private Stage thisWindowStage;
 
     private Double x = 0d, y = 0d;
+
+    private static final String reportsFolder = System.getProperty("user.home") + "\\AppData\\Roaming\\StockControl\\reportes";
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -125,6 +134,15 @@ public class StockControlController implements Initializable {
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
+        }
+    }
+
+    @FXML
+    private void openReportsFolder(){
+        try {
+            Runtime.getRuntime().exec("explorer " + reportsFolder);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -293,6 +311,7 @@ public class StockControlController implements Initializable {
                 "Reporte Creado Correctamente",
                 "Reporte")
         .show();
+        log.debug("Reporte de Stock Creado");
     }
 
     private void setMovementToTopBar() {

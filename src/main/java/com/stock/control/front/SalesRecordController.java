@@ -50,7 +50,7 @@ public class SalesRecordController implements Initializable {
     private DatePicker dateFrom, dateTo;
 
     @FXML
-    private Button btnSaveSale;
+    private Button btnSaveSale, btnGoToReportsFolder;
 
     @FXML
     private Pane topBar;
@@ -67,6 +67,8 @@ public class SalesRecordController implements Initializable {
     private Stage thisWindowStage;
 
     private Double x = 0d, y = 0d;
+
+    private static final String reportsFolder = System.getProperty("user.home") + "\\AppData\\Roaming\\StockControl\\reportes";
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -251,6 +253,15 @@ public class SalesRecordController implements Initializable {
             y = event.getScreenY() - thisWindowStage.getY();
         });
         topBar.setOnMouseDragged(event -> WindowsManager.moveWindow(thisWindowStage, event, x, y));
+    }
+
+    @FXML
+    private void openReportsFolder(){
+        try {
+            Runtime.getRuntime().exec("explorer " + reportsFolder);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML

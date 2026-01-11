@@ -18,6 +18,7 @@ import com.stock.control.front.tools.CurrencyFormater;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.Paths;
 import java.time.LocalDate;
@@ -38,14 +39,17 @@ public class PdfGenerator {
                                  colsForClient = {200f, 30f, 30f};
 
     private final static String home = System.getProperty("user.home");
-    private final static String downloadsPath = Paths.get(home, "Downloads").toString();
+    //TODO reemplzar por Roaming "REPORTES"
+    // private final static String downloadsPath = Paths.get(home, "Downloads").toString();
+    private final static String reportsFolder = home + "/AppData/Roaming/StockControl/reportes";
     private static final String pdfName = LocalDate.now().format(formatter) + ".pdf";
 
     public static void createProductsReportPdf(List<ProductSaveDto> products){
         try {
             buildPdfForProducts(products);
-            log.info("Report just created at: {}", downloadsPath + "\\reporte de stock " + pdfName);
+            log.info("Report just created at: {}", reportsFolder + "\\reporte de stock " + pdfName);
         } catch (FileNotFoundException e) {
+            log.error("Report not created");
             throw new RuntimeException(e);
         }
     }
@@ -53,7 +57,7 @@ public class PdfGenerator {
     public static void createSalesReportPdf(List<SaleViewDTO> sales, String totalAmount, String totalCurrency){
         try {
             buildPdfForSales(sales, totalAmount, totalCurrency);
-            log.info("Sale report just created at: {}", downloadsPath + "\\reporte de ventas " + pdfName);
+            log.info("Sale report just created at: {}", reportsFolder + "\\reporte de ventas " + pdfName);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -62,7 +66,7 @@ public class PdfGenerator {
     public static void createClientReportPdf(List<SaleReportDTO> sales, LocalDate dateFrom, LocalDate dateTo){
         try{
             buildPdfForClientReport(sales, dateFrom, dateTo);
-            log.info("Client sale report just created at: {}", downloadsPath + "\\reporte de clientes " + pdfName);
+            log.info("Client sale report just created at: {}", reportsFolder + "\\reporte de clientes " + pdfName);
         }catch (FileNotFoundException e){
             throw new RuntimeException(e);
         }
@@ -108,10 +112,18 @@ public class PdfGenerator {
     }
 
     private static Document createDoc(String name) throws FileNotFoundException {
-        PdfWriter pdfWriter = new PdfWriter(downloadsPath + "\\"+name + pdfName);
+        createReportsFolder();
+        PdfWriter pdfWriter = new PdfWriter(reportsFolder + "\\"+name + pdfName);
         PdfDocument pdfDocument = new PdfDocument(pdfWriter);
         pdfDocument.setDefaultPageSize(PageSize.A4);
         return new Document(pdfDocument);
+    }
+
+    private static void createReportsFolder(){
+        File reportFolder = new File(reportsFolder);
+
+        if(!reportFolder.exists())
+            reportFolder.mkdirs();
     }
 
     private static Paragraph addTableInfo(String totalAmount,String totalCurrency){

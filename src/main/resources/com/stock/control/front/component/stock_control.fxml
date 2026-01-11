@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="stockControlAnchorPane" prefHeight="713.0" prefWidth="1088.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stock.control.front.StockControlController">
+<AnchorPane fx:id="stockControlAnchorPane" prefHeight="713.0" prefWidth="1088.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stock.control.front.StockControlController">
    <children>
       <AnchorPane id="panelTitulo" layoutY="36.0" prefHeight="105.0" prefWidth="1088.0" style="-fx-background-color: orange;">
          <children>
@@ -27,11 +27,16 @@
                   <Font name="Verdana" size="32.0" />
                </font>
             </Label>
-            <ImageView fx:id="btnPdf" fitHeight="41.0" fitWidth="47.0" layoutX="1037.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true" styleClass="button">
+            <ImageView fx:id="btnPdf" fitHeight="41.0" fitWidth="47.0" layoutX="994.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true" styleClass="button">
                <image>
                   <Image url="@../../../../../images/pdf-icon.png" />
                </image>
             </ImageView>
+            <Button fx:id="btnGoToReportsFolder" layoutX="1038.0" layoutY="34.0" mnemonicParsing="false" onAction="#openReportsFolder" prefHeight="37.0" prefWidth="36.0" style="-fx-background-color: red;" text="Ir" textFill="WHITE">
+               <font>
+                  <Font name="Verdana Bold" size="12.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
       <AnchorPane layoutX="13.0" layoutY="147.0" prefHeight="399.0" prefWidth="784.0" stylesheets="@styles.css">
@@ -44,9 +49,9 @@
               <columns>
                 <TableColumn fx:id="id" editable="false" prefWidth="27.0" text="id" />
                 <TableColumn fx:id="name" editable="false" prefWidth="188.0" text="Nombre" />
-                  <TableColumn fx:id="description" editable="false" prefWidth="506.0" text="Descripción" />
-                  <TableColumn fx:id="price" editable="false" minWidth="0.0" prefWidth="107.0" text="Precio" />
-                  <TableColumn fx:id="stock" prefWidth="115.0" text="Stock" />
+                  <TableColumn fx:id="description" editable="false" prefWidth="411.0" text="Descripción" />
+                  <TableColumn fx:id="price" editable="false" minWidth="0.0" prefWidth="140.0" text="Precio" />
+                  <TableColumn fx:id="stock" prefWidth="177.0" text="Stock" />
                   <TableColumn fx:id="colAction" prefWidth="116.0" text="Acción" />
               </columns>
             </TableView>
