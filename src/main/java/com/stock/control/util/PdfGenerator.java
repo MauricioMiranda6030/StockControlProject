@@ -127,7 +127,7 @@ public class PdfGenerator {
     }
 
     private static Paragraph addTableInfo(String totalAmount,String totalCurrency){
-        Text text = new Text("Total de Productos: " + totalAmount + "\nTotal Recaudado: " + totalCurrency);
+        Text text = new Text("Total de Ventas: " + totalAmount + "\nTotal Recaudado: " + totalCurrency);
         return new Paragraph(text).setFontSize(10);
     }
 
