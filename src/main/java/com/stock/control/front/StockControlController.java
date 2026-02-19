@@ -8,6 +8,7 @@ import com.stock.control.front.tools.CurrencyFormater;
 import com.stock.control.front.tools.WindowsManager;
 import com.stock.control.service.IProductService;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,6 +21,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
@@ -53,7 +55,7 @@ public class StockControlController implements Initializable {
     private TableColumn<ProductSaveDto, ProductSaveDto> stock;
 
     @FXML
-    private TableColumn<ProductSaveDto, Double> price;
+    private TableColumn<ProductSaveDto, Double> price, colTotal;
 
     @FXML
     private TableColumn<ProductSaveDto, Long> id;
@@ -159,9 +161,25 @@ public class StockControlController implements Initializable {
         id.setCellValueFactory(new PropertyValueFactory<>("id"));
         price.setCellValueFactory(new PropertyValueFactory<>("price"));
         description.setCellValueFactory(new PropertyValueFactory<>("description"));
-        formatPriceColumn();
+
+        setUpColTotal();
         setUpColStock();
         setUpColAction();
+        formatPriceColumn();
+    }
+
+    private void setUpColTotal() {
+        colTotal.setCellValueFactory(cell -> {
+            ProductSaveDto productDto = cell.getValue();
+            return Bindings.createDoubleBinding( () -> {
+                try{
+                    return productDto.getPrice() * productDto.getStock();
+                }catch (Exception e){
+                    return 0d;
+                }
+            }).asObject();
+        });
+
     }
 
     private void setUpColStock() {
@@ -217,6 +235,14 @@ public class StockControlController implements Initializable {
             protected void updateItem(Double price, boolean empty){
                 super.updateItem(price, empty);
                 setText(empty || price == null ? null : CurrencyFormater.getCurrency(price));
+            }
+        });
+
+        colTotal.setCellFactory(column -> new TableCell<>(){
+            @Override
+            protected void updateItem(Double total, boolean empty){
+                super.updateItem(total, empty);
+                setText(empty || total == null ? null : CurrencyFormater.getCurrency(total));
             }
         });
     }

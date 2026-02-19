@@ -49,10 +49,11 @@
               <columns>
                 <TableColumn fx:id="id" editable="false" prefWidth="27.0" text="id" />
                 <TableColumn fx:id="name" editable="false" prefWidth="188.0" text="Nombre" />
-                  <TableColumn fx:id="description" editable="false" prefWidth="411.0" text="Descripción" />
-                  <TableColumn fx:id="price" editable="false" minWidth="0.0" prefWidth="140.0" text="Precio" />
-                  <TableColumn fx:id="stock" prefWidth="177.0" text="Stock" />
-                  <TableColumn fx:id="colAction" prefWidth="116.0" text="Acción" />
+                  <TableColumn fx:id="description" editable="false" prefWidth="278.0" text="Descripción" />
+                  <TableColumn fx:id="price" editable="false" minWidth="0.0" prefWidth="113.0" text="Precio" />
+                  <TableColumn fx:id="stock" prefWidth="123.0" text="Stock" />
+                  <TableColumn fx:id="colTotal" prefWidth="178.0" text="Total" />
+                  <TableColumn fx:id="colAction" prefWidth="151.0" text="Acción" />
               </columns>
             </TableView>
             <Button fx:id="btnAddProduct" layoutX="972.0" layoutY="15.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="85.0" styleClass="add-button" text="AGREGAR" textFill="WHITE">
