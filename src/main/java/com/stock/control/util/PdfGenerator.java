@@ -28,19 +28,19 @@ import java.util.List;
 /*
 * Clase que se encarga de la creación de los reportes en PDF
 */
+
+//TODO agregar un Suma Total al final del reporte de Stock.
 public class PdfGenerator {
 
     private static final Logger log = LoggerFactory.getLogger(PdfGenerator.class);
 
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-    private static final float[] colsForProducts = {50f, 500f, 90f, 110f}, //id, nombre, desc, precio y stock
+    private static final float[] colsForProducts = {50f, 500f, 80f, 100f, 110f}, //id, nombre, desc, precio, stock y total
                                  colsForSales = {30f, 50f, 80f, 150f, 30f, 90f, 50f}, //id, code, client, products, amount, price, date
                                  colsForClient = {200f, 30f, 30f};
 
     private final static String home = System.getProperty("user.home");
-    //TODO reemplzar por Roaming "REPORTES"
-    // private final static String downloadsPath = Paths.get(home, "Downloads").toString();
     private final static String reportsFolder = home + "/AppData/Roaming/StockControl/reportes";
     private static final String pdfName = LocalDate.now().format(formatter) + ".pdf";
 
@@ -140,6 +140,7 @@ public class PdfGenerator {
         table.addCell(createHeaderCell("Nombre"));
         table.addCell(createHeaderCell("Stock"));
         table.addCell(createHeaderCell("Precio"));
+        table.addCell(createHeaderCell("Total"));
     }
 
     private static void setUpColumnsForSale(Table table){
@@ -170,6 +171,9 @@ public class PdfGenerator {
                     table.addCell(createBodyCell(p.getName()));
                     table.addCell(createBodyCell(String.valueOf(p.getStock())));
                     table.addCell(createBodyCell(CurrencyFormater.getCurrency(p.getPrice())));
+                    table.addCell(createBodyCell(CurrencyFormater.getCurrency(
+                            p.getPrice() * p.getStock()
+                    )));
                 }
         );
     }
