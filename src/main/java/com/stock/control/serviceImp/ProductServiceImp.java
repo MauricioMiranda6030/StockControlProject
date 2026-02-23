@@ -3,6 +3,7 @@ package com.stock.control.serviceImp;
 import com.stock.control.dto.ProductForSaleDTO;
 import com.stock.control.dto.ProductSaveDTO;
 import com.stock.control.entity.Product;
+import com.stock.control.front.tools.CurrencyFormater;
 import com.stock.control.mapper.IProductMapper;
 import com.stock.control.repository.IProductRepository;
 import com.stock.control.service.IProductService;
@@ -45,7 +46,13 @@ public class ProductServiceImp implements IProductService {
 
     @Override
     public void createPdfReport() {
-        PdfGenerator.createProductsReportPdf(this.getAllProductsDto());
+        List<ProductSaveDTO> productsDto = this.getAllProductsDto();
+        String totalAmountProducts = productsDto.size() + " Productos";
+
+        Double totalPrice = productsDto.stream().mapToDouble(prod -> prod.getPrice() * prod.getStock()).sum();
+        String totalPriceFormatted = CurrencyFormater.getCurrency(totalPrice);
+
+        PdfGenerator.createProductsReportPdf(productsDto, totalAmountProducts, totalPriceFormatted);
     }
 
     @Override

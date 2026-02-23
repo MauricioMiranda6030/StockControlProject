@@ -27,7 +27,6 @@ import java.util.List;
 * Clase que se encarga de la creación de los reportes en PDF
 */
 
-//TODO agregar un Suma Total al final del reporte de Stock.
 public class PdfGenerator {
 
     private static final Logger log = LoggerFactory.getLogger(PdfGenerator.class);
@@ -38,13 +37,16 @@ public class PdfGenerator {
                                  colsForSales = {30f, 50f, 80f, 150f, 30f, 90f, 50f}, //id, code, client, products, amount, price, date
                                  colsForClient = {200f, 30f, 30f};
 
+    private static final float SUM_FONT_SIZE = 11f, TITLE_FONT_SIZE = 18f, CELL_FONT_SIZE = 10f;
+
+
     private final static String home = System.getProperty("user.home");
     private final static String reportsFolder = home + "/AppData/Roaming/StockControl/reportes";
     private static final String pdfName = LocalDate.now().format(formatter) + ".pdf";
 
-    public static void createProductsReportPdf(List<ProductSaveDTO> products){
+    public static void createProductsReportPdf(List<ProductSaveDTO> products, String totalProducts, String totalPrice){
         try {
-            buildPdfForProducts(products);
+            buildPdfForProducts(products, totalProducts, totalPrice);
             log.info("Report just created at: {}", reportsFolder + "\\reporte de stock " + pdfName);
         } catch (FileNotFoundException e) {
             log.error("Report not created");
@@ -70,13 +72,14 @@ public class PdfGenerator {
         }
     }
 
-    private static void buildPdfForProducts(List<ProductSaveDTO> products) throws FileNotFoundException {
+    private static void buildPdfForProducts(List<ProductSaveDTO> products, String totalProducts, String totalPrice) throws FileNotFoundException {
         Document doc = createDoc("reporte de stock ");
         setTitle(doc, "Reporte de Stock " + LocalDate.now().format(formatter));
         Table table = createTable(colsForProducts);
         setUpColumnsForProducts(table);
         fillTableProducts(products, table);
         doc.add(table);
+        doc.add(addAmountOfProductsAndTotalResume(totalProducts, totalPrice));
         doc.close();
     }
 
@@ -103,7 +106,7 @@ public class PdfGenerator {
 
     private static void setTitle(Document doc, String title) {
         Paragraph par = new Paragraph(title)
-                .setFontSize(15f)
+                .setFontSize(TITLE_FONT_SIZE)
                 .setBold();
 
         doc.add(par);
@@ -126,7 +129,12 @@ public class PdfGenerator {
 
     private static Paragraph addTableInfo(String totalAmount,String totalCurrency){
         Text text = new Text("Total de Ventas: " + totalAmount + "\nTotal Recaudado: " + totalCurrency);
-        return new Paragraph(text).setFontSize(10);
+        return new Paragraph(text).setFontSize(SUM_FONT_SIZE).setBold();
+    }
+
+    private static Paragraph addAmountOfProductsAndTotalResume(String totalProducts, String totalPrice){
+        Text text = new Text("Cantidad de Productos: " + totalProducts + "\nSuma de Precios Totales: " + totalPrice);
+        return new Paragraph(text).setFontSize(SUM_FONT_SIZE).setBold();
     }
 
     private static Table createTable(float[] cols) {
@@ -158,7 +166,7 @@ public class PdfGenerator {
     }
 
     private static Cell createHeaderCell(String title){
-        Paragraph content = new Paragraph(title).setFontSize(10).setMultipliedLeading(1.2f).setFontColor(Color.WHITE);
+        Paragraph content = new Paragraph(title).setFontSize(CELL_FONT_SIZE).setMultipliedLeading(1.2f).setFontColor(Color.WHITE);
         return new Cell().add(content).setBold().setBackgroundColor(Color.GRAY).setTextAlignment(TextAlignment.CENTER).setPadding(5);
     }
 
@@ -201,7 +209,7 @@ public class PdfGenerator {
     }
 
     private static Cell createBodyCell(String text){
-        Paragraph content = new Paragraph(text).setFontSize(10).setMultipliedLeading(1.2f);
+        Paragraph content = new Paragraph(text).setFontSize(CELL_FONT_SIZE).setMultipliedLeading(1.2f);
         return new Cell().add(content).setPadding(5);
     }
 }
