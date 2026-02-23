@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ISaleService {
 
-    Long saveSale(SaleDTO saleDto);
+    void saveSale(SaleDTO saleDto);
 
     List<Sale> getAllSales();
 

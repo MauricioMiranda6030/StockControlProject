@@ -8,12 +8,5 @@ import com.stock.control.entity.SaleDetails;
 import java.util.List;
 
 public interface ISaleDetailsService {
-
-    void saveSaleDetails(SaleDTO saleDto, Long id);
-
-    List<SaleDetails> getSaleDetailsBySaleId(Long id);
-
     boolean productExists(Product product);
-
-    void deleteAllBySale(Sale sale);
 }

@@ -1,10 +1,8 @@
 package com.stock.control.front.tools;
 
-import com.stock.control.dto.ProductSaveDto;
+import com.stock.control.dto.ProductSaveDTO;
 import com.stock.control.entity.Product;
 import com.stock.control.front.*;
-import javafx.stage.Stage;
-import javafx.stage.Window;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
@@ -35,7 +33,7 @@ public class ControllerManager {
     private static String formProductStatus;
 
     @Getter @Setter
-    private static ProductSaveDto productToEdit;
+    private static ProductSaveDTO productToEdit;
 
     @Getter @Setter
     private static Product productToAddStock = new Product();

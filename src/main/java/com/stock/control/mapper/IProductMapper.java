@@ -2,7 +2,7 @@ package com.stock.control.mapper;
 
 
 import com.stock.control.dto.ProductForSaleDTO;
-import com.stock.control.dto.ProductSaveDto;
+import com.stock.control.dto.ProductSaveDTO;
 import com.stock.control.entity.Product;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -17,7 +17,7 @@ public interface IProductMapper {
     ProductForSaleDTO productToProductDto(Product product);
     Product productDtoToProduct(ProductForSaleDTO productForSaleDto);
 
-    ProductSaveDto productToProductSaveDto(Product product);
-    Product productSaveDtoToProduct(ProductSaveDto productSaveDto);
+    ProductSaveDTO productToProductSaveDto(Product product);
+    Product productSaveDtoToProduct(ProductSaveDTO productSaveDto);
 
 }

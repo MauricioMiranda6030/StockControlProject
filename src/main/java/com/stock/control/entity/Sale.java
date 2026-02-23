@@ -33,4 +33,16 @@ public class Sale {
 
     @Column(nullable = false)
     private LocalDate dateOfSale;
+
+    @OneToMany
+            (mappedBy = "sale",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.EAGER)
+    private List<SaleDetails> saleDetails = new ArrayList<>();
+
+    public void addDetail(SaleDetails detail){
+        this.saleDetails.add(detail);
+        detail.setSale(this);
+    }
 }

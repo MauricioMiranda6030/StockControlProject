@@ -20,7 +20,7 @@ public class SaleViewDTO {
     private String productsDetails, totalAmount, finalPrice, dateOfSale, client, code;
 
 
-    public SaleViewDTO(Sale sale, List<SaleDetails> saleDetails){
+    public SaleViewDTO(Sale sale){
         this.id = sale.getId();
         this.dateOfSale = sale.getDateOfSale().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         this.finalPrice = CurrencyFormater.getCurrency(sale.getFinalPrice());
@@ -28,7 +28,7 @@ public class SaleViewDTO {
         this.client = sale.getClientFullName();
         this.code = sale.getDocId();
 
-        productsDetails = saleDetails.stream()
+        productsDetails = sale.getSaleDetails().stream()
                 .map(sd -> "(" + sd.getQuantity() + ") " + sd.getProduct().getName() + " vendido/s a " + CurrencyFormater.getCurrency(sd.getSoldPrice()))
                 .collect(Collectors.joining(",\n"));
     }

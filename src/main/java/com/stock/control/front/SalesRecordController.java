@@ -94,7 +94,7 @@ public class SalesRecordController implements Initializable {
         resetTable();
         LocalDate df = dateFrom.getValue(), dt = dateTo.getValue();
         String code = txtCodeFilter.getText();
-        Boolean exclude = chkExclude.isSelected();
+        boolean exclude = chkExclude.isSelected();
         setSalesViewInTable(saleService.findSalesByDatesCodeAndExclude(df, dt, code, exclude));
         updateLabels();
     }
@@ -122,15 +122,8 @@ public class SalesRecordController implements Initializable {
                 return event -> {
                     SaleViewDTO saleToDelete = getTableView().getItems().get(getIndex());
                     if (isDialogOk()) {
-                        try{
-                            saleService.deleteSaleById(saleToDelete.getId());
-                            getSales();
-                        }catch (IllegalStateException e){
-                            ControlFXManager.buildNotification(
-                                            "¡El Producto Tiene Ventas Relacionadas!",
-                                            "No se puede eliminar el Producto")
-                                    .showError();
-                        }
+                        saleService.deleteSaleById(saleToDelete.getId());
+                        getSales();
                     }
                 };
             }

@@ -21,36 +21,7 @@ public class SaleDetailsServiceImp implements ISaleDetailsService{
     private ISaleDetailsRepository saleDetailsRepository;
 
     @Override
-    @Transactional
-    public void saveSaleDetails(SaleDTO saleDto, Long id) {
-        Sale sale = ISaleMapper.INSTANCE.saleDtoToSale(saleDto);
-        sale.setId(id);
-
-        saleDto.getProducts()
-                .forEach(product -> {
-                            SaleDetails saleDetails = new SaleDetails();
-                            saleDetails.setSale(sale);
-                            saleDetails.setProduct(IProductMapper.INSTANCE.productDtoToProduct(product));
-                            saleDetails.setSoldPrice(product.getPrice());
-                            saleDetails.setQuantity(product.getAmountToSell());
-
-                            saleDetailsRepository.save(saleDetails);
-                        }
-                );
-    }
-
-    @Override
-    public List<SaleDetails> getSaleDetailsBySaleId(Long id) {
-        return saleDetailsRepository.findAllBySaleId(id);
-    }
-
-    @Override
     public boolean productExists(Product product) {
         return saleDetailsRepository.existsByProduct(product);
-    }
-
-    @Override
-    public void deleteAllBySale(Sale sale) {
-        saleDetailsRepository.deleteAllBySale(sale);
     }
 }

@@ -5,13 +5,12 @@ import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
-import com.itextpdf.layout.Style;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.element.Text;
 import com.itextpdf.layout.property.TextAlignment;
-import com.stock.control.dto.ProductSaveDto;
+import com.stock.control.dto.ProductSaveDTO;
 import com.stock.control.dto.SaleReportDTO;
 import com.stock.control.dto.SaleViewDTO;
 import com.stock.control.front.tools.CurrencyFormater;
@@ -20,7 +19,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -44,7 +42,7 @@ public class PdfGenerator {
     private final static String reportsFolder = home + "/AppData/Roaming/StockControl/reportes";
     private static final String pdfName = LocalDate.now().format(formatter) + ".pdf";
 
-    public static void createProductsReportPdf(List<ProductSaveDto> products){
+    public static void createProductsReportPdf(List<ProductSaveDTO> products){
         try {
             buildPdfForProducts(products);
             log.info("Report just created at: {}", reportsFolder + "\\reporte de stock " + pdfName);
@@ -72,7 +70,7 @@ public class PdfGenerator {
         }
     }
 
-    private static void buildPdfForProducts(List<ProductSaveDto> products) throws FileNotFoundException {
+    private static void buildPdfForProducts(List<ProductSaveDTO> products) throws FileNotFoundException {
         Document doc = createDoc("reporte de stock ");
         setTitle(doc, "Reporte de Stock " + LocalDate.now().format(formatter));
         Table table = createTable(colsForProducts);
@@ -164,7 +162,7 @@ public class PdfGenerator {
         return new Cell().add(content).setBold().setBackgroundColor(Color.GRAY).setTextAlignment(TextAlignment.CENTER).setPadding(5);
     }
 
-    private static void fillTableProducts(List<ProductSaveDto> products, Table table) {
+    private static void fillTableProducts(List<ProductSaveDTO> products, Table table) {
         products.forEach(
                 p -> {
                     table.addCell(createBodyCell(String.valueOf(p.getId())));

@@ -21,11 +21,11 @@ public class SaleDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(targetEntity = Product.class, fetch = FetchType.EAGER)
+    @ManyToOne(targetEntity = Product.class)
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @ManyToOne(targetEntity = Sale.class,fetch = FetchType.EAGER)
+    @ManyToOne(targetEntity = Sale.class)
     @JoinColumn(name = "sale_id")
     private Sale sale;
 

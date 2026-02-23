@@ -1,6 +1,6 @@
 package com.stock.control.front;
 
-import com.stock.control.dto.ProductSaveDto;
+import com.stock.control.dto.ProductSaveDTO;
 import com.stock.control.front.tools.ControlFXManager;
 import com.stock.control.front.tools.ControllerManager;
 import com.stock.control.front.tools.WindowsManager;
@@ -49,7 +49,7 @@ public class FormProductController implements Initializable {
     @FXML
     private Pane topBar;
 
-    private ProductSaveDto productDto;
+    private ProductSaveDTO productDto;
 
     private Double x = 0d, y = 0d;
 
@@ -91,7 +91,7 @@ public class FormProductController implements Initializable {
     }
 
     private void setUpForSave(){
-        productDto = new ProductSaveDto();
+        productDto = new ProductSaveDTO();
         lblTitle.setText("Nuevo Producto");
         btnSave.setVisible(true);
         btnEdit.setVisible(false);
@@ -123,7 +123,7 @@ public class FormProductController implements Initializable {
                 resetTextFields();
 
                 log.info("New product just saved: {}", productDto.getName());
-                productDto = new ProductSaveDto();
+                productDto = new ProductSaveDTO();
                 ControlFXManager.buildNotification("/images/check.png", "Producto guardado correctamente", "Registro de Producto")
                         .show();
             }

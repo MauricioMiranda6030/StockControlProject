@@ -5,6 +5,7 @@ import com.stock.control.dto.SaleReportDTO;
 import com.stock.control.dto.SaleViewDTO;
 import com.stock.control.entity.Sale;
 import com.stock.control.entity.SaleDetails;
+import com.stock.control.mapper.IProductMapper;
 import com.stock.control.mapper.ISaleMapper;
 import com.stock.control.repository.ISaleRepository;
 import com.stock.control.service.ISaleDetailsService;
@@ -12,7 +13,6 @@ import com.stock.control.service.ISaleService;
 import com.stock.control.util.PdfGenerator;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -28,17 +28,25 @@ public class SaleServiceImp implements ISaleService {
     private ISaleDetailsService saleDetailsService;
 
     @Override
-    @Transactional
-    public Long saveSale(SaleDTO saleDto){
-        Sale sale = ISaleMapper.INSTANCE.saleDtoToSale(saleDto);
-        sale.setDateOfSale(LocalDate.now());
+    public void saveSale(SaleDTO saleDto) {
+        Sale newSale = ISaleMapper.INSTANCE.saleDtoToSale(saleDto);
+        newSale.setDateOfSale(LocalDate.now());
 
-        return saleRepository.save(sale).getId();
+        saleDto.getProducts()
+                        .forEach(product -> {
+                            SaleDetails details = new SaleDetails();
+                            details.setQuantity(product.getAmountToSell());
+                            details.setSoldPrice(product.getPrice());
+                            details.setProduct(IProductMapper.INSTANCE.productDtoToProduct(product));
+                            newSale.addDetail(details);
+                        });
+
+        saleRepository.save(newSale);
     }
 
     @Override
     public List<Sale> getAllSales() {
-        return saleRepository.findAll();
+        return saleRepository.getAllSalesWithProducts();
     }
 
     @Override
@@ -58,10 +66,7 @@ public class SaleServiceImp implements ISaleService {
     @Override
     @Transactional
     public void deleteSaleById(Long id) {
-        Sale sale = saleRepository.findById(id).orElseThrow();
-
-        saleDetailsService.deleteAllBySale(sale);
-        saleRepository.deleteById(sale.getId());
+        saleRepository.deleteById(id);
     }
 
     @Override
@@ -75,13 +80,13 @@ public class SaleServiceImp implements ISaleService {
         PdfGenerator.createClientReportPdf(sales, dateFrom, dateTo);
     }
 
-    private List<SaleReportDTO> getClientReport(LocalDate dateFrom, LocalDate dateTo, boolean exclude){
+    private List<SaleReportDTO> getClientReport(LocalDate dateFrom, LocalDate dateTo, boolean exclude) {
         return saleRepository.getClientReport(dateFrom, dateTo, exclude);
     }
 
-    private List<SaleViewDTO> toSalesViewDto(List<Sale> sales){
+    private List<SaleViewDTO> toSalesViewDto(List<Sale> sales) {
         return sales.stream()
-                .map(s -> new SaleViewDTO(s,saleDetailsService.getSaleDetailsBySaleId(s.getId())))
+                .map(SaleViewDTO::new)
                 .toList();
     }
 }

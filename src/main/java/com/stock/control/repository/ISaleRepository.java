@@ -1,6 +1,7 @@
 package com.stock.control.repository;
 
 import com.stock.control.dto.SaleReportDTO;
+import com.stock.control.dto.SaleViewDTO;
 import com.stock.control.entity.Sale;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -29,4 +30,9 @@ public interface ISaleRepository extends JpaRepository<Sale, Long> {
     List<SaleReportDTO> getClientReport(@Param("df") LocalDate dateFrom,
                                         @Param("dt") LocalDate dateTo,
                                         @Param("ex") boolean ex);
+
+    @Query( "SELECT s FROM Sale s " +
+            "JOIN SaleDetails sd ON s = sd.sale " +
+            "JOIN Product p ON sd.product = p")
+    List<Sale> getAllSalesWithProducts();
 }

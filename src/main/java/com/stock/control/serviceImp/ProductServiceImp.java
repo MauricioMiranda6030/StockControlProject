@@ -1,7 +1,7 @@
 package com.stock.control.serviceImp;
 
 import com.stock.control.dto.ProductForSaleDTO;
-import com.stock.control.dto.ProductSaveDto;
+import com.stock.control.dto.ProductSaveDTO;
 import com.stock.control.entity.Product;
 import com.stock.control.mapper.IProductMapper;
 import com.stock.control.repository.IProductRepository;
@@ -24,7 +24,7 @@ public class ProductServiceImp implements IProductService {
     private ISaleDetailsService saleDetailsService;
 
     @Override
-    public void saveProduct(ProductSaveDto productDto) {
+    public void saveProduct(ProductSaveDTO productDto) {
         Product productToSave = IProductMapper.INSTANCE.productSaveDtoToProduct(productDto);
         productRepository.save(productToSave);
     }
@@ -49,7 +49,7 @@ public class ProductServiceImp implements IProductService {
     }
 
     @Override
-    public void deleteProduct(ProductSaveDto productDto) {
+    public void deleteProduct(ProductSaveDTO productDto) {
         Product product =  IProductMapper.INSTANCE.productSaveDtoToProduct(productDto);
         boolean productInSales = saleDetailsService.productExists(product);
 
@@ -65,7 +65,7 @@ public class ProductServiceImp implements IProductService {
     }
 
     @Override
-    public List<ProductSaveDto> getAllProductsDto() {
+    public List<ProductSaveDTO> getAllProductsDto() {
         return toDtoList(getAllProducts());
     }
 
@@ -75,11 +75,11 @@ public class ProductServiceImp implements IProductService {
     }
 
     @Override
-    public List<ProductSaveDto> getProductsByNameSaveDto(String name) {
+    public List<ProductSaveDTO> getProductsByNameSaveDto(String name) {
         return toDtoList(getProductsByName(name));
     }
 
-    private List<ProductSaveDto> toDtoList(List<Product> products){
+    private List<ProductSaveDTO> toDtoList(List<Product> products){
         return  products.stream()
                 .map(IProductMapper.INSTANCE::productToProductSaveDto)
                 .toList();

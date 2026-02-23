@@ -1,7 +1,6 @@
 package com.stock.control.front;
 
-import com.stock.control.dto.ProductForSaleDTO;
-import com.stock.control.dto.ProductSaveDto;
+import com.stock.control.dto.ProductSaveDTO;
 import com.stock.control.front.tools.ControlFXManager;
 import com.stock.control.front.tools.ControllerManager;
 import com.stock.control.front.tools.CurrencyFormater;
@@ -21,7 +20,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
@@ -29,8 +27,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -46,22 +42,22 @@ public class StockControlController implements Initializable {
     private IProductService productService;
 
     @FXML
-    private TableView<ProductSaveDto> tableProducts;
+    private TableView<ProductSaveDTO> tableProducts;
 
     @FXML
-    private TableColumn<ProductSaveDto, String> description, name;
+    private TableColumn<ProductSaveDTO, String> description, name;
 
     @FXML
-    private TableColumn<ProductSaveDto, ProductSaveDto> stock;
+    private TableColumn<ProductSaveDTO, ProductSaveDTO> stock;
 
     @FXML
-    private TableColumn<ProductSaveDto, Double> price, colTotal;
+    private TableColumn<ProductSaveDTO, Double> price, colTotal;
 
     @FXML
-    private TableColumn<ProductSaveDto, Long> id;
+    private TableColumn<ProductSaveDTO, Long> id;
 
     @FXML
-    private TableColumn<ProductSaveDto, ProductSaveDto> colAction;
+    private TableColumn<ProductSaveDTO, ProductSaveDTO> colAction;
 
     @FXML
     private TextField txtSearch;
@@ -170,7 +166,7 @@ public class StockControlController implements Initializable {
 
     private void setUpColTotal() {
         colTotal.setCellValueFactory(cell -> {
-            ProductSaveDto productDto = cell.getValue();
+            ProductSaveDTO productDto = cell.getValue();
             return Bindings.createDoubleBinding( () -> {
                 try{
                     return productDto.getPrice() * productDto.getStock();
@@ -183,9 +179,9 @@ public class StockControlController implements Initializable {
     }
 
     private void setUpColStock() {
-        stock.setCellValueFactory(p -> new ReadOnlyObjectWrapper<ProductSaveDto>(p.getValue()));
+        stock.setCellValueFactory(p -> new ReadOnlyObjectWrapper<ProductSaveDTO>(p.getValue()));
 
-        stock.setCellFactory(col -> new TableCell<ProductSaveDto, ProductSaveDto>() {
+        stock.setCellFactory(col -> new TableCell<ProductSaveDTO, ProductSaveDTO>() {
             private final HBox hbox = new HBox(20);
             private final Label label = new Label();
             private final Button addButton = new Button("+");
@@ -204,7 +200,7 @@ public class StockControlController implements Initializable {
 
             private void setUpAddButton() {
                 addButton.setOnAction(e -> {
-                    ProductSaveDto productSelected = getTableView().getItems().get(getIndex());
+                    ProductSaveDTO productSelected = getTableView().getItems().get(getIndex());
                     ControllerManager.getProductToAddStock().setStock(productSelected.getStock());
                     ControllerManager.getProductToAddStock().setId(productSelected.getId());
 
@@ -217,7 +213,7 @@ public class StockControlController implements Initializable {
             }
 
             @Override
-            protected void updateItem(ProductSaveDto product, boolean empty) {
+            protected void updateItem(ProductSaveDTO product, boolean empty) {
                 super.updateItem(product, empty);
                 if (empty || product == null) {
                     setGraphic(null);
@@ -257,7 +253,7 @@ public class StockControlController implements Initializable {
 
             private EventHandler<ActionEvent> deleteProduct() {
                 return event -> {
-                    ProductSaveDto productToDelete = getTableView().getItems().get(getIndex());
+                    ProductSaveDTO productToDelete = getTableView().getItems().get(getIndex());
                     if (isDialogOk(productToDelete)) {
                         try{
                             productService.deleteProduct(productToDelete);
@@ -277,12 +273,12 @@ public class StockControlController implements Initializable {
                 };
             }
 
-            private boolean isDialogOk(ProductSaveDto productToDelete) {
+            private boolean isDialogOk(ProductSaveDTO productToDelete) {
                 return WindowsManager.confirmDialog(stockControlAnchorPane, "¿Esta Seguro de Eliminar el Producto " + productToDelete.getName() + "?").get() == ButtonType.OK;
             }
 
             @Override
-            protected void updateItem(ProductSaveDto item, boolean empty) {
+            protected void updateItem(ProductSaveDTO item, boolean empty) {
                 super.updateItem(item, empty);
                 if (empty) {
                     setGraphic(null);
@@ -301,7 +297,7 @@ public class StockControlController implements Initializable {
     }
 
     private void resetTable(){
-        ObservableList<ProductSaveDto> products = tableProducts.getItems();
+        ObservableList<ProductSaveDTO> products = tableProducts.getItems();
         products.clear();
         tableProducts.setItems(products);
     }

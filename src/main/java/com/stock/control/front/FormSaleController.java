@@ -413,8 +413,9 @@ public class FormSaleController implements Initializable {
     }
 
     private void saveSaleDetailsAndUpdateStock() {
-        Long id = saleService.saveSale(saleDto);
-        saleDetailsService.saveSaleDetails(saleDto, id);
+        saleService.saveSale(saleDto);
+        //TODO eliminar el save details y agregarlo solamente a sale para que guarde automaticamente
+        //saleDetailsService.saveSaleDetails(saleDto, id);
         productService.updateStock(saleDto.getProducts());
     }
 
