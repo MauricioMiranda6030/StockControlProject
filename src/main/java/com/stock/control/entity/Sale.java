@@ -38,7 +38,7 @@ public class Sale {
             (mappedBy = "sale",
             cascade = CascadeType.ALL,
             orphanRemoval = true,
-            fetch = FetchType.EAGER)
+            fetch = FetchType.LAZY)
     private List<SaleDetails> saleDetails = new ArrayList<>();
 
     public void addDetail(SaleDetails detail){

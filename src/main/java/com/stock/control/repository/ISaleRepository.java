@@ -31,8 +31,9 @@ public interface ISaleRepository extends JpaRepository<Sale, Long> {
                                         @Param("dt") LocalDate dateTo,
                                         @Param("ex") boolean ex);
 
-    @Query( "SELECT s FROM Sale s " +
-            "JOIN SaleDetails sd ON s = sd.sale " +
-            "JOIN Product p ON sd.product = p")
+    @Query( "SELECT DISTINCT s " +
+            "FROM Sale s " +
+            "JOIN FETCH s.saleDetails sd " +
+            "JOIN FETCH sd.product")
     List<Sale> getAllSalesWithProducts();
 }

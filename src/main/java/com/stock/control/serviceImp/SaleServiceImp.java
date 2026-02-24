@@ -28,6 +28,7 @@ public class SaleServiceImp implements ISaleService {
     private ISaleDetailsService saleDetailsService;
 
     @Override
+    @Transactional
     public void saveSale(SaleDTO saleDto) {
         Sale newSale = ISaleMapper.INSTANCE.saleDtoToSale(saleDto);
         newSale.setDateOfSale(LocalDate.now());
@@ -50,6 +51,7 @@ public class SaleServiceImp implements ISaleService {
     }
 
     @Override
+    @Transactional
     public List<SaleViewDTO> getAllSalesViewDto() {
         return toSalesViewDto(getAllSales());
     }
