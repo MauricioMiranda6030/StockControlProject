@@ -15,6 +15,8 @@ import java.util.List;
 public interface ISaleRepository extends JpaRepository<Sale, Long> {
 
     @Query( "SELECT s FROM Sale s " +
+            "JOIN FETCH s.saleDetails sd " +
+            "JOIN FETCH sd.product " +
             "WHERE ((:df IS NULL OR :dt IS NULL) OR s.dateOfSale BETWEEN :df AND :dt ) " +
             "AND (:code IS NULL OR s.docId LIKE :code) " +
             "AND (:ex = FALSE OR s.docId != '0000')")
